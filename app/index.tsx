@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Text } from 'react-native';
 
-import { CenterContainer, CenterText } from 'common/layout/CenterContainer';
-import { Button } from 'common/interaction/Button';
+import { CenterContainer } from 'common/layout/CenterContainer';
+import { Group } from 'modules/groups/Group';
 
 export default function HomeScreen() {
   return (
     <CenterContainer>
-      <CenterText>Home</CenterText>
-      <Button>
-        <Text>Click me</Text>
-      </Button>
+      <Group
+        name="Familie Bakker"
+        type="family"
+      />
     </CenterContainer>
   );
 };

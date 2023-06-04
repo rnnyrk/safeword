@@ -12,7 +12,7 @@ export const LogoHeader = () => {
     <LogoHeaderContainer paddingTop={insets.top}>
       <Image
         source={SafeWordLogo}
-        resizeMode="contain"
+        contentFit="contain"
         style={{ width: 200, height: 22, marginTop: 18 }}
       />
     </LogoHeaderContainer>

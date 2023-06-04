@@ -4,6 +4,7 @@ const theme = {
   colors: {
     primary: '#56A2BC',
     black: '#1D191F',
+    gray: '#CCCCCC',
     white: '#FFFFFF',
     orange: '#F6662B',
     red: '#EB3456',
@@ -21,15 +22,9 @@ const theme = {
 
   fonts: {
     LexendDeca: {
-      400: {
-        normal: 'LexendDeca_400Regular',
-      },
-      500: {
-        normal: 'LexendDeca_500Medium',
-      },
-      800: {
-        normal: 'LexendDeca_800ExtraBold',
-      },
+      400: 'LexendDeca_400Regular',
+      500: 'LexendDeca_500Medium',
+      800: 'LexendDeca_800ExtraBold',
     },
   },
 } as const;

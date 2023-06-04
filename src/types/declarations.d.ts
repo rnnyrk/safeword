@@ -17,5 +17,3 @@ declare module '*.mp4' {
   const value: number;
   export = value;
 }
-
-declare module '@expo-google-fonts/lexend-deca';
