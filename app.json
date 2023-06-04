@@ -1,0 +1,13 @@
+{
+  "expo": {
+    "scheme": "safeword",
+    "name": "Safeword",
+    "slug": "safeword",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    }
+  }
+}

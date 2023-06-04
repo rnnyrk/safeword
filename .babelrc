@@ -1,0 +1,32 @@
+{
+  "presets": [
+    "babel-preset-expo",
+    "module:metro-react-native-babel-preset",
+    "@babel/typescript"
+  ],
+  "plugins": [
+    "expo-router/babel",
+    "babel-plugin-styled-components",
+    "react-native-reanimated/plugin",
+    [
+      "module-resolver",
+      {
+        "extensions": [".js"],
+        "alias": {
+          "common": "./src/components/common",
+          "modules": "./src/components/modules",
+          "services": "./src/services",
+          "hooks": "./src/services/hooks",
+          "queries": "./src/queries",
+          "images": "./src/assets/images",
+          "fonts": "./src/assets/fonts",
+          "store": "./src/store",
+          "styles": "./src/styles",
+          "types": "./src/types"
+        },
+        "root": ".",
+        "cwd": "babelrc"
+      }
+    ]
+  ]
+}
