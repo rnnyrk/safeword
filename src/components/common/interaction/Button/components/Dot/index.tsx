@@ -12,16 +12,16 @@ export const Dot: React.FC<DotProps> = ({ delay }) => {
       duration: 1400,
       delay: delay,
       easing: Easing.ease,
-      useNativeDriver: true
+      useNativeDriver: true,
     }),
   ).start();
 
   const opacity = opacityValue.interpolate({
     inputRange: [0, 50, 100],
-    outputRange: [0.0, 1.0, 0.0]
-  })
+    outputRange: [0.0, 1.0, 0.0],
+  });
 
-  return <DotContainer style={{ opacity }} />
+  return <DotContainer style={{ opacity }} />;
 };
 
 type DotProps = {

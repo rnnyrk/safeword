@@ -12,4 +12,3 @@ export const ButtonLoader: React.FC = () => {
     </ButtonLoaderContainer>
   );
 };
-

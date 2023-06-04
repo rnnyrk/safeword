@@ -3,7 +3,12 @@ import Svg, { Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
 
-export const Bubble = ({ fill = '#000000', width = 200, height = 200, $position = 'static' }: BubbleProps) => (
+export const Bubble = ({
+  fill = '#000000',
+  width = 200,
+  height = 200,
+  $position = 'static',
+}: BubbleProps) => (
   <SvgWrapper $position={$position}>
     <Svg
       width={width}

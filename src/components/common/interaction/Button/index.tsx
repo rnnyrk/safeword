@@ -1,12 +1,10 @@
 import * as React from 'react';
 
-import { ButtonContainer, ButtonWrapper, ButtonIcon, ButtonLabel } from './styled';
 import { ButtonLoader } from './components';
+import { ButtonContainer, ButtonIcon, ButtonLabel, ButtonWrapper } from './styled';
 import { ButtonProps } from './types';
 
-const ButtonContent = ({
-  children, icon, isLoading, iconOnly, iconPosition,
-}: ButtonProps) => (
+const ButtonContent = ({ children, icon, isLoading, iconOnly, iconPosition }: ButtonProps) => (
   <>
     {isLoading ? (
       <ButtonLoader />
@@ -27,7 +25,12 @@ const ButtonContent = ({
 );
 
 export const Button = ({
-  children, icon, isLoading, isDisabled, iconPosition = 'left', onPress,
+  children,
+  icon,
+  isLoading,
+  isDisabled,
+  iconPosition = 'left',
+  onPress,
 }: ButtonProps) => {
   const styledButtonProps = {
     isDisabled,
@@ -48,7 +51,10 @@ export const Button = ({
     <ButtonContainer onPress={onPress}>
       {({ pressed }) => {
         return (
-          <ButtonWrapper {...styledButtonProps } isPressed={pressed}>
+          <ButtonWrapper
+            {...styledButtonProps}
+            isPressed={pressed}
+          >
             <ButtonContent {...buttonContentProps} />
           </ButtonWrapper>
         );

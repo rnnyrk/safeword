@@ -19,7 +19,7 @@ export type ThemeColors = keyof typeof theme.colors;
 
 // Get subcolors from colors if they exist
 export type SubThemeColors = {
-  [color in i.ThemeColors]: Exclude<keyof typeof theme.colors[color], keyof string>;
+  [color in i.ThemeColors]: Exclude<keyof (typeof theme.colors)[color], keyof string>;
 };
 
 // Ensures colors exist in theme
@@ -33,4 +33,3 @@ export type SubcolorFromTheme<
   Colors extends i.ThemeColors,
   Subcolors extends i.SubcolorsFromColor<Colors>,
 > = [Colors, Subcolors];
-
