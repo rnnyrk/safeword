@@ -3,8 +3,10 @@ import 'styled-components';
 const theme = {
   colors: {
     primary: '#00a7c1',
+    primaryHover: '#63B6C9',
     black: '#1D191F',
     gray: '#CCCCCC',
+    darkGray: '#808080',
     white: '#FFFFFF',
     orange: '#F6662B',
     red: '#EB3456',

@@ -6,11 +6,11 @@ export const Text = styled.Text<TextProps>`
   line-height: ${({ size }) => (size || 20) + 8 + 'px'};
   color: ${({ theme, color }) => theme.colors[color || 'black']};
   font-family: ${({ theme }) => theme.fonts.LexendDeca[800]};
-  text-align: ${({ align }) => align};
+  text-align: ${({ align }) => align || 'left'};
 `;
 
 type TextProps = {
   align?: 'left' | 'center' | 'right';
-  color?: i.ColorsFromTheme<'primary'>;
+  color?: i.ColorsFromTheme<'primary' | 'gray' | 'darkGray'>;
   size?: 20 | 28 | 32 | 40 | 48 | 56 | 64;
 };

@@ -1,20 +1,25 @@
-import * as React from 'react';
-import Constants from 'expo-constants';
-import { Text } from 'react-native';
+import { useRouter } from 'expo-router';
 
-import { CenterContainer, CenterText } from 'common/layout';
+import { Button } from 'common/interaction/Button';
+import { Container } from 'common/layout';
+import { Text } from 'common/typography';
+import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
-  // process.env.API_URL load the variable directly from eas.json but this doesn;t work on a developer server;
-  const apiUrl = process.env.API_URL;
-  // Therefor it might be better to use these which loads the data from app.js, but is a bit more ugly;
-  const Constantstest = Constants?.expoConfig?.extra?.apiUrl;
+  const router = useRouter();
 
   return (
-    <CenterContainer>
-      <CenterText>Environmental Variables</CenterText>
-      <Text>Process: {apiUrl}</Text>
-      <Text>Constants: {Constantstest}</Text>
-    </CenterContainer>
+    <Container>
+      <GroupSafeword />
+      <Text
+        align="center"
+        color="darkGray"
+        size={48}
+        style={{ marginTop: 24 }}
+      >
+        Familie Bakker
+      </Text>
+      <Button onPress={() => router.push('/')}>Terug naar het overzicht</Button>
+    </Container>
   );
 }

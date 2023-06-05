@@ -1,22 +1,26 @@
 import * as i from 'types';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 
 import { windowWidth } from 'services';
 import theme from 'styles/theme';
 import { Bubble, Lock, Work } from 'common/svg';
 import { Text } from 'common/typography';
 
-import { GroupContainer, GroupContent, GroupIcon } from './styled';
+import { GroupContent, GroupIcon } from './styled';
 
-export const Group = ({ name, size = 'small', type }: GroupProps) => {
+export const Group = ({ name, size = 'small', type, to }: GroupProps) => {
+  const router = useRouter();
+
   const isSmall = size === 'small';
-
   let groupSize = windowWidth - 40;
+
   if (isSmall) {
     groupSize = windowWidth / 2 - 10;
   }
 
   return (
-    <GroupContainer>
+    <Pressable onPress={() => router.push(to)}>
       <GroupContent
         groupSize={groupSize}
         size={size}
@@ -45,13 +49,13 @@ export const Group = ({ name, size = 'small', type }: GroupProps) => {
         >
           {name}
         </Text>
+        <Bubble
+          $position="absolute"
+          width={groupSize}
+          height={groupSize}
+        />
       </GroupContent>
-      <Bubble
-        $position="absolute"
-        width={groupSize}
-        height={groupSize}
-      />
-    </GroupContainer>
+    </Pressable>
   );
 };
 
@@ -59,4 +63,5 @@ export type GroupProps = {
   name: string;
   size?: 'small' | 'large';
   type: i.GroupType;
+  to: string;
 };

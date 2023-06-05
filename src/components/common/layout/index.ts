@@ -1,2 +1,2 @@
-export * from './CenterContainer';
+export * from './Container';
 export * from './LogoHeader';

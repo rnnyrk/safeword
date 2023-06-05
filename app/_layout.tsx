@@ -11,6 +11,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
 import theme from 'styles/theme';
+import { LogoHeader } from 'common/layout';
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -28,7 +29,11 @@ export default function RootLayout() {
       <ThemeProvider theme={theme}>
         <View style={{ flex: 1 }}>
           <StatusBar style="dark" />
-          <Stack />
+          <Stack
+            screenOptions={{
+              header: () => <LogoHeader />,
+            }}
+          />
         </View>
       </ThemeProvider>
     </SafeAreaProvider>
