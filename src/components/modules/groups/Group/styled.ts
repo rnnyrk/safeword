@@ -10,8 +10,8 @@ export const GroupContainer = styled.View`
 export const GroupContent = styled.View`
   position: relative;
   z-index: 10;
-  flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 400px;
+  padding-top: 80px;
+  /* background: ${({ theme }) => theme.colors.gray}; */
 `;

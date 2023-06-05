@@ -3,27 +3,27 @@ import Svg, { Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
 
-export const Lock = ({
+export const Work = ({
   fill = '#000000',
   width = 20,
   height = 20,
   $position = 'static',
-}: LockProps) => (
+}: WorkProps) => (
   <SvgWrapper $position={$position}>
     <Svg
       width={width}
       height={height}
-      viewBox="0 0 244.6 428.8"
+      viewBox="0 0 414.8 389.7"
     >
       <Path
+        d="M345 88.5h-.7v-27c0-33.9-27.6-61.5-61.5-61.5H132C98.1 0 70.5 27.6 70.5 61.5v27h-.7C31.4 88.5 0 119.9 0 158.3v161.6c0 38.4 31.4 69.8 69.8 69.8H345c38.4 0 69.8-31.4 69.8-69.8V158.3c0-38.4-31.4-69.8-69.8-69.8zm-228-27c0-8.1 6.8-15 15-15h150.7c8.1 0 15 6.8 15 15v27H117v-27z"
         fill={fill}
-        d="M190.1 224c32.8-21.9 54.5-59.3 54.5-101.7C244.6 54.8 189.9 0 122.3 0 54.8 0 0 54.7 0 122.3c0 42.4 21.6 79.8 54.5 101.7L25.8 399.3c-2.5 15.5 9.4 29.5 25.1 29.5h142.8c15.7 0 27.6-14 25.1-29.5L190.1 224z"
       />
     </Svg>
   </SvgWrapper>
 );
 
-type LockProps = {
+type WorkProps = {
   fill?: string;
   width?: number;
   height?: number;

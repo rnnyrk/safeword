@@ -2,7 +2,7 @@ import 'styled-components';
 
 const theme = {
   colors: {
-    primary: '#56A2BC',
+    primary: '#00a7c1',
     black: '#1D191F',
     gray: '#CCCCCC',
     white: '#FFFFFF',
