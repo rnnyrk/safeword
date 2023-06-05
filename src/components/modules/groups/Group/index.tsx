@@ -13,14 +13,14 @@ export const Group = ({ name, type }: GroupProps) => {
         {type === 'family' && (
           <Lock
             width={20}
-            height={50}
+            height={40}
             fill={theme.colors.gray}
           />
         )}
         {type === 'work' && (
           <Work
-            width={20}
-            height={50}
+            width={30}
+            height={40}
             fill={theme.colors.gray}
           />
         )}
