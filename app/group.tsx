@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Text } from 'react-native';
 import Constants from 'expo-constants';
+import { Text } from 'react-native';
 
 import { CenterContainer, CenterText } from 'common/layout';
 
-export default function EnvironmentScreen() {
+export default function GroupScreen() {
   // process.env.API_URL load the variable directly from eas.json but this doesn;t work on a developer server;
   const apiUrl = process.env.API_URL;
   // Therefor it might be better to use these which loads the data from app.js, but is a bit more ugly;
@@ -17,4 +17,4 @@ export default function EnvironmentScreen() {
       <Text>Constants: {Constantstest}</Text>
     </CenterContainer>
   );
-};
+}

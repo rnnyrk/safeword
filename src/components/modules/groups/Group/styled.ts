@@ -1,5 +1,7 @@
 import styled from 'styled-components/native';
 
+import { GroupProps } from '.';
+
 export const GroupContainer = styled.View`
   width: 100%;
   flex: 1;
@@ -7,11 +9,22 @@ export const GroupContainer = styled.View`
   align-items: center;
 `;
 
-export const GroupContent = styled.View`
+export const GroupIcon = styled.View`
+  width: 100%;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const GroupContent = styled.View<GroupContentProps>`
   position: relative;
   z-index: 10;
-  display: flex;
-  height: 400px;
-  padding-top: 80px;
-  /* background: ${({ theme }) => theme.colors.gray}; */
+  height: ${({ groupSize }) => groupSize + 'px'};
+  width: ${({ groupSize }) => groupSize + 'px'};
+  padding: ${({ size }) => (size === 'small' ? '20px' : '80px')} 24px 0 24px;
 `;
+
+type GroupContentProps = {
+  size: GroupProps['size'];
+  groupSize: number;
+};

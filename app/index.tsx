@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Stack } from 'expo-router';
 
 import { LogoHeader } from 'common/layout';
-import { CenterContainer } from 'common/layout/CenterContainer';
-import { Group } from 'modules/groups/Group';
+import { Group, GroupGrid } from 'modules/groups';
 
 export default function HomeScreen() {
   return (
@@ -13,12 +12,16 @@ export default function HomeScreen() {
           header: () => <LogoHeader />,
         }}
       />
-      <CenterContainer>
+      <GroupGrid>
         <Group
           name="Familie Bakker"
+          type="family"
+        />
+        <Group
+          name="Label A + Ace"
           type="work"
         />
-      </CenterContainer>
+      </GroupGrid>
     </>
   );
 }
