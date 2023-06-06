@@ -1,6 +1,7 @@
 import * as i from 'types';
 import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
+import { FadeInUp } from 'react-native-reanimated';
 
 import { windowWidth } from 'services';
 import theme from 'styles/theme';
@@ -26,6 +27,7 @@ export const Group = ({ name, size = 'small', type, to }: GroupProps) => {
           <GroupContent
             groupSize={groupSize}
             size={size}
+            entering={FadeInUp.duration(750).delay(250)}
           >
             <View style={{ position: 'relative', zIndex: 50 }}>
               <GroupIcon>

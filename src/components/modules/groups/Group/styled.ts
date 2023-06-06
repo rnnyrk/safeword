@@ -1,3 +1,4 @@
+import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
 import { GroupProps } from '.';
@@ -9,7 +10,7 @@ export const GroupIcon = styled.View`
   align-items: center;
 `;
 
-export const GroupContent = styled.View<GroupContentProps>`
+export const GroupContent = styled(Animated.View)<GroupContentProps>`
   position: relative;
   z-index: 10;
   height: ${({ groupSize }) => groupSize + 'px'};

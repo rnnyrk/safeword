@@ -4,7 +4,7 @@ import {
   LexendDeca_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/lexend-deca';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -29,11 +29,8 @@ export default function RootLayout() {
       <ThemeProvider theme={theme}>
         <View style={{ flex: 1 }}>
           <StatusBar style="dark" />
-          <Stack
-            screenOptions={{
-              header: () => <LogoHeader />,
-            }}
-          />
+          <LogoHeader />
+          <Slot />
         </View>
       </ThemeProvider>
     </SafeAreaProvider>
