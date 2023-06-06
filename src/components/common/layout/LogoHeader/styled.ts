@@ -2,14 +2,15 @@ import styled from 'styled-components/native';
 
 export const LogoHeaderContainer = styled.View<LogoHeaderContainerProps>`
   position: relative;
-  display: flex;
+  flex-direction: row;
   align-items: center;
+  justify-content: space-between;
   width: 100%;
-  padding: 24px;
-  paddingTop: ${({ paddingTop }) => paddingTop + 'px'};
-  background-color: ${({ theme }) => theme.colors.white};
+  padding-top: ${({ paddingTop }) => paddingTop + 'px'};
+  padding-right: 24px;
+  padding-left: 24px;
 `;
 
-type LogoHeaderContainerProps ={
-  paddingTop: number
+type LogoHeaderContainerProps = {
+  paddingTop: number;
 };

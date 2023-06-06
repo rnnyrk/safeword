@@ -6,7 +6,6 @@ import {
 } from '@expo-google-fonts/lexend-deca';
 import { Slot } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
@@ -27,11 +26,9 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
-        <View style={{ flex: 1 }}>
-          <StatusBar style="dark" />
-          <LogoHeader />
-          <Slot />
-        </View>
+        <StatusBar style="dark" />
+        <LogoHeader />
+        <Slot />
       </ThemeProvider>
     </SafeAreaProvider>
   );
