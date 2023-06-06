@@ -1,6 +1,6 @@
 import * as i from 'types';
 import { useRouter } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { windowWidth } from 'services';
 import theme from 'styles/theme';
@@ -21,40 +21,48 @@ export const Group = ({ name, size = 'small', type, to }: GroupProps) => {
 
   return (
     <Pressable onPress={() => router.push(to)}>
-      <GroupContent
-        groupSize={groupSize}
-        size={size}
-      >
-        <GroupIcon>
-          {type === 'family' && (
-            <Lock
-              width={isSmall ? 15 : 20}
-              height={isSmall ? 30 : 40}
-              fill={theme.colors.gray}
+      {({ pressed }) => {
+        return (
+          <GroupContent
+            groupSize={groupSize}
+            size={size}
+          >
+            <View style={{ position: 'relative', zIndex: 50 }}>
+              <GroupIcon>
+                {type === 'family' && (
+                  <Lock
+                    width={isSmall ? 15 : 20}
+                    height={isSmall ? 30 : 40}
+                    fill={theme.colors.gray}
+                  />
+                )}
+                {type === 'work' && (
+                  <Work
+                    width={isSmall ? 25 : 30}
+                    height={isSmall ? 30 : 40}
+                    fill={theme.colors.gray}
+                  />
+                )}
+              </GroupIcon>
+              <Text
+                color="primary"
+                align="center"
+                size={isSmall ? 20 : 40}
+                style={{ marginTop: isSmall ? 15 : 30 }}
+              >
+                {name}
+              </Text>
+            </View>
+            <Bubble
+              $position="absolute"
+              strokeColor={pressed ? theme.colors.primaryHover : theme.colors.primary}
+              fill={pressed ? theme.colors.primaryLight : 'none'}
+              width={groupSize}
+              height={groupSize}
             />
-          )}
-          {type === 'work' && (
-            <Work
-              width={isSmall ? 25 : 30}
-              height={isSmall ? 30 : 40}
-              fill={theme.colors.gray}
-            />
-          )}
-        </GroupIcon>
-        <Text
-          color="primary"
-          align="center"
-          size={isSmall ? 20 : 40}
-          style={{ marginTop: isSmall ? 15 : 30 }}
-        >
-          {name}
-        </Text>
-        <Bubble
-          $position="absolute"
-          width={groupSize}
-          height={groupSize}
-        />
-      </GroupContent>
+          </GroupContent>
+        );
+      }}
     </Pressable>
   );
 };
