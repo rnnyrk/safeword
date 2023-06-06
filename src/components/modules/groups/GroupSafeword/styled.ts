@@ -1,14 +1,25 @@
 import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
-export const GroupSafewordContent = styled(Animated.View)<GroupSafewordContentProps>`
-  position: relative;
-  z-index: 10;
+export const GroupSafewordContainer = styled(Animated.View)<GroupSafewordContainerProps>`
   height: ${({ groupSize }) => groupSize + 'px'};
   width: ${({ groupSize }) => groupSize + 'px'};
-  padding: 80px 24px 0 24px;
+  margin-bottom: 24px;
 `;
 
-type GroupSafewordContentProps = {
+type GroupSafewordContainerProps = {
   groupSize: number;
 };
+
+export const GroupSafewordContent = styled.View`
+  position: relative;
+  z-index: 50;
+  align-items: center;
+  padding: 88px 24px 0px 24px;
+  height: 100%;
+`;
+
+export const GroupSafewordWord = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;

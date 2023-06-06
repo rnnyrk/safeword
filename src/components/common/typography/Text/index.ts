@@ -7,10 +7,16 @@ export const Text = styled.Text<TextProps>`
   color: ${({ theme, color }) => theme.colors[color || 'black']};
   font-family: ${({ theme }) => theme.fonts.LexendDeca[800]};
   text-align: ${({ align }) => align || 'left'};
+  margin-top: ${({ marginTop }) => (marginTop || 0) + 'px'};
+  margin-right: ${({ marginRight }) => (marginRight || 0) + 'px'};
+  margin-bottom: ${({ marginBottom }) => (marginBottom || 0) + 'px'};
 `;
 
 type TextProps = {
   align?: 'left' | 'center' | 'right';
   color?: i.ColorsFromTheme<'primary' | 'gray' | 'darkGray'>;
+  marginTop?: number;
+  marginRight?: number;
+  marginBottom?: number;
   size?: 20 | 28 | 32 | 40 | 48 | 56 | 64;
 };
