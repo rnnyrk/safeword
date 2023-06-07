@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useRouter, useSearchParams } from 'expo-router';
 
 import { Button } from 'common/interaction/Button';
 import { Container } from 'common/layout';
@@ -7,6 +7,7 @@ import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
   const router = useRouter();
+  const params = useSearchParams();
 
   return (
     <Container>
@@ -17,9 +18,9 @@ export default function GroupScreen() {
         size={48}
         style={{ marginTop: 24 }}
       >
-        Familie Bakker
+        {params.group}
       </Text>
-      <Button onPress={() => router.push('/')}>Terug naar het overzicht</Button>
+      <Button onPress={() => router.back()}>Terug naar het overzicht</Button>
     </Container>
   );
 }

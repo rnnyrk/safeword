@@ -8,12 +8,12 @@ export default function HomeScreen() {
       <Group
         name="Familie Bakker"
         type="family"
-        to="/home/group"
+        to="/home/familie-bakker"
       />
       <Group
         name="Label A + Ace"
         type="work"
-        to="/home/group"
+        to="/home/labela-ace"
       />
     </GroupGrid>
   );

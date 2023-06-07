@@ -18,6 +18,7 @@ export default function RootScreen() {
         >
           Auth / Welcome
         </Text>
+        {/* Use replace to prevent going back to Auth <Button onPress={() => router.replace('/home')}> */}
         <Button onPress={() => router.push('/home')}>
           <Text>Ga naar home</Text>
         </Button>
