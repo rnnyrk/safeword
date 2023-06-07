@@ -4,7 +4,7 @@ import { Button } from 'common/interaction/Button';
 import { Container } from 'common/layout';
 import { Text } from 'common/typography';
 
-export default function Screen1() {
+export default function Settings() {
   const router = useRouter();
 
   return (

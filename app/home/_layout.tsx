@@ -40,6 +40,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
     </ScrollView>
   );
 }
+
 export default function DrawerLayout() {
   return (
     <SafeAreaProvider>
