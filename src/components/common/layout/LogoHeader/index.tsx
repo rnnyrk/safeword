@@ -1,4 +1,4 @@
-import { useNavigation, useRouter } from 'expo-router';
+import { useNavigation } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,21 +7,30 @@ import { Menu, Safeword } from 'common/svg';
 
 import { LogoHeaderContainer } from './styled';
 
-export const LogoHeader = () => {
+export const LogoHeader = ({ showDrawer = false }: LogoHeaderProps) => {
   const insets = useSafeAreaInsets();
+  const navigation = useNavigation();
 
   return (
     <LogoHeaderContainer paddingTop={insets.top + 8}>
       <View />
       <Safeword width={200} />
-      <Pressable
-        hitSlop={10}
-        // onPress={() => (navigation as any).openDrawer()}
-      >
-        {({ pressed }) => (
-          <Menu fill={pressed ? theme.colors.primaryLight : theme.colors.primary} />
-        )}
-      </Pressable>
+      {showDrawer ? (
+        <Pressable
+          hitSlop={10}
+          onPress={() => (navigation as any)?.toggleDrawer()}
+        >
+          {({ pressed }) => (
+            <Menu fill={pressed ? theme.colors.primaryLight : theme.colors.primary} />
+          )}
+        </Pressable>
+      ) : (
+        <View />
+      )}
     </LogoHeaderContainer>
   );
+};
+
+type LogoHeaderProps = {
+  showDrawer?: boolean;
 };

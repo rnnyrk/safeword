@@ -1,20 +1,27 @@
-import * as React from 'react';
+import { useRouter } from 'expo-router';
 
-import { Group, GroupGrid } from 'modules/groups';
+import { Button } from 'common/interaction/Button';
+import { Container, LogoHeader } from 'common/layout';
+import { Text } from 'common/typography';
 
-export default function HomeScreen() {
+export default function RootScreen() {
+  const router = useRouter();
+
   return (
-    <GroupGrid>
-      <Group
-        name="Familie Bakker"
-        type="family"
-        to="/group"
-      />
-      <Group
-        name="Label A + Ace"
-        type="work"
-        to="/group"
-      />
-    </GroupGrid>
+    <>
+      <LogoHeader />
+      <Container>
+        <Text
+          align="center"
+          color="darkGray"
+          size={48}
+        >
+          Auth / Welcome
+        </Text>
+        <Button onPress={() => router.push('/home')}>
+          <Text>Ga naar home</Text>
+        </Button>
+      </Container>
+    </>
   );
 }

@@ -9,6 +9,7 @@ export const LogoHeaderContainer = styled.View<LogoHeaderContainerProps>`
   padding-top: ${({ paddingTop }) => paddingTop + 'px'};
   padding-right: 24px;
   padding-left: 24px;
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 type LogoHeaderContainerProps = {
