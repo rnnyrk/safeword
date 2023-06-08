@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import {
   LexendDeca_400Regular,
   LexendDeca_500Medium,
@@ -9,7 +10,11 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
+import { AuthProvider } from 'services/authContext';
 import theme from 'styles/theme';
+
+global.Buffer = require('buffer').Buffer;
+global.Buffer = Buffer;
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({
@@ -25,11 +30,13 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
-        <StatusBar style="dark" />
-        <Stack
-          initialRouteName="index"
-          screenOptions={{ header: () => null }}
-        />
+        <AuthProvider>
+          <StatusBar style="dark" />
+          <Stack
+            initialRouteName="index"
+            screenOptions={{ header: () => null }}
+          />
+        </AuthProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
