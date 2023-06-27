@@ -17,6 +17,7 @@ module.exports = {
   },
   ios: {
     runtimeVersion: '1.0.0',
+    associatedDomains: ['applinks:dev.getsafeword.app', 'applinks:getsafeword.app'],
   },
   icon: './src/assets/images/icon.png',
   splash: {
@@ -33,6 +34,7 @@ module.exports = {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtzcGhjd252dWhrY3R3dml1Y2pwIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODYxMjQyMzUsImV4cCI6MjAwMTcwMDIzNX0.VGXbow3jlSqVEhsgj51B6N5ygfW9W0qU4HvWHWFl-wI',
   },
   plugins: [
+    'expo-apple-authentication',
     [
       'expo-build-properties',
       {
