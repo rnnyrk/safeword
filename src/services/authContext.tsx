@@ -20,8 +20,6 @@ function useProtectedRoute(user: i.User | null) {
   React.useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)';
 
-    console.log({ user, inAuthGroup });
-
     // If the user is not signed in, and not on signin page
     if (!user && !inAuthGroup) {
       router.replace('/sign-in');
@@ -39,12 +37,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = React.useState<i.User | null>(null);
 
   React.useEffect(() => {
+    console.log();
+
+    // Check if the user jwt is still saved in secure store (current session)
     (async () => {
       const token = await SecureStoreAdapter.getItem('jwtToken');
+      console.log('MOUNT AUTH PROVIDER', token);
+
       if (token) {
         const decodedToken = jwt_decode(token) as JwtPayload;
-        console.log({ decodedToken });
-
         const data = await getUserByEmail(decodedToken.email);
         setUser(data);
       }

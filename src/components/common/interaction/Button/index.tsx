@@ -2,9 +2,16 @@ import * as React from 'react';
 
 import { ButtonLoader } from './components';
 import { ButtonContainer, ButtonIcon, ButtonLabel, ButtonWrapper } from './styled';
-import { ButtonProps } from './types';
+import { ButtonProps, ButtonContentProps } from './types';
 
-const ButtonContent = ({ children, icon, isLoading, iconOnly, iconPosition }: ButtonProps) => (
+const ButtonContent = ({
+  children,
+  icon,
+  isLoading,
+  iconOnly,
+  iconPosition,
+  variant,
+}: ButtonContentProps) => (
   <>
     {isLoading ? (
       <ButtonLoader />
@@ -18,7 +25,7 @@ const ButtonContent = ({ children, icon, isLoading, iconOnly, iconPosition }: Bu
             {icon}
           </ButtonIcon>
         )}
-        <ButtonLabel>{children}</ButtonLabel>
+        <ButtonLabel variant={variant}>{children}</ButtonLabel>
       </>
     )}
   </>
@@ -31,12 +38,15 @@ export const Button = ({
   isDisabled,
   iconPosition = 'left',
   onPress,
+  variant,
+  style,
 }: ButtonProps) => {
   const styledButtonProps = {
     isDisabled,
     isLoading,
     iconOnly: !children && Boolean(icon),
     iconPosition,
+    variant,
   };
 
   const buttonContentProps = {
@@ -45,10 +55,14 @@ export const Button = ({
     isLoading,
     iconOnly: !children && Boolean(icon),
     iconPosition,
+    variant,
   };
 
   return (
-    <ButtonContainer onPress={onPress}>
+    <ButtonContainer
+      onPress={onPress}
+      style={style}
+    >
       {({ pressed }) => {
         return (
           <ButtonWrapper
