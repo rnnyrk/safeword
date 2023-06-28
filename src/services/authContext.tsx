@@ -1,55 +1,120 @@
-import React from 'react';
+import * as i from 'types';
+import * as React from 'react';
 import { useRouter, useSegments } from 'expo-router';
+import jwt_decode, { JwtPayload } from 'jwt-decode';
+
+import { createNewUser, getUserByEmail } from 'queries/users';
+
+import { SecureStoreAdapter } from './secureStore';
 
 const AuthContext = React.createContext<AuthContextProps>(null);
 
-type AuthContextProps = {
-  signIn: () => void;
-  signOut: () => void;
-  user: any;
-} | null;
-
-// This hook can be used to access the user info.
 export function useAuth() {
   return React.useContext(AuthContext);
 }
 
-// This hook will protect the route access based on user authentication.
-function useProtectedRoute(user: any) {
+function useProtectedRoute(user: i.User | null) {
   const segments = useSegments();
   const router = useRouter();
 
   React.useEffect(() => {
     const inAuthGroup = segments[0] === '(auth)';
 
-    if (
-      // If the user is not signed in and the initial segment is not anything in the auth group.
-      !user &&
-      !inAuthGroup
-    ) {
-      // Redirect to the sign-in page.
+    console.log({ user, inAuthGroup });
+
+    // If the user is not signed in, and not on signin page
+    if (!user && !inAuthGroup) {
       router.replace('/sign-in');
     } else if (user && inAuthGroup) {
-      // Redirect away from the sign-in page.
-      router.replace('/');
+      if (user.finished_onboarding) {
+        router.replace('/');
+      } else {
+        router.replace('/onboarding');
+      }
     }
   }, [user, segments]);
 }
 
-export function AuthProvider(props: any) {
-  const [user, setAuth] = React.useState<{} | null>(null);
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = React.useState<i.User | null>(null);
+
+  React.useEffect(() => {
+    (async () => {
+      const token = await SecureStoreAdapter.getItem('jwtToken');
+      if (token) {
+        const decodedToken = jwt_decode(token) as JwtPayload;
+        console.log({ decodedToken });
+
+        const data = await getUserByEmail(decodedToken.email);
+        setUser(data);
+      }
+    })();
+  }, []);
+
+  const signIn = async ({ email, token }: SignInPayload) => {
+    SecureStoreAdapter.setItem('jwtToken', token);
+
+    let userEmail = email;
+    if (!userEmail) {
+      const decodedToken = jwt_decode(token) as JwtPayload;
+
+      console.log({
+        decodedToken,
+        email: decodedToken.email,
+      });
+
+      userEmail = decodedToken.email;
+    }
+
+    // Fetch user, is not existing, create, else set
+    const data = await getUserByEmail(userEmail);
+
+    if (data) {
+      setUser(data);
+    } else if (!data) {
+      const { data: newUser, error: newUserError } = await createNewUser(userEmail);
+
+      if (newUser && !newUserError) {
+        setUser(newUser);
+      } else if (newUserError) {
+        console.error('Error creating new user', { newUserError });
+      }
+    }
+  };
+
+  const signOut = () => {
+    SecureStoreAdapter.removeItem('jwtToken');
+    setUser(null);
+  };
 
   useProtectedRoute(user);
 
   return (
     <AuthContext.Provider
       value={{
-        signIn: () => setAuth({}),
-        signOut: () => setAuth(null),
+        signIn,
+        signOut,
         user,
       }}
     >
-      {props.children}
+      {children}
     </AuthContext.Provider>
   );
 }
+
+declare module 'jwt-decode' {
+  export interface JwtPayload {
+    email: string;
+  }
+}
+
+type SignInPayload = {
+  email: string | null;
+  token: string;
+};
+
+type AuthContextProps = {
+  signIn: (payload: SignInPayload) => void;
+  signOut: () => void;
+  user: i.User | null;
+} | null;
