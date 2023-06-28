@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-import { createNewUser, getUserByEmail } from 'queries/users';
+import { createUser, getUserByEmail } from 'queries/users';
 
 import { SecureStoreAdapter } from './secureStore';
 
@@ -73,7 +73,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (data) {
       setUser(data);
     } else if (!data) {
-      const { data: newUser, error: newUserError } = await createNewUser(userEmail);
+      const { data: newUser, error: newUserError } = await createUser(userEmail);
 
       if (newUser && !newUserError) {
         setUser(newUser);
