@@ -1,19 +1,14 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as Google from 'expo-auth-session/providers/google';
-import { useRouter } from 'expo-router';
-import * as SecureStore from 'expo-secure-store';
 
 import { supabase, supabaseUrl } from 'services';
+import { useAuth } from 'services/authContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
-const saveJwtToken = async (token: string) => {
-  await SecureStore.setItemAsync('jwt', token);
-};
-
 export default function RootScreen() {
-  const router = useRouter();
+  const authContext = useAuth();
 
   const [req, _, promptAsync] = Google.useAuthRequest(
     {
@@ -26,6 +21,8 @@ export default function RootScreen() {
   );
 
   const onGoogleSignIn = async () => {
+    if (!authContext) return;
+
     try {
       const response = await promptAsync({
         url: `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${req?.redirectUri}`,
@@ -43,13 +40,24 @@ export default function RootScreen() {
         // refreshToken: res.params.refresh_token,
       });
 
-      // saveJwtToken(response);
+      if (error) {
+        console.error('Google signInWithOAuth error', { error });
+      }
+
+      console.log({ googleData: data });
+
+      // authContext.signIn({
+      //   email: data?.user?.email,
+      //   token: data?.access_token,
+      // });
     } catch (err: any) {
-      console.log({ err });
+      console.error({ err });
     }
   };
 
   const onAppleSignIn = async () => {
+    if (!authContext) return;
+
     try {
       const response = await AppleAuthentication.signInAsync({
         requestedScopes: [
@@ -65,12 +73,26 @@ export default function RootScreen() {
         token: response.identityToken,
       });
 
-      // saveJwtToken(response.identityToken);
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'apple',
+        // refreshToken: res.params.refresh_token,
+      });
+
+      if (error) {
+        console.error('Apple signInWithOAuth error', { error });
+      }
+
+      authContext.signIn({
+        email: response.email,
+        token: response.identityToken!,
+      });
     } catch (err: any) {
       if (err.code === 'ERR_REQUEST_CANCELED') {
         // handle that the user canceled the sign-in flow
+        console.error({ err });
       } else {
         // handle other errors
+        console.error({ err });
       }
     }
   };
