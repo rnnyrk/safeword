@@ -13,10 +13,10 @@ export async function getGroupById(id: string): Promise<i.Group | null> {
   return data;
 }
 
-export async function createGroup(
-  name: string,
-  type: i.GroupType,
-): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
+export async function createGroup({
+  name,
+  type,
+}: i.CreateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
     .insert({

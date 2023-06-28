@@ -10,3 +10,5 @@ export type Group = {
   invite_code: string;
   type: i.GroupType;
 };
+
+export type CreateGroup = Pick<i.Group, 'name' | 'type'>;
