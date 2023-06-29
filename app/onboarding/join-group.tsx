@@ -8,11 +8,11 @@ import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
-type GroupForm = {
-  name: string;
+type JoinGroupForm = {
+  code: string;
 };
 
-export default function CreateGroup() {
+export default function JoinGroup() {
   const router = useRouter();
 
   const {
@@ -21,19 +21,21 @@ export default function CreateGroup() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: '',
+      code: '',
     },
   });
 
-  async function onSubmitGroup(data: GroupForm) {
+  async function onSubmitCode(data: JoinGroupForm) {
     console.log(data);
 
-    await createGroup({
-      name: data.name,
-      type: 'family',
-    });
+    // await createGroup({
+    //   name: data.name,
+    //   type: 'family',
+    // });
 
-    router.push('/onboarding/invite-members');
+    // @TODO update finish_onboarding on user
+
+    router.push('/');
   }
 
   return (
@@ -45,7 +47,7 @@ export default function CreateGroup() {
           color="primary"
           size={24}
         >
-          Groep aanmaken
+          Groep joinen
         </Text>
         <Text
           align="center"
@@ -53,25 +55,24 @@ export default function CreateGroup() {
           size={24}
           style={{ marginTop: 4 }}
         >
-          Kies een naam
+          Voer de sleutelcode in die je via e-mail hebt ontvangen
         </Text>
 
         <Controller
-          name="name"
+          name="code"
           control={control}
           rules={{ ...validation.required }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
-              placeholder="Naam van de groep"
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              error={errors.name}
+              error={errors.code}
             />
           )}
         />
 
-        <Button onPress={handleSubmit(onSubmitGroup)}>Versturen</Button>
+        <Button onPress={handleSubmit(onSubmitCode)}>Versturen</Button>
       </Container>
     </>
   );

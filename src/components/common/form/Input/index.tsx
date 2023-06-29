@@ -11,6 +11,7 @@ export const Input = ({
   editable = true,
   description,
   handleIconClick,
+  placeholder,
   value,
   onChangeText,
 }: i.InputProps) => {
@@ -26,6 +27,7 @@ export const Input = ({
           onChangeText={onChangeText}
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
+          placeholder={placeholder}
           {...{ value, editable }}
         />
         {icon && (
