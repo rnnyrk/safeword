@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 
 import { createGroup } from 'queries/groups';
-import { validation } from 'services';
+import { generateInviteCode, validation } from 'services';
 import { Input } from 'common/form';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -26,14 +26,15 @@ export default function CreateGroup() {
   });
 
   async function onSubmitGroup(data: GroupForm) {
-    console.log(data);
+    const groupCode = generateInviteCode(6);
 
     await createGroup({
       name: data.name,
       type: 'family',
+      invite_code: groupCode,
     });
 
-    router.push('/onboarding/invite-members');
+    router.push(`/onboarding/invite-members?code=${groupCode}`);
   }
 
   return (

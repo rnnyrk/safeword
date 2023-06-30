@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useRouter, useSearchParams } from 'expo-router';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { Pressable } from 'react-native';
 
@@ -8,7 +8,6 @@ import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Add } from 'common/svg';
 import { Text } from 'common/typography';
-import { InviteMemberButtonContainer } from 'modules/onboarding/InviteMembers';
 
 type InviteMembersForm = {
   members: {
@@ -18,6 +17,7 @@ type InviteMembersForm = {
 
 export default function InviteMembers() {
   const router = useRouter();
+  const params = useSearchParams();
 
   const {
     control,
@@ -47,7 +47,10 @@ export default function InviteMembers() {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data.members),
+      body: JSON.stringify({
+        code: params.code,
+        members: data.members,
+      }),
     });
 
     // @TODO update finish_onboarding on user

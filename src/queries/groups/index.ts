@@ -1,7 +1,7 @@
 import * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
 
-import { generateInviteCode, supabase } from 'services';
+import { supabase } from 'services';
 
 export async function getGroupById(id: string): Promise<i.Group | null> {
   const { data } = await supabase
@@ -16,13 +16,14 @@ export async function getGroupById(id: string): Promise<i.Group | null> {
 export async function createGroup({
   name,
   type,
+  invite_code,
 }: i.CreateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
     .insert({
       name,
       type,
-      invite_code: generateInviteCode(6),
+      invite_code,
     })
     .select('id, name, qrcode, invite_code, type, created_at');
 
