@@ -5,22 +5,29 @@ import { FormField } from '../FormField';
 import { StyledInput, InputWrapper, InputIcon } from './styled';
 
 export const Input = ({
+  autoCapitalize,
+  secureTextEntry,
   label,
   icon,
   error,
   editable = true,
+  marginBottom,
+  marginTop,
   description,
-  handleIconClick,
+  onIconClick,
   placeholder,
   value,
   onChangeText,
+  style,
 }: i.InputProps) => {
   const [isFocus, setIsFocus] = React.useState(false);
   const isActive = isFocus || Boolean(value);
   const IconComponent = icon as React.ReactNode;
 
   return (
-    <FormField {...{ label, error, description, isActive, hasValue: !!value }}>
+    <FormField
+      {...{ label, error, description, isActive, marginBottom, marginTop, hasValue: !!value }}
+    >
       <InputWrapper>
         <StyledInput
           hasError={!!error}
@@ -28,14 +35,14 @@ export const Input = ({
           onFocus={() => setIsFocus(true)}
           onBlur={() => setIsFocus(false)}
           placeholder={placeholder}
-          {...{ value, editable }}
+          {...{ autoCapitalize, secureTextEntry, value, editable, style }}
         />
         {icon && (
           <InputIcon
             activeOpacity={0.6}
             hitSlop={{ top: 5, left: 5, right: 5, bottom: 5 }}
-            readOnly={!handleIconClick}
-            onPress={handleIconClick}
+            readOnly={!onIconClick}
+            onPress={onIconClick}
           >
             {IconComponent}
           </InputIcon>
