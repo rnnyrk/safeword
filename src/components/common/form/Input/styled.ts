@@ -32,7 +32,8 @@ export type InputProps = {
 export const InputIcon = styled.TouchableOpacity<IconWrapperProps>`
   position: absolute;
   top: 50%;
-  right: 32px;
+  margin-top: -12px;
+  right: 12px;
   justify-content: center;
   align-items: center;
 

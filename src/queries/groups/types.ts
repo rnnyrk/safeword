@@ -11,4 +11,4 @@ export type Group = {
   type: i.GroupType;
 };
 
-export type CreateGroup = Pick<i.Group, 'name' | 'type'>;
+export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'>;

@@ -3,15 +3,19 @@ import { FieldError, RegisterOptions } from 'react-hook-form';
 import { TextInputProps } from 'react-native';
 
 export type FormFieldProps = {
-  name?: string;
-  children?: React.ReactNode;
   label?: string;
   description?: string;
   direction?: 'horizontal' | 'vertical';
+  children?: React.ReactNode;
+  isActive?: boolean;
+  hasValue?: boolean;
   error?: FieldError;
+  marginTop?: string;
+  marginBottom?: string;
+  onPress?: () => void;
 };
 
-export type DefaultInputProps = Partial<TextInputProps> & {
+export type DefaultInputProps = Omit<Partial<TextInputProps>, 'style'> & {
   onChange?: ((text: string) => void) | undefined;
   onChangeText?: (text: string) => void;
   defaultValue?: string;
@@ -19,7 +23,7 @@ export type DefaultInputProps = Partial<TextInputProps> & {
   editable?: boolean;
   rules?: Exclude<RegisterOptions, 'valueAsNumber' | 'valueAsDate' | 'setValueAs'>;
   icon?: React.ReactNode;
-  handleIconClick?: ((event: any) => void) | undefined;
+  onIconClick?: ((event: any) => void) | undefined;
   error?: FieldError;
 };
 
@@ -28,7 +32,10 @@ export type CheckboxItemType = {
   value: string;
 };
 
-export type InputProps = DefaultInputProps & FormFieldProps;
+export type InputProps = DefaultInputProps &
+  Omit<FormFieldProps, 'onPress'> & {
+    style?: any;
+  };
 
 export type SelectOption = {
   label: string;

@@ -1,5 +1,5 @@
+import * as i from 'types';
 import * as React from 'react';
-import { FieldError } from 'react-hook-form';
 import { Animated, Pressable } from 'react-native';
 
 import theme from 'styles/theme';
@@ -7,15 +7,17 @@ import theme from 'styles/theme';
 import { FormDescription } from '../FormDescription';
 import { FormFieldWrapper, FieldWrapper, InputWrapper, Label } from './styled';
 
-export const FormField: React.FC<FormFieldProps> = ({
+export const FormField = ({
   children,
   label,
   error,
   description,
+  marginBottom,
+  marginTop,
   isActive,
   hasValue,
   onPress,
-}) => {
+}: i.FormFieldProps) => {
   const animatedValue = React.useRef(new Animated.Value(0)).current;
 
   const animateTransition = (reverse = false) => {
@@ -55,14 +57,16 @@ export const FormField: React.FC<FormFieldProps> = ({
     outputRange: [0, -16],
   });
 
-  console.log({ error });
-
   return (
     <FormFieldWrapper
-      {...(onPress && {
-        as: Pressable,
-        onPress,
-      })}
+      {...{
+        marginBottom,
+        marginTop,
+        ...(onPress && {
+          as: Pressable,
+          onPress,
+        }),
+      }}
     >
       <FieldWrapper style={{ borderColor: interPolatedBorderColor }}>
         <Animated.View
@@ -83,14 +87,4 @@ export const FormField: React.FC<FormFieldProps> = ({
       )}
     </FormFieldWrapper>
   );
-};
-
-export type FormFieldProps = {
-  label?: string;
-  description?: string;
-  error?: FieldError;
-  isActive?: boolean;
-  hasValue?: boolean;
-  onPress?: () => void;
-  children: React.ReactNode;
 };

@@ -30,7 +30,7 @@ export default function Onboarding() {
 
         <Button
           // onPress={() => router.push('/onboarding/create-group')}
-          onPress={() => router.push('/onboarding/invite-members')}
+          onPress={() => router.push('/onboarding/invite-members?code=TES_EST')}
           variant="secondary"
           style={{ width: 300, marginTop: 16 }}
         >

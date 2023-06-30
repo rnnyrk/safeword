@@ -1,9 +1,26 @@
 import { Animated } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
-export const FormFieldWrapper = styled.Pressable`
+export const FormFieldWrapper = styled.Pressable<FormFieldWrapperProps>`
   margin: 20px 0;
+
+  ${({ marginBottom }) =>
+    marginBottom &&
+    css`
+      margin-bottom: ${marginBottom};
+    `};
+
+  ${({ marginTop }) =>
+    marginTop &&
+    css`
+      margin-top: ${marginTop};
+    `};
 `;
+
+type FormFieldWrapperProps = {
+  marginBottom?: string;
+  marginTop?: string;
+};
 
 export const FieldWrapper = styled(Animated.View)`
   width: 100%;
