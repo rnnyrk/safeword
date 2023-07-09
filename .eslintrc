@@ -17,11 +17,6 @@
     "FileReader": true,
     "fetch": false
   },
-  "settings": {
-    "import/resolver": {
-      "babel-module": {}
-    }
-  },
   "rules": {
     "indent": "off",
     "react/style-prop-object": 0,

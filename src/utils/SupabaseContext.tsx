@@ -1,7 +1,6 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
-import { useSegments } from 'expo-router/src/LocationProvider';
+import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
 import { createUser, getUserByEmail } from 'queries/users';

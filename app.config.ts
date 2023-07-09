@@ -47,5 +47,9 @@ module.exports = {
       },
     ],
   ],
+  experiments: {
+    tsconfigPaths: true,
+    typedRoutes: true,
+  },
   owner: 'ronnyrr',
 } as ExpoConfig;
