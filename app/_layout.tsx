@@ -1,15 +1,16 @@
-import { Buffer } from 'buffer';
 import {
   LexendDeca_400Regular,
   LexendDeca_500Medium,
   LexendDeca_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/lexend-deca';
+import { Buffer } from 'buffer';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
+import { SupabaseProvider } from 'services/SupabaseContext';
 import { AuthProvider } from 'services/authContext';
 import theme from 'styles/theme';
 
@@ -30,13 +31,13 @@ export default function RootLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
-        <AuthProvider>
+        <SupabaseProvider>
           <StatusBar style="dark" />
           <Stack
             initialRouteName="index"
             screenOptions={{ header: () => null }}
           />
-        </AuthProvider>
+        </SupabaseProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
