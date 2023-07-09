@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import * as SecureStore from 'expo-secure-store';
 import * as WebBrowser from 'expo-web-browser';
 
-import { useSupabase } from 'services/SupabaseContext';
+import { SecureStoreAdapter } from 'src/utils';
+import { useSupabase } from 'src/utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
@@ -54,7 +54,7 @@ export default function RootScreen() {
         });
 
         // You can optionally store Google's access token if you need it later
-        SecureStore.setItemAsync('google-access-token', JSON.stringify(data.provider_token));
+        SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
       // Handle error here
@@ -78,9 +78,6 @@ export default function RootScreen() {
       if (result.type === 'success') {
         const data = extractParamsFromUrl(result.url);
 
-        console.log({ access_token: data.access_token });
-        console.log({ refresh_token: data.refresh_token });
-
         if (!data.access_token || !data.refresh_token) return;
 
         setOAuthSession({
@@ -89,7 +86,7 @@ export default function RootScreen() {
         });
 
         // You can optionally store Apple access token if you need it later
-        SecureStore.setItemAsync('apple-access-token', JSON.stringify(data.provider_token));
+        SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
       // Handle error here

@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
-import { windowWidth } from 'services';
+import { windowWidth } from 'src/utils';
 import theme from 'styles/theme';
 import { Bubble, Lock, Work } from 'common/svg';
 import { Text } from 'common/typography';

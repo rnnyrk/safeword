@@ -1,9 +1,5 @@
 {
-  "presets": [
-    "babel-preset-expo",
-    "module:metro-react-native-babel-preset",
-    "@babel/typescript"
-  ],
+  "presets": ["babel-preset-expo", "module:metro-react-native-babel-preset", "@babel/typescript"],
   "plugins": [
     "expo-router/babel",
     "babel-plugin-styled-components",
@@ -15,8 +11,8 @@
         "alias": {
           "common": "./src/components/common",
           "modules": "./src/components/modules",
-          "services": "./src/services",
-          "hooks": "./src/services/hooks",
+          "utils": "./src/utils",
+          "hooks": "./src/utils/hooks",
           "queries": "./src/queries",
           "images": "./src/assets/images",
           "fonts": "./src/assets/fonts",

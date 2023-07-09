@@ -2,7 +2,7 @@ import { useRouter, useSearchParams } from 'expo-router';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { Pressable } from 'react-native';
 
-import { validation, windowWidth } from 'services';
+import { validation, windowWidth } from 'src/utils';
 import { Input } from 'common/form';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';

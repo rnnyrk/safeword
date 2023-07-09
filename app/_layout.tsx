@@ -4,18 +4,13 @@ import {
   LexendDeca_800ExtraBold,
   useFonts,
 } from '@expo-google-fonts/lexend-deca';
-import { Buffer } from 'buffer';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components';
 
-import { SupabaseProvider } from 'services/SupabaseContext';
-import { AuthProvider } from 'services/authContext';
+import { SupabaseProvider } from 'src/utils/SupabaseContext';
 import theme from 'styles/theme';
-
-global.Buffer = require('buffer').Buffer;
-global.Buffer = Buffer;
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({

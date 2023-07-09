@@ -1,7 +1,7 @@
 import * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
 
-import { supabase } from 'services';
+import { supabase } from 'src/utils';
 
 export async function getUserByEmail(email: string): Promise<i.User | null> {
   const { data } = await supabase

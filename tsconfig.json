@@ -19,10 +19,10 @@
     "paths": {
       "common/*": ["src/components/common/*"],
       "modules/*": ["src/components/modules/*"],
-      "services": ["src/services"],
-      "services/*": ["src/services/*"],
-      "hooks": ["src/services/hooks/index"],
-      "hooks/*": ["src/services/hooks/*"],
+      "utils": ["src/utils"],
+      "utils/*": ["src/utils/*"],
+      "hooks": ["src/utils/hooks/index"],
+      "hooks/*": ["src/utils/hooks/*"],
       "queries/*": ["src/queries/*"],
       "client": ["src/queryClient"],
       "images": ["./src/assets/images"],
@@ -36,11 +36,5 @@
     "typeRoots": ["node_modules/@types"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"]
   },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "@expo/metro-config",
-    "**/*.json",
-    "**/*.spec.ts"
-  ],
+  "exclude": ["node_modules", "babel.config.js", "@expo/metro-config", "**/*.json", "**/*.spec.ts"]
 }
