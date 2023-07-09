@@ -10,7 +10,7 @@ export const InputPassword: React.FC<i.InputProps> = ({ ...props }) => {
   return (
     <Input
       secureTextEntry={secureTextEntry}
-      handleIconClick={() => setSecureTextEntry(!secureTextEntry)}
+      onIconClick={() => setSecureTextEntry(!secureTextEntry)}
       icon={<VisibilityToggle isToggled={!secureTextEntry} />}
       {...props}
     />

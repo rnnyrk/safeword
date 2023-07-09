@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Animated, TouchableWithoutFeedback } from 'react-native';
 
-import { CheckSvg } from 'common/svg';
 import theme from 'styles/theme';
+import { Check } from 'common/svg';
 
 import { CheckContainer, CheckboxTouchableContent, Label, CheckboxBox } from './styled';
 
@@ -24,7 +24,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ isActive, onChange, children
 
   const interpolatedColor = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [theme.colors.grayMedium, theme.colors.greenDark],
+    outputRange: [theme.colors.gray, theme.colors.primary],
   });
 
   const interpolatedBorderRadius = animatedValue.interpolate({
@@ -39,7 +39,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({ isActive, onChange, children
           style={{ borderColor: interpolatedColor, borderRadius: interpolatedBorderRadius }}
         >
           <CheckContainer style={{ opacity: animatedValue }}>
-            <CheckSvg />
+            <Check />
           </CheckContainer>
         </CheckboxBox>
         <Label>{children}</Label>

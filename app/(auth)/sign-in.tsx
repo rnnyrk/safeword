@@ -5,6 +5,7 @@ import { SecureStoreAdapter } from 'src/utils';
 import { useSupabase } from 'src/utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
+import { Apple, Gsuite } from 'common/svg';
 import { Text } from 'common/typography';
 
 export default function RootScreen() {
@@ -104,12 +105,14 @@ export default function RootScreen() {
           onPress={onSignInWithGoogle}
           disabled={loading}
         >
+          <Gsuite />
           <Text color="white">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
         </Button>
         <Button
           onPress={onSignInWithApple}
           disabled={loading}
         >
+          <Apple />
           <Text color="white">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
         </Button>
       </Container>

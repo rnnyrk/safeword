@@ -37,6 +37,7 @@ module.exports = {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxqaXppd29zc3lrY2RsZXp0aG50Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODc5MzUzMDAsImV4cCI6MjAwMzUxMTMwMH0.5luhqtIhVhVf9MXPf3fl0yAg0KY-hJXAqMGBUWgnztM',
   },
   plugins: [
+    'expo-router',
     [
       'expo-build-properties',
       {
