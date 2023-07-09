@@ -41,7 +41,7 @@ export default function InviteMembers() {
   async function onInviteMembers(data: InviteMembersForm) {
     console.log(data);
 
-    fetch('http://localhost:54321/functions/v1/safeword-resend', {
+    fetch('https://dev.getsafeword.app/safeword-resend', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

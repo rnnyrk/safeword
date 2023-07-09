@@ -7,9 +7,12 @@ import { createUser, getUserByEmail } from 'queries/users';
 
 import { supabase } from './supabase';
 
+type UserType = i.User | null | undefined;
+
 type SupabaseContextProps = {
   loggedIn: boolean;
-  user: i.User | null;
+  user: UserType;
+  setUser: (user: UserType) => void;
   getAppleOAuthUrl: () => Promise<string | null>;
   getGoogleOAuthUrl: () => Promise<string | null>;
   setOAuthSession: (tokens: { access_token: string; refresh_token: string }) => Promise<void>;
@@ -18,6 +21,7 @@ type SupabaseContextProps = {
 export const SupabaseContext = createContext<SupabaseContextProps>({
   loggedIn: false,
   user: null,
+  setUser: () => {},
   getAppleOAuthUrl: async () => '',
   getGoogleOAuthUrl: async () => '',
   setOAuthSession: async () => {},
@@ -27,29 +31,34 @@ export function useSupabase() {
   return useContext(SupabaseContext);
 }
 
-function useProtectedRoute(user: i.User | null) {
+function useProtectedRoute(user: UserType) {
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    const inAuthGroup = segments[0] === '(auth)';
+    if (user === undefined) {
+      return;
+    }
+
+    const rootSegment = segments[0];
+    const isAppDir = rootSegment === '(app)';
 
     // If the user is not signed in, and not on signin page
-    if (!user && !inAuthGroup) {
-      router.replace('/sign-in');
-    } else if (user && inAuthGroup) {
+    if (!user && !isAppDir) {
+      router.replace('/(app)');
+    } else if (user && isAppDir) {
       if (user.finished_onboarding) {
-        router.replace('/');
+        router.replace('/(app)/home');
       } else {
-        router.replace('/onboarding');
+        router.replace('/(app)/onboarding');
       }
     }
-  }, [segments]);
+  }, [user, segments]);
 }
 
 export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const [user, setUser] = useState<i.User | null>(null);
+  const [user, setUser] = useState<UserType>(undefined);
 
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
@@ -126,6 +135,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       value={{
         loggedIn,
         user,
+        setUser,
         getAppleOAuthUrl,
         getGoogleOAuthUrl,
         setOAuthSession,

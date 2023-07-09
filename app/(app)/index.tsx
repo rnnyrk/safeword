@@ -8,7 +8,7 @@ import { Container, LogoHeader } from 'common/layout';
 import { Apple, Gsuite } from 'common/svg';
 import { Text } from 'common/typography';
 
-export default function RootScreen() {
+export default function AuthScreen() {
   const { getAppleOAuthUrl, getGoogleOAuthUrl, setOAuthSession } = useSupabase();
   const [loading, setLoading] = useState<boolean>(false);
 
