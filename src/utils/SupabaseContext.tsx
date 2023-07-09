@@ -44,9 +44,9 @@ function useProtectedRoute(user: UserType) {
     const isAppDir = rootSegment === '(app)';
 
     // If the user is not signed in, and not on signin page
-    if (!user && !isAppDir) {
+    if (!user) {
       router.replace('/(app)');
-    } else if (user && isAppDir) {
+    } else if (user && isAppDir && segments.length === 1) {
       if (user.finished_onboarding) {
         router.replace('/(app)/home');
       } else {
