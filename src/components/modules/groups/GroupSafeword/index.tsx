@@ -20,7 +20,7 @@ const safeWords: string[] = [
   'Zolder',
 ];
 
-export const GroupSafeword = () => {
+export function GroupSafeword() {
   const [currentSafeWord, setCurrentSafeWord] = useState<string | undefined>(undefined);
 
   const randomizeSafeWord = () => {

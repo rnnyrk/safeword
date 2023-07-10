@@ -34,7 +34,10 @@ export default function CreateGroup() {
       invite_code: groupCode,
     });
 
-    router.push(`/onboarding/invite-members?code=${groupCode}`);
+    router.push({
+      pathname: '/(app)/onboarding/invite-members/[code]',
+      params: { code: groupCode },
+    });
   }
 
   return (

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 
-import { SecureStoreAdapter } from 'src/utils';
-import { useSupabase } from 'src/utils/SupabaseContext';
+import { isIphone, SecureStoreAdapter } from 'utils';
+import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Apple, Gsuite } from 'common/svg';
@@ -76,6 +76,8 @@ export default function AuthScreen() {
         showInRecents: true,
       });
 
+      console.log({ result });
+
       if (result.type === 'success') {
         const data = extractParamsFromUrl(result.url);
 
@@ -108,13 +110,15 @@ export default function AuthScreen() {
           <Gsuite />
           <Text color="white">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
         </Button>
-        <Button
-          onPress={onSignInWithApple}
-          disabled={loading}
-        >
-          <Apple />
-          <Text color="white">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
-        </Button>
+        {isIphone() && (
+          <Button
+            onPress={onSignInWithApple}
+            disabled={loading}
+          >
+            <Apple />
+            <Text color="white">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
+          </Button>
+        )}
       </Container>
     </>
   );

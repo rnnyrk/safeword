@@ -12,7 +12,7 @@ type UserType = i.User | null | undefined;
 type SupabaseContextProps = {
   loggedIn: boolean;
   user: UserType;
-  setUser: (user: UserType) => void;
+  signOut: () => Promise<void>;
   getAppleOAuthUrl: () => Promise<string | null>;
   getGoogleOAuthUrl: () => Promise<string | null>;
   setOAuthSession: (tokens: { access_token: string; refresh_token: string }) => Promise<void>;
@@ -21,7 +21,7 @@ type SupabaseContextProps = {
 export const SupabaseContext = createContext<SupabaseContextProps>({
   loggedIn: false,
   user: null,
-  setUser: () => {},
+  signOut: async () => {},
   getAppleOAuthUrl: async () => '',
   getGoogleOAuthUrl: async () => '',
   setOAuthSession: async () => {},
@@ -62,15 +62,25 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
-    const userEmail = decodedToken.email;
+
+    console.log({
+      decodedToken,
+      custom_claims: (decodedToken as any).user_metadata,
+    });
+
+    const email = decodedToken.email;
+    const name = decodedToken.name;
 
     // Fetch user, is not existing, create the
-    const data = await getUserByEmail(userEmail);
+    const data = await getUserByEmail(email);
 
     if (data) {
       setUser(data);
     } else if (!data) {
-      const { data: newUser, error: newUserError } = await createUser(userEmail);
+      const { data: newUser, error: newUserError } = await createUser({
+        email,
+        name,
+      });
 
       if (newUser && !newUserError) {
         setUser(newUser);
@@ -98,7 +108,8 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: 'com.safeword:/oauthredirect',
+        redirectTo: 'com.safeword:/(app)',
+        scopes: 'full_name email',
       },
     });
 
@@ -109,7 +120,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'com.safeword:/oauthredirect',
+        redirectTo: 'com.safeword:/(app)',
       },
     });
 
@@ -128,6 +139,14 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     setLoggedIn(data.session !== null);
   }
 
+  async function signOut() {
+    const { error } = await supabase.auth.signOut();
+    setUser(null);
+    setLoggedIn(false);
+
+    if (error) throw error;
+  }
+
   useProtectedRoute(user);
 
   return (
@@ -135,7 +154,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       value={{
         loggedIn,
         user,
-        setUser,
+        signOut,
         getAppleOAuthUrl,
         getGoogleOAuthUrl,
         setOAuthSession,
@@ -153,5 +172,6 @@ type SupabaseProviderProps = {
 declare module 'jwt-decode' {
   export interface JwtPayload {
     email: string;
+    name: string;
   }
 }

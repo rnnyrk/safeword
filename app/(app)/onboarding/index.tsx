@@ -1,12 +1,13 @@
-import * as React from 'react';
 import { useRouter } from 'expo-router';
 
+import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
 export default function Onboarding() {
   const router = useRouter();
+  const { user } = useSupabase();
 
   return (
     <>
@@ -17,7 +18,7 @@ export default function Onboarding() {
           color="darkGray"
           size={24}
         >
-          Welkom Bart!
+          Welkom {user?.name || user?.email}!
         </Text>
         <Text
           align="center"
@@ -29,8 +30,7 @@ export default function Onboarding() {
         </Text>
 
         <Button
-          // onPress={() => router.push('/onboarding/create-group')}
-          onPress={() => router.push('/onboarding/invite-members?code=TES_EST')}
+          onPress={() => router.push('/onboarding/create-group')}
           variant="secondary"
           style={{ width: 300, marginTop: 16 }}
         >
