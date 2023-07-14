@@ -3,8 +3,8 @@ import Svg, { G, Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
 
-export const Gsuite = ({ width, height }: GsuiteProps) => (
-  <SvgWrapper>
+export const Gsuite = ({ width, height, style }: GsuiteProps) => (
+  <SvgWrapper style={style}>
     <Svg
       width={width}
       height={height}
@@ -38,4 +38,5 @@ export const Gsuite = ({ width, height }: GsuiteProps) => (
 type GsuiteProps = {
   width?: number;
   height?: number;
+  style?: any;
 };

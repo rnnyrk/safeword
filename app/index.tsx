@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 
-import { isIphone, SecureStoreAdapter } from 'utils';
+import { getApplicationId, isIphone, SecureStoreAdapter } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -40,7 +40,7 @@ export default function AuthScreen() {
       const url = await getGoogleOAuthUrl();
       if (!url) return;
 
-      const result = await WebBrowser.openAuthSessionAsync(url, 'com.safeword:/oauthredirect?', {
+      const result = await WebBrowser.openAuthSessionAsync(url, 'com.safeword://home', {
         showInRecents: true,
       });
 
@@ -58,8 +58,7 @@ export default function AuthScreen() {
         SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
-      // Handle error here
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -72,11 +71,9 @@ export default function AuthScreen() {
       const url = await getAppleOAuthUrl();
       if (!url) return;
 
-      const result = await WebBrowser.openAuthSessionAsync(url, 'com.safeword:/oauthredirect?', {
+      const result = await WebBrowser.openAuthSessionAsync(url, 'com.safeword://home', {
         showInRecents: true,
       });
-
-      console.log({ result });
 
       if (result.type === 'success') {
         const data = extractParamsFromUrl(result.url);
@@ -92,8 +89,7 @@ export default function AuthScreen() {
         SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
-      // Handle error here
-      console.log(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -106,17 +102,27 @@ export default function AuthScreen() {
         <Button
           onPress={onSignInWithGoogle}
           disabled={loading}
+          variant="social"
         >
-          <Gsuite />
-          <Text color="white">{loading ? 'Loading...' : 'Sign in with Google'}</Text>
+          <Gsuite
+            width={20}
+            height={20}
+            style={{ marginRight: 8 }}
+          />
+          <Text>{loading ? 'Loading...' : 'Sign in with Google'}</Text>
         </Button>
-        {isIphone() && (
+        {isIphone && (
           <Button
             onPress={onSignInWithApple}
             disabled={loading}
+            variant="social"
           >
-            <Apple />
-            <Text color="white">{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
+            <Apple
+              width={20}
+              height={20}
+              style={{ marginRight: 8 }}
+            />
+            <Text>{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
           </Button>
         )}
       </Container>

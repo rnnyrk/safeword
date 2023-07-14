@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { createGroup } from 'queries/groups';
 import { generateInviteCode, validation } from 'src/utils';
@@ -35,7 +35,7 @@ export default function CreateGroup() {
     });
 
     router.push({
-      pathname: '/(app)/onboarding/invite-members/[code]',
+      pathname: '/onboarding/invite-members/[code]',
       params: { code: groupCode },
     });
   }

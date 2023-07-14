@@ -1,10 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
-import Constants from 'expo-constants';
 
 import { SecureStoreAdapter } from './secureStore';
 
-export const supabaseUrl = Constants!.expoConfig!.extra!.SUPABASE_URL;
-const supabaseAnonKey = Constants!.expoConfig!.extra!.SUPABASE_PUBLIC_KEY;
+export const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL!;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLIC_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

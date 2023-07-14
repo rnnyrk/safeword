@@ -1,4 +1,4 @@
-import { PressableProps, StyleProp, ViewStyle, StyleSheet } from 'react-native';
+import { PressableProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 export type ButtonType = {
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ export type IconType = {
 };
 
 export type ButtonVariantsType = {
-  variant?: 'primary' | 'secondary';
+  variant?: 'primary' | 'secondary' | 'social';
 };
 
 export type ButtonProps = Omit<PressableProps, 'onPress'> &

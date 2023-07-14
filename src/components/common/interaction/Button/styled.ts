@@ -53,6 +53,20 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
       `}
     `}
 
+  ${({ variant, isPressed, theme }) =>
+    variant === 'social' &&
+    css`
+      width: 100%;
+      border: 2px solid ${theme.colors.gray};
+      background-color: ${theme.colors.white};
+
+      ${isPressed &&
+      css`
+        border: 2px solid ${theme.colors.primaryHover};
+        background-color: ${theme.colors.gray};
+      `}
+    `}
+
   ${({ isDisabled }) =>
     isDisabled &&
     css`

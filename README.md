@@ -20,3 +20,5 @@
 
   - iOS `eas device:create` && `eas build --profile development --platform ios`
   - Android `eas build --profile development --platform android`
+
+Connect locally to `http://127.0.0.1:8081`

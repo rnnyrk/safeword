@@ -41,16 +41,16 @@ function useProtectedRoute(user: UserType) {
     }
 
     const rootSegment = segments[0];
-    const isAppDir = rootSegment === '(app)';
+    const isAppDir = rootSegment === undefined;
 
     // If the user is not signed in, and not on signin page
     if (!user) {
-      router.replace('/(app)');
-    } else if (user && isAppDir && segments.length === 1) {
+      router.replace('/');
+    } else if (user && isAppDir) {
       if (user.finished_onboarding) {
-        router.replace('/(app)/home');
+        router.replace('/home/');
       } else {
-        router.replace('/(app)/onboarding');
+        router.replace('/onboarding/');
       }
     }
   }, [user, segments]);
@@ -62,11 +62,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
-
-    console.log({
-      decodedToken,
-      custom_claims: (decodedToken as any).user_metadata,
-    });
 
     const email = decodedToken.email;
     const name = decodedToken.name;
@@ -108,7 +103,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: 'com.safeword:/(app)',
+        redirectTo: 'com.safeword://home/',
         scopes: 'full_name email',
       },
     });
@@ -120,7 +115,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'com.safeword:/(app)',
+        redirectTo: 'com.safeword://home/',
       },
     });
 
