@@ -5,11 +5,12 @@ import { ScrollView } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
+import { windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { LogoHeader } from 'common/layout';
 
 const DrawerLabelStyle = {
-  color: theme.colors.darkGray,
+  color: theme.colors.white,
   fontSize: 24,
   fontFamily: theme.fonts.LexendDeca[800],
 };
@@ -30,7 +31,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       style={{ flex: 1, marginTop: 24 }}
     >
       <DrawerItem
-        label="Mijn groepen"
+        label="Groepen beheren"
         onPress={() => navigation.navigate('index')}
         labelStyle={DrawerLabelStyle}
       />
@@ -56,9 +57,9 @@ export default function DrawerLayout() {
         screenOptions={{
           header: () => <LogoHeader showDrawer />,
           drawerPosition: 'right',
-          drawerLabelStyle: {
-            color: theme.colors.gray,
-            fontFamily: theme.fonts.LexendDeca[800],
+          drawerStyle: {
+            width: windowWidth * 0.9,
+            backgroundColor: theme.colors.primary,
           },
         }}
         drawerContent={(props: DrawerContentComponentProps) => {
