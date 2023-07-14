@@ -16,7 +16,7 @@ export type ButtonVariantsType = {
   variant?: 'primary' | 'secondary' | 'social';
 };
 
-export type ButtonProps = Omit<PressableProps, 'onPress' | 'style'> &
+export type ButtonProps = Omit<PressableProps, 'onPress' | 'style' | 'disabled'> &
   ButtonType &
   ButtonVariantsType &
   IconType & {

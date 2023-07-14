@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
@@ -21,6 +22,7 @@ export default function InviteMembers() {
   const router = useRouter();
   const params = useSearchParams<{ code: string; name: string }>();
   const { user } = useSupabase();
+  const [isLoading, setLoading] = useState(false);
 
   const {
     control,
@@ -42,8 +44,8 @@ export default function InviteMembers() {
   });
 
   async function onInviteMembers(data: InviteMembersForm) {
-    console.log({ user, data, url: `${getApiUrl}/api/mail` });
     if (!user) return;
+    setLoading(true);
 
     const req = await fetch(`${getApiUrl}/api/mail`, {
       method: 'POST',
@@ -59,11 +61,17 @@ export default function InviteMembers() {
 
     const mailResponse = await req.json();
 
-    const updated = await updateUser({
+    const { data: updatedUser, error } = await updateUser({
       email: user?.email,
       values: { finished_onboarding: true },
     });
 
+    if (error) {
+      console.error(error);
+      throw error;
+    }
+
+    setLoading(false);
     router.push('/home/');
   }
 
@@ -130,7 +138,12 @@ export default function InviteMembers() {
           />
         </Pressable>
 
-        <Button onPress={handleSubmit(onInviteMembers)}>Uitnodigen</Button>
+        <Button
+          onPress={handleSubmit(onInviteMembers)}
+          isDisabled={isLoading}
+        >
+          Uitnodigen
+        </Button>
       </Container>
     </>
   );

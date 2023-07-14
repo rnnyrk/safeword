@@ -8,7 +8,8 @@ export type Group = {
   created_at: string;
   qrcode: string;
   invite_code: string;
-  type: i.GroupType;
+  type?: i.GroupType;
+  admin: string;
 };
 
-export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'>;
+export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code' | 'admin'>;

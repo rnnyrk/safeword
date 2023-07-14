@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
 import { createGroup } from 'queries/groups';
 import { validation } from 'src/utils';
@@ -26,8 +26,6 @@ export default function JoinGroup() {
   });
 
   async function onSubmitCode(data: JoinGroupForm) {
-    console.log(data);
-
     // await createGroup({
     //   name: data.name,
     //   type: 'family',

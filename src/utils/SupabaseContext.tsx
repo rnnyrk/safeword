@@ -36,9 +36,7 @@ function useProtectedRoute(user: UserType) {
   const router = useRouter();
 
   useEffect(() => {
-    if (user === undefined) {
-      return;
-    }
+    if (user === undefined) return;
 
     const rootSegment = segments[0];
     const isAppDir = rootSegment === undefined;
@@ -63,8 +61,18 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
 
+    console.info({
+      decodedToken,
+      meta: decodedToken.user_metadata,
+    });
+
     const email = decodedToken.email;
-    const name = decodedToken.name;
+    const name =
+      decodedToken.user_metadata?.full_name ||
+      decodedToken.user_metadata?.name ||
+      decodedToken?.name;
+
+    console.info({ name });
 
     // Fetch user, is not existing, create the
     const data = await getUserByEmail(email);
@@ -167,6 +175,7 @@ type SupabaseProviderProps = {
 declare module 'jwt-decode' {
   export interface JwtPayload {
     email: string;
-    name: string;
+    name?: string;
+    user_metadata?: Record<string, any>;
   }
 }

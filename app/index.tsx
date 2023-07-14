@@ -10,7 +10,7 @@ import { Text } from 'common/typography';
 
 export default function AuthScreen() {
   const { getAppleOAuthUrl, getGoogleOAuthUrl, setOAuthSession } = useSupabase();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     WebBrowser.warmUpAsync();
@@ -101,7 +101,7 @@ export default function AuthScreen() {
       <Container>
         <Button
           onPress={onSignInWithGoogle}
-          isDisabled={loading}
+          isDisabled={isLoading}
           variant="social"
           style={{ marginBottom: 16, width: '100%' }}
         >
@@ -110,12 +110,12 @@ export default function AuthScreen() {
             height={19}
             style={{ marginRight: 16 }}
           />
-          <Text>{loading ? 'Loading...' : 'Inloggen met Google'}</Text>
+          <Text>{isLoading ? 'Loading...' : 'Inloggen met Google'}</Text>
         </Button>
         {isIphone && (
           <Button
             onPress={onSignInWithApple}
-            isDisabled={loading}
+            isDisabled={isLoading}
             variant="social"
             style={{ marginBottom: 16, width: '100%' }}
           >
@@ -124,7 +124,7 @@ export default function AuthScreen() {
               height={22}
               style={{ marginRight: 16 }}
             />
-            <Text>{loading ? 'Loading...' : 'Inloggen met Apple'}</Text>
+            <Text>{isLoading ? 'Loading...' : 'Inloggen met Apple'}</Text>
           </Button>
         )}
       </Container>
