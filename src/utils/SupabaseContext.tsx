@@ -1,6 +1,5 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 

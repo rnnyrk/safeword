@@ -14,7 +14,16 @@ import theme from 'styles/theme';
 import { SupabaseProvider } from 'utils/SupabaseContext';
 
 SplashScreen.preventAutoHideAsync();
-const queryClient = new QueryClient();
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000, // 60 seconds
+      cacheTime: 1000 * 6 * 10, // 10 minutes
+      retry: false,
+    },
+  },
+});
 
 export default function AppLayout() {
   const [fontsLoaded] = useFonts({

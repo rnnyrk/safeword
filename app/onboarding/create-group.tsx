@@ -13,7 +13,7 @@ type GroupForm = {
   name: string;
 };
 
-export default function CreateGroup() {
+export default function CreateGroupScreen() {
   const router = useRouter();
   const { user } = useSupabase();
 
