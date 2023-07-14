@@ -65,19 +65,11 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
 
-    // @TODO check where name is on first access from apple
-    console.info({
-      decodedToken,
-      meta: decodedToken.user_metadata,
-    });
-
     const email = decodedToken.email;
     let name =
       decodedToken.user_metadata?.full_name ||
       decodedToken.user_metadata?.name ||
       decodedToken?.name;
-
-    console.info({ name });
 
     if (!name) {
       name = email.split('@')[0];
