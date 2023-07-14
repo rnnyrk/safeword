@@ -98,7 +98,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       if (newUser && !newUserError) {
         console.log({ CreateNewUser: newUser });
 
-        setUser(newUser);
+        setUser(newUser[0]);
       } else if (newUserError) {
         console.error('Error creating new user', { newUserError });
       }

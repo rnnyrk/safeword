@@ -64,7 +64,7 @@ export function Group({ name, size = 'small', type, group }: GroupProps) {
             </View>
             <Bubble
               $position="absolute"
-              fill={pressed ? theme.colors.primaryLight : theme.colors.primary}
+              fill={pressed ? theme.colors.primaryHover : theme.colors.primary}
               width={groupSize}
               height={groupSize}
             />
@@ -78,6 +78,6 @@ export function Group({ name, size = 'small', type, group }: GroupProps) {
 export type GroupProps = {
   name: string;
   size?: 'small' | 'large';
-  type: i.GroupType;
+  type?: i.GroupType;
   group: string;
 };

@@ -2,12 +2,11 @@ import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerItem } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
 import { ScrollView } from 'react-native';
-import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ThemeProvider } from 'styled-components/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
 import { windowWidth } from 'utils';
-import { SupabaseProvider, useSupabase } from 'utils/SupabaseContext';
+import { useSupabase } from 'utils/SupabaseContext';
 import { LogoHeader } from 'common/layout';
 
 const DrawerLabelStyle = {
@@ -16,14 +15,14 @@ const DrawerLabelStyle = {
   fontFamily: theme.fonts.LexendDeca[800],
 };
 
-// const DrawerItemStyle = {
-//   paddingTop: 8,
-//   paddingRight: 16,
-//   paddingBottom: 8,
-//   paddingLeft: 16,
-//   borderRadius: 8,
-//   backgroundColor: theme.colors.white,
-// };
+const DrawerItemStyle = {
+  paddingTop: 8,
+  paddingRight: 16,
+  paddingBottom: 8,
+  paddingLeft: 16,
+  borderRadius: 8,
+  backgroundColor: theme.colors.white,
+};
 
 function CustomDrawerContent({ drawerPosition, navigation }: any) {
   const insets = useSafeAreaInsets();
@@ -44,19 +43,19 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
         label="Mijn groepen"
         onPress={() => navigation.navigate('index')}
         labelStyle={DrawerLabelStyle}
-        // style={DrawerItemStyle}
+        style={DrawerItemStyle}
       />
       <DrawerItem
         label="Instellingen"
         onPress={() => navigation.navigate('settings')}
         labelStyle={DrawerLabelStyle}
-        // style={DrawerItemStyle}
+        style={DrawerItemStyle}
       />
       <DrawerItem
         label="Uitloggen"
         onPress={signOut}
         labelStyle={DrawerLabelStyle}
-        // style={DrawerItemStyle}
+        style={DrawerItemStyle}
       />
     </ScrollView>
   );
@@ -64,9 +63,6 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
 
 export default function DrawerLayout() {
   return (
-    // <SafeAreaProvider>
-    //   <ThemeProvider theme={theme}>
-    //     <SupabaseProvider>
     <Drawer
       initialRouteName="screen1"
       screenOptions={{
@@ -89,8 +85,5 @@ export default function DrawerLayout() {
       <Drawer.Screen name="index" />
       <Drawer.Screen name="settings" />
     </Drawer>
-    //     </SupabaseProvider>
-    //   </ThemeProvider>
-    // </SafeAreaProvider>
   );
 }

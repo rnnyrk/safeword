@@ -65,7 +65,7 @@ export default function JoinGroup() {
       console.log({ JoinGroupUpdatedUser: updatedUser });
 
       if (updatedUser) {
-        setUser(updatedUser);
+        setUser(updatedUser[0]);
       }
 
       router.push('/home/');
