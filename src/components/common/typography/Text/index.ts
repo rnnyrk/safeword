@@ -14,9 +14,9 @@ export const Text = styled.Text<TextProps>`
 
 type TextProps = {
   align?: 'left' | 'center' | 'right';
-  color?: i.ColorsFromTheme<'primary' | 'gray' | 'darkGray'>;
+  color?: i.ColorsFromTheme<'primary' | 'gray' | 'darkGray' | 'white'>;
   marginTop?: number;
   marginRight?: number;
   marginBottom?: number;
-  size?: 20 | 28 | 32 | 40 | 48 | 56 | 64;
+  size?: 20 | 24 | 28 | 32 | 40 | 48 | 56 | 64;
 };

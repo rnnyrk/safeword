@@ -1,13 +1,13 @@
 import { useRouter, useSearchParams } from 'expo-router';
 
-import { Button } from 'common/interaction/Button';
+import { Button } from 'common/interaction';
 import { Container } from 'common/layout';
 import { Text } from 'common/typography';
 import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
   const router = useRouter();
-  const params = useSearchParams();
+  const params = useSearchParams<{ group: string }>();
 
   return (
     <Container>

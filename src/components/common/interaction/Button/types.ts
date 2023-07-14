@@ -1,4 +1,4 @@
-import { PressableProps } from 'react-native';
+import { PressableProps, StyleProp, StyleSheet, ViewStyle } from 'react-native';
 
 export type ButtonType = {
   children?: React.ReactNode;
@@ -13,13 +13,23 @@ export type IconType = {
 };
 
 export type ButtonVariantsType = {
-  variant?: 'primary';
+  variant?: 'primary' | 'secondary' | 'social';
 };
 
-export type ButtonProps = PressableProps
-& ButtonType
-& ButtonVariantsType
-& IconType
-& {
-  isPressed?: boolean;
-};
+export type ButtonProps = Omit<PressableProps, 'onPress' | 'style'> &
+  ButtonType &
+  ButtonVariantsType &
+  IconType & {
+    isPressed?: boolean;
+    onPress: () => void;
+    style?: any;
+  };
+
+export type ButtonWrapperProps = ButtonVariantsType &
+  Pick<ButtonProps, 'isPressed'> &
+  Pick<ButtonType, 'isDisabled'> &
+  Pick<IconType, 'iconPosition' | 'iconOnly'>;
+
+export type ButtonContentProps = ButtonVariantsType &
+  Pick<ButtonType, 'children' | 'isLoading'> &
+  Pick<IconType, 'icon' | 'iconPosition' | 'iconOnly'>;

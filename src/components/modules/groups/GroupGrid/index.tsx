@@ -1,6 +1,6 @@
 import { GroupGridContainer } from './styled';
 
-export const GroupGrid = ({ children }: GroupGridProps) => {
+export function GroupGrid({ children }: GroupGridProps) {
   return <GroupGridContainer>{children}</GroupGridContainer>;
 };
 

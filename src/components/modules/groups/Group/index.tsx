@@ -1,16 +1,16 @@
 import * as i from 'types';
-import { useRouter } from 'expo-router';
+import { Href, useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
-import { windowWidth } from 'services';
+import { windowWidth } from 'src/utils';
 import theme from 'styles/theme';
 import { Bubble, Lock, Work } from 'common/svg';
 import { Text } from 'common/typography';
 
 import { GroupContent, GroupIcon } from './styled';
 
-export const Group = ({ name, size = 'small', type, to }: GroupProps) => {
+export function Group({ name, size = 'small', type, to }: GroupProps) {
   const router = useRouter();
 
   const isSmall = size === 'small';
@@ -73,5 +73,5 @@ export type GroupProps = {
   name: string;
   size?: 'small' | 'large';
   type: i.GroupType;
-  to: string;
+  to: Href<string>;
 };

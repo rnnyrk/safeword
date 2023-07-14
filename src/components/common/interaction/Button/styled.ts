@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/native';
 
-import { ButtonProps, IconType } from './types';
+import { ButtonVariantsType, ButtonWrapperProps, IconType } from './types';
 
 export const ButtonIcon = styled.View<IconType>`
   width: 16px;
@@ -26,7 +26,7 @@ export const ButtonContainer = styled.Pressable`
   width: 200px;
 `;
 
-export const ButtonWrapper = styled.View<ButtonProps>`
+export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -34,17 +34,46 @@ export const ButtonWrapper = styled.View<ButtonProps>`
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 4px;
 
-  ${({ isPressed }) =>
+  ${({ isPressed, theme }) =>
     isPressed &&
     css`
-      background-color: ${({ theme }) => theme.colors.primaryHover};
+      background-color: ${theme.colors.primaryHover};
     `}
 
-  ${({ isDisabled }) =>
+  ${({ variant, isPressed, theme }) =>
+    variant === 'secondary' &&
+    css`
+      border: 4px solid ${theme.colors.primary};
+      background-color: ${theme.colors.white};
+
+      ${isPressed &&
+      css`
+        border: 4px solid ${theme.colors.primaryHover};
+        background-color: ${theme.colors.gray};
+      `}
+    `}
+
+  ${({ variant, isPressed, theme }) =>
+    variant === 'social' &&
+    css`
+      align-items: center;
+      border: 3px solid ${theme.colors.gray};
+      background-color: ${theme.colors.white};
+      border-radius: 8px;
+
+      ${isPressed &&
+      css`
+        border: 3px solid ${theme.colors.primaryHover};
+        background-color: ${theme.colors.primaryHover};
+      `}
+    `}
+
+  ${({ isDisabled, theme }) =>
     isDisabled &&
     css`
       opacity: 0.4;
-      background-color: #999999;
+      background-color: ${theme.colors.gray};
+      border-color: ${theme.colors.gray};
     `}
 
   ${({ iconPosition }) =>
@@ -60,7 +89,13 @@ export const ButtonWrapper = styled.View<ButtonProps>`
     `}
 `;
 
-export const ButtonLabel = styled.Text`
+export const ButtonLabel = styled.Text<ButtonVariantsType>`
   font-size: 16px;
-  color: #ffffff;
+  color: ${({ theme }) => theme.colors.white};
+
+  ${({ variant, theme }) =>
+    variant === 'secondary' &&
+    css`
+      color: ${theme.colors.primary};
+    `}
 `;

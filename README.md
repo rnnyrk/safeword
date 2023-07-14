@@ -1,14 +1,24 @@
-# Expo Router Example
+# Safeword
 
-Use [`expo-router`](https://expo.github.io/router) to build native navigation using files in the `app/` directory.
+- Expo
+- [`expo-router`](https://expo.github.io/router)
 
-## 🚀 How to use
-
-```sh
-npx create-expo-app -e with-router
-```
-
-## 📝 Notes
+## Notes
 
 - [Expo Router: Docs](https://expo.github.io/router)
 - [Expo Router: Repo](https://github.com/expo/router)
+- [Expo + Supabase Google Auth](https://blog.spirokit.com/google-authentication-with-expo-supabase)
+
+### Commands
+
+- Create a build for a simulator
+
+  - iOS `eas build --profile development-simulator --platform ios`
+  - Android `eas build --profile development --platform android`
+
+- Create a build for a device
+
+  - iOS `eas device:create` && `eas build --profile development --platform ios`
+  - Android `eas build --profile development --platform android`
+
+Connect manually to the development server via `http://127.0.0.1:8081`

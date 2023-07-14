@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { Pressable } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
-import { windowWidth } from 'services';
-import { formatDate } from 'services/dates';
+import { windowWidth } from 'src/utils';
+import { formatDate } from 'src/utils/dates';
 import { Bubble, Refresh } from 'common/svg';
 import { Text } from 'common/typography';
 
@@ -20,7 +20,7 @@ const safeWords: string[] = [
   'Zolder',
 ];
 
-export const GroupSafeword = () => {
+export function GroupSafeword() {
   const [currentSafeWord, setCurrentSafeWord] = useState<string | undefined>(undefined);
 
   const randomizeSafeWord = () => {

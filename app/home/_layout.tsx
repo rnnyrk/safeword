@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
+import { useSupabase } from 'utils/SupabaseContext';
 import { LogoHeader } from 'common/layout';
 
 const DrawerLabelStyle = {
@@ -15,6 +16,7 @@ const DrawerLabelStyle = {
 
 function CustomDrawerContent({ drawerPosition, navigation }: any) {
   const insets = useSafeAreaInsets();
+  const { signOut } = useSupabase();
 
   return (
     <ScrollView
@@ -35,6 +37,11 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       <DrawerItem
         label="Instellingen"
         onPress={() => navigation.navigate('settings')}
+        labelStyle={DrawerLabelStyle}
+      />
+      <DrawerItem
+        label="Uitloggen"
+        onPress={signOut}
         labelStyle={DrawerLabelStyle}
       />
     </ScrollView>
