@@ -62,8 +62,6 @@ export default function JoinGroup() {
         values: { finished_onboarding: true },
       });
 
-      console.log({ JoinGroupUpdatedUser: updatedUser });
-
       if (updatedUser) {
         setUser(updatedUser[0]);
       }

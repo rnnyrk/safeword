@@ -68,8 +68,6 @@ export default function InviteMembers() {
         values: { finished_onboarding: true },
       });
 
-      console.log({ CodeUpdatedUser: updatedUser });
-
       if (error) {
         console.error(error);
         throw error;

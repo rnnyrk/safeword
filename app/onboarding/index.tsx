@@ -15,13 +15,13 @@ export default function Onboarding() {
     <>
       <LogoHeader />
       <Container>
-        {/* <Text
+        <Text
           align="center"
           color="darkGray"
           size={24}
         >
           Welkom {user?.name || user?.email}!
-        </Text> */}
+        </Text>
         <Text
           align="center"
           color="darkGray"

@@ -79,8 +79,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const { data, error } = await getUserByEmail(email);
 
     if (data) {
-      console.log({ SetExistingUser: data });
-
       setUser(data);
     } else if (!data) {
       const { data: newUser, error: newUserError } = await createUser({
@@ -89,8 +87,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       });
 
       if (newUser && !newUserError) {
-        console.log({ CreateNewUser: newUser });
-
         setUser(newUser[0]);
       } else if (newUserError) {
         console.error('Error creating new user', { newUserError });
@@ -148,8 +144,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   }
 
   async function signOut() {
-    console.log('signout');
-
     const { error } = await supabase.auth.signOut();
     setUser(null);
     setLoggedIn(false);

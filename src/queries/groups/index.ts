@@ -7,8 +7,7 @@ import { supabase } from 'src/utils';
 function formatGroup(group: i.Group): i.FormattedGroup {
   return {
     ...group,
-    // members: group.members.split(','),
-    members: JSON.parse(group.members),
+    members: group.members.split(','),
   };
 }
 
@@ -41,8 +40,6 @@ export async function fetchGroupById(id: string): Promise<i.FormattedGroup | nul
     .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
     .eq('id', id)
     .single<i.Group>();
-
-  console.log({ fetchGroupById: data });
 
   if (error) {
     console.error(error);
