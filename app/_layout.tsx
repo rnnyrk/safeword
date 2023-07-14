@@ -7,7 +7,7 @@ import {
 } from '@expo-google-fonts/lexend-deca';
 import { SplashScreen, Stack } from 'expo-router';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components/native';
 
 import theme from 'styles/theme';
 import { SupabaseProvider } from 'utils/SupabaseContext';

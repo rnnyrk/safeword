@@ -13,12 +13,14 @@ export async function getGroupById(
     .single<i.Group>();
 
   return {
-    data: data
-      ? {
-          ...data,
-          members: data.members.split(','),
-        }
-      : null,
+    data: null,
+    // data: data
+    //   ? {
+    //       ...data,
+    //       // members: data.members.split(','),
+    //       members: JSON.parse(data.members),
+    //     }
+    //   : null,
     error,
   };
 }
@@ -33,49 +35,40 @@ export async function getGroupByInviteCode(
     .single<i.Group>();
 
   return {
-    data: data
-      ? {
-          ...data,
-          members: data.members.split(','),
-        }
-      : null,
+    data: null,
+    // data: data
+    //   ? {
+    //       ...data,
+    //       // members: data.members.split(','),
+    //       members: JSON.parse(data.members),
+    //     }
+    //   : null,
     error,
   };
 }
 
-export async function createGroup({
-  userId,
-  name,
-  invite_code,
-}: i.CreateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
-  const { data, error } = await supabase
-    .from('groups')
-    .insert({
-      admin_id: userId,
-      members: [userId],
-      name,
-      invite_code,
-    })
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
+export async function getGroupsOfUser(
+  userId: string,
+): Promise<{ data: i.FormattedGroup[] | null; error: PostgrestError | null }> {
+  // @TODO - fix this query with array includes/contains instead of textSearch
 
   return {
-    data: data as unknown as i.Group,
-    error,
+    data: null,
+    error: null,
   };
-}
 
-export async function updateGroup({
-  id,
-  values,
-}: i.UpdateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
-  const { data, error } = await supabase
-    .from('groups')
-    .update(values)
-    .eq('id', id)
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
-
-  return {
-    data: data as unknown as i.Group,
-    error,
-  };
+  // const { data, error } = await supabase
+  //   .from('groups')
+  //   .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+  //   .textSearch('members', `${userId}`);
+  // return {
+  //   data: data
+  //     ? data.map((group) => ({
+  //         ...group,
+  //         // members: group.members.split(','),
+  //         members: JSON.parse(group.members),
+  //       }))
+  //     : null,
+  //   error,
+  // };
 }
