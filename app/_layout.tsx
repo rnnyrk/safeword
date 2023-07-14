@@ -36,14 +36,14 @@ export default function AppLayout() {
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
-        <SupabaseProvider>
-          <QueryClientProvider client={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SupabaseProvider>
             <Stack
               initialRouteName="index"
               screenOptions={{ header: () => null }}
             />
-          </QueryClientProvider>
-        </SupabaseProvider>
+          </SupabaseProvider>
+        </QueryClientProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );

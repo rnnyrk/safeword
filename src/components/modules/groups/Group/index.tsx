@@ -10,7 +10,7 @@ import { Text } from 'common/typography';
 
 import { GroupContent, GroupIcon } from './styled';
 
-export function Group({ name, size = 'small', type, group }: GroupProps) {
+export function Group({ name, groupId, size = 'small', type }: GroupProps) {
   const router = useRouter();
 
   const isSmall = size === 'small';
@@ -24,8 +24,8 @@ export function Group({ name, size = 'small', type, group }: GroupProps) {
     <Pressable
       onPress={() =>
         router.push({
-          pathname: '/home/[group]',
-          params: { group },
+          pathname: '/home/[groupId]',
+          params: { groupId },
         })
       }
     >
@@ -79,5 +79,5 @@ export type GroupProps = {
   name: string;
   size?: 'small' | 'large';
   type?: i.GroupType;
-  group: string;
+  groupId: string;
 };

@@ -78,9 +78,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
     console.info({ name });
 
-    // if (!name) {
-    //   name = email.split('@')[0];
-    // }
+    if (!name) {
+      name = email.split('@')[0];
+    }
 
     // Fetch user, is not existing, create the
     const { data, error } = await getUserByEmail(email);

@@ -7,7 +7,7 @@ import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
   const router = useRouter();
-  const params = useSearchParams<{ group: string }>();
+  const params = useSearchParams<{ groupId: string }>();
 
   return (
     <Container>
@@ -18,7 +18,7 @@ export default function GroupScreen() {
         size={48}
         style={{ marginTop: 24 }}
       >
-        {params.group}
+        {params.groupId}
       </Text>
       <Button onPress={() => router.back()}>Terug naar het overzicht</Button>
     </Container>

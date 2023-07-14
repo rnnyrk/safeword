@@ -13,7 +13,7 @@ export default function GroupsScreen() {
             <Group
               key={group.id}
               name={group.name}
-              group={group.name.toLowerCase().replace(/\s/g, '-')}
+              groupId={group.id}
               size={groups.length > 1 ? 'small' : 'large'}
             />
           ))
