@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as WebBrowser from 'expo-web-browser';
 
-import { getApplicationId, isIphone, SecureStoreAdapter } from 'utils';
+import { isIphone, SecureStoreAdapter } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -101,28 +101,30 @@ export default function AuthScreen() {
       <Container>
         <Button
           onPress={onSignInWithGoogle}
-          disabled={loading}
+          isDisabled={loading}
           variant="social"
+          style={{ marginBottom: 16, width: '100%' }}
         >
           <Gsuite
-            width={20}
-            height={20}
-            style={{ marginRight: 8 }}
+            width={19}
+            height={19}
+            style={{ marginRight: 16 }}
           />
-          <Text>{loading ? 'Loading...' : 'Sign in with Google'}</Text>
+          <Text>{loading ? 'Loading...' : 'Inloggen met Google'}</Text>
         </Button>
         {isIphone && (
           <Button
             onPress={onSignInWithApple}
-            disabled={loading}
+            isDisabled={loading}
             variant="social"
+            style={{ marginBottom: 16, width: '100%' }}
           >
             <Apple
               width={20}
-              height={20}
-              style={{ marginRight: 8 }}
+              height={22}
+              style={{ marginRight: 16 }}
             />
-            <Text>{loading ? 'Loading...' : 'Sign in with Apple'}</Text>
+            <Text>{loading ? 'Loading...' : 'Inloggen met Apple'}</Text>
           </Button>
         )}
       </Container>

@@ -1,8 +1,6 @@
-import * as React from 'react';
-
 import { ButtonLoader } from './components';
 import { ButtonContainer, ButtonIcon, ButtonLabel, ButtonWrapper } from './styled';
-import { ButtonProps, ButtonContentProps } from './types';
+import { ButtonContentProps, ButtonProps } from './types';
 
 const ButtonContent = ({
   children,
@@ -62,6 +60,7 @@ export const Button = ({
     <ButtonContainer
       onPress={onPress}
       style={style}
+      disabled={isDisabled}
     >
       {({ pressed }) => {
         return (

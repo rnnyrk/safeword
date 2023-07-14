@@ -56,22 +56,24 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   ${({ variant, isPressed, theme }) =>
     variant === 'social' &&
     css`
-      width: 100%;
-      border: 2px solid ${theme.colors.gray};
+      align-items: center;
+      border: 3px solid ${theme.colors.gray};
       background-color: ${theme.colors.white};
+      border-radius: 8px;
 
       ${isPressed &&
       css`
-        border: 2px solid ${theme.colors.primaryHover};
-        background-color: ${theme.colors.gray};
+        border: 3px solid ${theme.colors.primaryHover};
+        background-color: ${theme.colors.primaryHover};
       `}
     `}
 
-  ${({ isDisabled }) =>
+  ${({ isDisabled, theme }) =>
     isDisabled &&
     css`
       opacity: 0.4;
-      background-color: #999999;
+      background-color: ${theme.colors.gray};
+      border-color: ${theme.colors.gray};
     `}
 
   ${({ iconPosition }) =>
