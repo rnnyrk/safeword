@@ -4,7 +4,7 @@ import { FadeInUp } from 'react-native-reanimated';
 
 import { windowWidth } from 'src/utils';
 import { formatDate } from 'src/utils/dates';
-import { Bubble, Refresh } from 'common/svg';
+import { BubbleStroke, Refresh } from 'common/svg';
 import { Text } from 'common/typography';
 
 import { GroupSafewordContainer, GroupSafewordContent, GroupSafewordWord } from './styled';
@@ -68,11 +68,11 @@ export function GroupSafeword() {
         </Text>
       </GroupSafewordContent>
 
-      <Bubble
+      <BubbleStroke
         $position="absolute"
         width={groupSize}
         height={groupSize}
       />
     </GroupSafewordContainer>
   );
-};
+}

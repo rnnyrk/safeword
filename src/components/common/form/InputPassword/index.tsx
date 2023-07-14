@@ -1,4 +1,4 @@
-import * as i from 'types';
+import type * as i from 'types';
 import * as React from 'react';
 
 import { Input } from '../Input';

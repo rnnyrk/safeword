@@ -1,8 +1,8 @@
-import * as i from 'types';
+import type * as i from 'types';
 import * as React from 'react';
 
 import { FormField } from '../FormField';
-import { StyledInput, InputWrapper, InputIcon } from './styled';
+import { InputIcon, InputWrapper, StyledInput } from './styled';
 
 export const Input = ({
   autoCapitalize,

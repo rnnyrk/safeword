@@ -1,5 +1,5 @@
-import * as i from 'types';
-import { Href, useRouter } from 'expo-router';
+import type * as i from 'types';
+import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
@@ -37,7 +37,7 @@ export function Group({ name, size = 'small', type, group }: GroupProps) {
             entering={FadeInUp.duration(750).delay(250)}
           >
             <View style={{ position: 'relative', zIndex: 50 }}>
-              <GroupIcon>
+              {/* <GroupIcon>
                 {type === 'family' && (
                   <Lock
                     width={isSmall ? 15 : 20}
@@ -52,20 +52,19 @@ export function Group({ name, size = 'small', type, group }: GroupProps) {
                     fill={theme.colors.gray}
                   />
                 )}
-              </GroupIcon>
+              </GroupIcon> */}
               <Text
-                color="primary"
+                color="white"
                 align="center"
                 size={isSmall ? 20 : 40}
-                style={{ marginTop: isSmall ? 15 : 30 }}
+                style={{ marginTop: isSmall ? -15 : -30 }}
               >
                 {name}
               </Text>
             </View>
             <Bubble
               $position="absolute"
-              strokeColor={pressed ? theme.colors.primaryHover : theme.colors.primary}
-              fill={pressed ? theme.colors.primaryLight : 'none'}
+              fill={pressed ? theme.colors.primaryLight : theme.colors.primary}
               width={groupSize}
               height={groupSize}
             />

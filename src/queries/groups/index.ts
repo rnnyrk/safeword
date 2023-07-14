@@ -1,4 +1,4 @@
-import * as i from 'types';
+import type * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
 
 import { supabase } from 'src/utils';
