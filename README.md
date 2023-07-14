@@ -11,14 +11,14 @@
 
 ### Commands
 
-- Create build for simulator
+- Create a build for a simulator
 
   - iOS `eas build --profile development-simulator --platform ios`
   - Android `eas build --profile development --platform android`
 
-- Create build for device
+- Create a build for a device
 
   - iOS `eas device:create` && `eas build --profile development --platform ios`
   - Android `eas build --profile development --platform android`
 
-Connect locally to `http://127.0.0.1:8081`
+Connect manually to the development server via `http://127.0.0.1:8081`
