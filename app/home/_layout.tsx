@@ -53,7 +53,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       />
       <DrawerItem
         label="Uitloggen"
-        onPress={signOut}
+        onPress={() => signOut()}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
@@ -64,7 +64,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
 export default function DrawerLayout() {
   return (
     <Drawer
-      initialRouteName="screen1"
+      initialRouteName="index"
       screenOptions={{
         header: () => <LogoHeader showDrawer />,
         drawerPosition: 'right',
