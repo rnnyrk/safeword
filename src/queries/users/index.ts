@@ -1,48 +1,43 @@
 import type * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
+import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from 'src/utils';
 
-export async function getUserByEmail(email: string): Promise<i.User | null> {
-  const { data } = await supabase
+export async function fetchUserByEmail(email: string): Promise<i.User | null> {
+  const { data, error } = await supabase
     .from('users')
-    .select('id, email, name, finished_onboarding, group, created_at')
+    .select('id, email, name, finished_onboarding, created_at')
     .eq('email', email)
     .single();
+
+  if (error) {
+    console.error(error);
+    return null;
+  }
 
   return data;
 }
 
-export async function createUser({
-  email,
-  name,
-}: i.CreateUserProps): Promise<{ data: i.User | null; error: PostgrestError | null }> {
-  const { data, error } = await supabase
-    .from('users')
-    .insert({
-      email,
-      name,
-    })
-    .select('id, email, name, finished_onboarding, group, created_at');
-
-  return {
-    data: data as unknown as i.User,
-    error,
-  };
+export function useGetUserByEmail(email?: string) {
+  return useQuery({
+    queryKey: ['user', email],
+    queryFn: ({ queryKey }) => fetchUserByEmail(queryKey[1]!),
+    enabled: Boolean(email),
+  });
 }
 
-export async function updateUser({
-  email,
-  values,
-}: i.UpdateUserProps): Promise<{ data: i.User | null; error: PostgrestError | null }> {
+export async function getUserByEmail(
+  email: string,
+): Promise<{ data: i.User | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('users')
-    .update(values)
+    .select('id, email, name, finished_onboarding, created_at')
     .eq('email', email)
-    .select('id, email, name, finished_onboarding, group, created_at');
+    .single();
 
   return {
-    data: data as unknown as i.User,
+    data,
     error,
   };
 }

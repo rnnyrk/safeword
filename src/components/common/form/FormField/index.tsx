@@ -1,11 +1,11 @@
-import * as i from 'types';
+import type * as i from 'types';
 import * as React from 'react';
 import { Animated, Pressable } from 'react-native';
 
 import theme from 'styles/theme';
 
 import { FormDescription } from '../FormDescription';
-import { FormFieldWrapper, FieldWrapper, InputWrapper, Label } from './styled';
+import { FieldWrapper, FormFieldWrapper, InputWrapper, Label } from './styled';
 
 export const FormField = ({
   children,

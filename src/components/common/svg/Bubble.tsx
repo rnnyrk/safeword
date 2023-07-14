@@ -6,8 +6,7 @@ import theme from 'styles/theme';
 import { SvgWrapper } from './styled';
 
 export const Bubble = ({
-  strokeColor = theme.colors.primary,
-  fill = 'none',
+  fill = theme.colors.primary,
   width = 200,
   height = 200,
   $position = 'static',
@@ -16,21 +15,17 @@ export const Bubble = ({
     <Svg
       width={width}
       height={height}
-      viewBox="0 0 945.3 1053.1"
+      viewBox="0 0 442 493.3"
     >
       <Path
-        d="M876.9 225.6c-40-66.9-94.8-119.9-164.5-158.8S563.1 8.5 473.5 8.5c-89.7 0-169.3 19.4-239 58.3S109.8 158.6 69.3 225.6 8.5 369.2 8.5 455.6c0 86.5 20.3 163.1 60.8 230 40.5 67 95.6 119.9 165.2 158.8 62.4 34.8 132.8 54 211.2 57.7l-21.3 46.5c-14.2 30.9-3.1 67.6 25.9 85.5l3.4 2.1c21.3 13.2 48.7 10.7 67.4-5.9l272.7-243.5c32.5-29.1 60.3-62.8 83.1-101.1 39.9-66.9 59.9-143.6 59.9-230 0-86.5-20-163.1-59.9-230.1z"
+        d="M413.4 103.3c-19-31.9-45.1-57.1-78.3-75.6C302 9.2 264 0 221.4 0c-42.7 0-80.6 9.2-113.8 27.8-33.2 18.5-59.4 43.7-78.7 75.6C9.7 135.2 0 171.7 0 212.9s9.7 77.6 28.9 109.5c19.3 31.9 45.5 57.1 78.7 75.6 29.7 16.6 63.2 25.7 100.6 27.4L198 447.6c-6.8 14.7-1.5 32.2 12.3 40.7l1.6 1c10.1 6.3 23.2 5.1 32.1-2.8l129.8-115.9c15.5-13.9 28.7-29.9 39.6-48.1 19-31.9 28.5-68.4 28.5-109.5.1-41.3-9.5-77.8-28.5-109.7z"
         fill={fill}
-        stroke={strokeColor}
-        strokeWidth={17}
-        strokeMiterlimit={10}
       />
     </Svg>
   </SvgWrapper>
 );
 
 type BubbleProps = {
-  strokeColor?: string;
   fill?: string;
   width?: number;
   height?: number;

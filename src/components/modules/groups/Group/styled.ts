@@ -13,9 +13,10 @@ export const GroupIcon = styled.View`
 export const GroupContent = styled(Animated.View)<GroupContentProps>`
   position: relative;
   z-index: 10;
+  justify-content: center;
   height: ${({ groupSize }) => groupSize + 'px'};
   width: ${({ groupSize }) => groupSize + 'px'};
-  padding: ${({ size }) => (size === 'small' ? '20px' : '80px')} 24px 0 24px;
+  padding: 0 24px;
 `;
 
 type GroupContentProps = {

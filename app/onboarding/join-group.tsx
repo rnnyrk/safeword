@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import { useForm, Controller } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 
-import { createGroup } from 'queries/groups';
+import { getGroupByInviteCode } from 'queries/groups';
+import { updateGroup } from 'queries/groups/mutate';
+import { updateUser } from 'queries/users/mutate';
 import { validation } from 'src/utils';
+import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -14,6 +18,8 @@ type JoinGroupForm = {
 
 export default function JoinGroup() {
   const router = useRouter();
+  const { user, setUser } = useSupabase();
+  const [isLoading, setLoading] = useState(false);
 
   const {
     control,
@@ -26,16 +32,47 @@ export default function JoinGroup() {
   });
 
   async function onSubmitCode(data: JoinGroupForm) {
-    console.log(data);
+    setLoading(true);
 
-    // await createGroup({
-    //   name: data.name,
-    //   type: 'family',
-    // });
+    try {
+      // First fetch the group by the invite code, and check if already a member
+      const { data: group } = await getGroupByInviteCode(data.code);
 
-    // @TODO update finish_onboarding on user
+      if (!group || !user) {
+        console.error('No group or user found');
+        return;
+      }
 
-    router.push('/');
+      if (group.members.includes(user.id)) {
+        console.error('User is already a member of this group');
+        return;
+      }
+
+      // Add current user to the group
+      const { data: updatedGroup, error: updateGroupError } = await updateGroup({
+        id: group.id,
+        values: {
+          members: [...group.members, user.id].join(','),
+        },
+      });
+
+      // Update the user, because onboarding is now finished
+      const { data: updatedUser, error: updateUserError } = await updateUser({
+        email: user?.email,
+        values: { finished_onboarding: true },
+      });
+
+      if (updatedUser) {
+        setUser(updatedUser[0]);
+      }
+
+      router.push('/home/');
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setLoading(true);
+    }
   }
 
   return (
@@ -72,7 +109,12 @@ export default function JoinGroup() {
           )}
         />
 
-        <Button onPress={handleSubmit(onSubmitCode)}>Versturen</Button>
+        <Button
+          onPress={handleSubmit(onSubmitCode)}
+          isDisabled={isLoading}
+        >
+          Versturen
+        </Button>
       </Container>
     </>
   );

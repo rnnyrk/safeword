@@ -1,9 +1,11 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-import { createUser, getUserByEmail } from 'queries/users';
+import { getUserByEmail } from 'queries/users';
+import { createUser } from 'queries/users/mutate';
 
 import { supabase } from './supabase';
 
@@ -12,6 +14,7 @@ type UserType = i.User | null | undefined;
 type SupabaseContextProps = {
   loggedIn: boolean;
   user: UserType;
+  setUser: (user: UserType) => void;
   signOut: () => Promise<void>;
   getAppleOAuthUrl: () => Promise<string | null>;
   getGoogleOAuthUrl: () => Promise<string | null>;
@@ -21,6 +24,7 @@ type SupabaseContextProps = {
 export const SupabaseContext = createContext<SupabaseContextProps>({
   loggedIn: false,
   user: null,
+  setUser: () => {},
   signOut: async () => {},
   getAppleOAuthUrl: async () => '',
   getGoogleOAuthUrl: async () => '',
@@ -36,9 +40,7 @@ function useProtectedRoute(user: UserType) {
   const router = useRouter();
 
   useEffect(() => {
-    if (user === undefined) {
-      return;
-    }
+    if (user === undefined) return;
 
     const rootSegment = segments[0];
     const isAppDir = rootSegment === undefined;
@@ -64,10 +66,17 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const decodedToken = jwt_decode(token) as JwtPayload;
 
     const email = decodedToken.email;
-    const name = decodedToken.name;
+    let name =
+      decodedToken.user_metadata?.full_name ||
+      decodedToken.user_metadata?.name ||
+      decodedToken?.name;
+
+    if (!name) {
+      name = email.split('@')[0];
+    }
 
     // Fetch user, is not existing, create the
-    const data = await getUserByEmail(email);
+    const { data, error } = await getUserByEmail(email);
 
     if (data) {
       setUser(data);
@@ -78,7 +87,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       });
 
       if (newUser && !newUserError) {
-        setUser(newUser);
+        setUser(newUser[0]);
       } else if (newUserError) {
         console.error('Error creating new user', { newUserError });
       }
@@ -103,7 +112,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: 'com.safeword://home/',
+        redirectTo: 'com.safeword://',
         scopes: 'full_name email',
       },
     });
@@ -115,7 +124,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'com.safeword://home/',
+        redirectTo: 'com.safeword://',
       },
     });
 
@@ -149,6 +158,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       value={{
         loggedIn,
         user,
+        setUser,
         signOut,
         getAppleOAuthUrl,
         getGoogleOAuthUrl,
@@ -167,6 +177,7 @@ type SupabaseProviderProps = {
 declare module 'jwt-decode' {
   export interface JwtPayload {
     email: string;
-    name: string;
+    name?: string;
+    user_metadata?: Record<string, any>;
   }
 }

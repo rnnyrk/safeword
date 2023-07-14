@@ -1,5 +1,5 @@
-import * as i from 'types';
-import { Href, useRouter } from 'expo-router';
+import type * as i from 'types';
+import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
@@ -10,7 +10,7 @@ import { Text } from 'common/typography';
 
 import { GroupContent, GroupIcon } from './styled';
 
-export function Group({ name, size = 'small', type, to }: GroupProps) {
+export function Group({ name, groupId, size = 'small', type }: GroupProps) {
   const router = useRouter();
 
   const isSmall = size === 'small';
@@ -21,7 +21,14 @@ export function Group({ name, size = 'small', type, to }: GroupProps) {
   }
 
   return (
-    <Pressable onPress={() => router.push(to)}>
+    <Pressable
+      onPress={() =>
+        router.push({
+          pathname: '/home/[groupId]',
+          params: { groupId },
+        })
+      }
+    >
       {({ pressed }) => {
         return (
           <GroupContent
@@ -30,7 +37,7 @@ export function Group({ name, size = 'small', type, to }: GroupProps) {
             entering={FadeInUp.duration(750).delay(250)}
           >
             <View style={{ position: 'relative', zIndex: 50 }}>
-              <GroupIcon>
+              {/* <GroupIcon>
                 {type === 'family' && (
                   <Lock
                     width={isSmall ? 15 : 20}
@@ -45,20 +52,19 @@ export function Group({ name, size = 'small', type, to }: GroupProps) {
                     fill={theme.colors.gray}
                   />
                 )}
-              </GroupIcon>
+              </GroupIcon> */}
               <Text
-                color="primary"
+                color="white"
                 align="center"
                 size={isSmall ? 20 : 40}
-                style={{ marginTop: isSmall ? 15 : 30 }}
+                style={{ marginTop: isSmall ? -15 : -30 }}
               >
                 {name}
               </Text>
             </View>
             <Bubble
               $position="absolute"
-              strokeColor={pressed ? theme.colors.primaryHover : theme.colors.primary}
-              fill={pressed ? theme.colors.primaryLight : 'none'}
+              fill={pressed ? theme.colors.primaryHover : theme.colors.primary}
               width={groupSize}
               height={groupSize}
             />
@@ -67,11 +73,11 @@ export function Group({ name, size = 'small', type, to }: GroupProps) {
       }}
     </Pressable>
   );
-};
+}
 
 export type GroupProps = {
   name: string;
   size?: 'small' | 'large';
-  type: i.GroupType;
-  to: Href<string>;
+  type?: i.GroupType;
+  groupId: string;
 };

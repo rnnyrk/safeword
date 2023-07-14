@@ -1,8 +1,9 @@
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 
-import { createGroup } from 'queries/groups';
+import { createGroup } from 'queries/groups/mutate';
 import { generateInviteCode, validation } from 'src/utils';
+import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -14,6 +15,7 @@ type GroupForm = {
 
 export default function CreateGroup() {
   const router = useRouter();
+  const { user } = useSupabase();
 
   const {
     control,
@@ -26,13 +28,20 @@ export default function CreateGroup() {
   });
 
   async function onSubmitGroup(data: GroupForm) {
+    if (!user) return;
+
     const groupCode = generateInviteCode(6);
 
-    await createGroup({
+    const { data: group, error } = await createGroup({
       name: data.name,
-      type: 'family',
       invite_code: groupCode,
+      userId: user.id,
     });
+
+    if (error) {
+      console.error(error);
+      throw error;
+    }
 
     router.push({
       pathname: '/onboarding/invite-members/[code]',

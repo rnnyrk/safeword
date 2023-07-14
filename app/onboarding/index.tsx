@@ -9,6 +9,8 @@ export default function Onboarding() {
   const router = useRouter();
   const { user } = useSupabase();
 
+  // if (!user) return null;
+
   return (
     <>
       <LogoHeader />

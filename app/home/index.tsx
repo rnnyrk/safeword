@@ -1,20 +1,23 @@
-import * as React from 'react';
-
+import { useGroupsOfUser } from 'queries/groups';
+import { useSupabase } from 'utils/SupabaseContext';
 import { Group, GroupGrid } from 'modules/groups';
 
-export default function HomeScreen() {
+export default function GroupsScreen() {
+  const { user } = useSupabase();
+  const { data: groups } = useGroupsOfUser(user?.id);
+
   return (
     <GroupGrid>
-      <Group
-        name="Familie Bakker"
-        type="family"
-        to="/home/familie-bakker"
-      />
-      <Group
-        name="Label A + Ace"
-        type="work"
-        to="/home/labela-ace"
-      />
+      {groups && groups
+        ? groups.map((group) => (
+            <Group
+              key={group.id}
+              name={group.name}
+              groupId={group.id}
+              size={groups.length > 1 ? 'small' : 'large'}
+            />
+          ))
+        : null}
     </GroupGrid>
   );
 }

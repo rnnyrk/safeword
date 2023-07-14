@@ -1,8 +1,9 @@
+import { useState } from 'react';
 import { useRouter, useSearchParams } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 
-import { updateUser } from 'queries/users';
+import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -20,7 +21,8 @@ type InviteMembersForm = {
 export default function InviteMembers() {
   const router = useRouter();
   const params = useSearchParams<{ code: string; name: string }>();
-  const { user } = useSupabase();
+  const { user, setUser } = useSupabase();
+  const [isLoading, setLoading] = useState(false);
 
   const {
     control,
@@ -42,29 +44,46 @@ export default function InviteMembers() {
   });
 
   async function onInviteMembers(data: InviteMembersForm) {
-    console.log({ user, data, url: `${getApiUrl}/api/mail` });
-    if (!user) return;
+    setLoading(true);
 
-    const req = await fetch(`${getApiUrl}/api/mail`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        code: params.code,
-        members: data.members,
-      }),
-    });
+    try {
+      if (!user) return;
 
-    const mailResponse = await req.json();
+      const req = await fetch(`${getApiUrl}/api/mail`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: params.code,
+          members: data.members,
+        }),
+      });
 
-    const updated = await updateUser({
-      email: user?.email,
-      values: { finished_onboarding: true },
-    });
+      const mailResponse = await req.json();
 
-    router.push('/home/');
+      const { data: updatedUser, error } = await updateUser({
+        email: user?.email,
+        values: { finished_onboarding: true },
+      });
+
+      if (error) {
+        console.error(error);
+        throw error;
+      }
+
+      if (updatedUser) {
+        setUser(updatedUser[0]);
+      }
+
+      router.push('/home/');
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setLoading(true);
+    }
   }
 
   return (
@@ -130,7 +149,12 @@ export default function InviteMembers() {
           />
         </Pressable>
 
-        <Button onPress={handleSubmit(onInviteMembers)}>Uitnodigen</Button>
+        <Button
+          onPress={handleSubmit(onInviteMembers)}
+          isDisabled={isLoading}
+        >
+          Uitnodigen
+        </Button>
       </Container>
     </>
   );
