@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 
-import { getGroupByInviteCode, updateGroup } from 'queries/groups';
-import { updateUser } from 'queries/users';
+import { getGroupByInviteCode } from 'queries/groups';
+import { updateGroup } from 'queries/groups/mutate';
+import { updateUser } from 'queries/users/mutate';
 import { validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -56,12 +57,17 @@ export default function JoinGroup() {
       });
 
       // Update the user, because onboarding is now finished
-      const { data: updatedUser } = await updateUser({
+      const { data: updatedUser, error: updateUserError } = await updateUser({
         email: user?.email,
         values: { finished_onboarding: true },
       });
 
-      setUser(updatedUser);
+      console.log({ JoinGroupUpdatedUser: updatedUser });
+
+      if (updatedUser) {
+        setUser(updatedUser[0]);
+      }
+
       router.push('/home/');
     } catch (error) {
       console.error(error);

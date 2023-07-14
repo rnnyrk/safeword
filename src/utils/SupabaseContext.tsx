@@ -3,7 +3,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
-import { createUser, getUserByEmail } from 'queries/users';
+import { getUserByEmail } from 'queries/users';
+import { createUser } from 'queries/users/mutate';
 
 import { supabase } from './supabase';
 
@@ -63,23 +64,30 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
 
+    // @TODO check where name is on first access from apple
     console.info({
       decodedToken,
       meta: decodedToken.user_metadata,
     });
 
     const email = decodedToken.email;
-    const name =
+    let name =
       decodedToken.user_metadata?.full_name ||
       decodedToken.user_metadata?.name ||
       decodedToken?.name;
 
     console.info({ name });
 
+    // if (!name) {
+    //   name = email.split('@')[0];
+    // }
+
     // Fetch user, is not existing, create the
     const { data, error } = await getUserByEmail(email);
 
     if (data) {
+      console.log({ SetExistingUser: data });
+
       setUser(data);
     } else if (!data) {
       const { data: newUser, error: newUserError } = await createUser({
@@ -88,7 +96,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       });
 
       if (newUser && !newUserError) {
-        setUser(newUser);
+        console.log({ CreateNewUser: newUser });
+
+        setUser(newUser[0]);
       } else if (newUserError) {
         console.error('Error creating new user', { newUserError });
       }
@@ -97,6 +107,8 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
   // Check if the user still has an exisiting session
   useEffect(() => {
+    // signOut();
+
     (async () => {
       const { data, error } = await supabase.auth.getSession();
 
@@ -113,7 +125,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: 'com.safeword://home/',
+        redirectTo: 'com.safeword://',
         scopes: 'full_name email',
       },
     });
@@ -125,7 +137,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     const result = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'com.safeword://home/',
+        redirectTo: 'com.safeword://',
       },
     });
 
@@ -145,6 +157,8 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   }
 
   async function signOut() {
+    console.log('signout');
+
     const { error } = await supabase.auth.signOut();
     setUser(null);
     setLoggedIn(false);

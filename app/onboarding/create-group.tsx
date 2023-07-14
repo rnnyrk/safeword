@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 
-import { createGroup } from 'queries/groups';
+import { createGroup } from 'queries/groups/mutate';
 import { generateInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';

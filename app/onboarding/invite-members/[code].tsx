@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 
-import { updateUser } from 'queries/users';
+import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -68,12 +68,16 @@ export default function InviteMembers() {
         values: { finished_onboarding: true },
       });
 
+      console.log({ CodeUpdatedUser: updatedUser });
+
       if (error) {
         console.error(error);
         throw error;
       }
 
-      setUser(updatedUser);
+      if (updatedUser) {
+        setUser(updatedUser[0]);
+      }
 
       router.push('/home/');
     } catch (error) {
