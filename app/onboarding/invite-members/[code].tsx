@@ -21,7 +21,7 @@ type InviteMembersForm = {
 export default function InviteMembers() {
   const router = useRouter();
   const params = useSearchParams<{ code: string; name: string }>();
-  const { user } = useSupabase();
+  const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -44,35 +44,44 @@ export default function InviteMembers() {
   });
 
   async function onInviteMembers(data: InviteMembersForm) {
-    if (!user) return;
     setLoading(true);
 
-    const req = await fetch(`${getApiUrl}/api/mail`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        code: params.code,
-        members: data.members,
-      }),
-    });
+    try {
+      if (!user) return;
 
-    const mailResponse = await req.json();
+      const req = await fetch(`${getApiUrl}/api/mail`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          code: params.code,
+          members: data.members,
+        }),
+      });
 
-    const { data: updatedUser, error } = await updateUser({
-      email: user?.email,
-      values: { finished_onboarding: true },
-    });
+      const mailResponse = await req.json();
 
-    if (error) {
+      const { data: updatedUser, error } = await updateUser({
+        email: user?.email,
+        values: { finished_onboarding: true },
+      });
+
+      if (error) {
+        console.error(error);
+        throw error;
+      }
+
+      setUser(updatedUser);
+
+      router.push('/home/');
+    } catch (error) {
       console.error(error);
       throw error;
+    } finally {
+      setLoading(true);
     }
-
-    setLoading(false);
-    router.push('/home/');
   }
 
   return (

@@ -3,29 +3,76 @@ import { PostgrestError } from '@supabase/supabase-js';
 
 import { supabase } from 'src/utils';
 
-export async function getGroupById(id: string): Promise<i.Group | null> {
-  const { data } = await supabase
+export async function getGroupById(
+  id: string,
+): Promise<{ data: i.FormattedGroup | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin')
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
     .eq('id', id)
-    .single();
+    .single<i.Group>();
 
-  return data;
+  return {
+    data: data
+      ? {
+          ...data,
+          members: data.members.split(','),
+        }
+      : null,
+    error,
+  };
+}
+
+export async function getGroupByInviteCode(
+  code: string,
+): Promise<{ data: i.FormattedGroup | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('groups')
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+    .eq('invite_code', code)
+    .single<i.Group>();
+
+  return {
+    data: data
+      ? {
+          ...data,
+          members: data.members.split(','),
+        }
+      : null,
+    error,
+  };
 }
 
 export async function createGroup({
-  admin,
+  userId,
   name,
   invite_code,
 }: i.CreateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
     .insert({
-      admin,
+      admin_id: userId,
+      members: [userId],
       name,
       invite_code,
     })
-    .select('id, name, qrcode, invite_code, type, created_at, admin');
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
+
+  return {
+    data: data as unknown as i.Group,
+    error,
+  };
+}
+
+export async function updateGroup({
+  id,
+  values,
+}: i.UpdateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('groups')
+    .update(values)
+    .eq('id', id)
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
 
   return {
     data: data as unknown as i.Group,

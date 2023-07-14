@@ -9,7 +9,19 @@ export type Group = {
   qrcode: string;
   invite_code: string;
   type?: i.GroupType;
-  admin: string;
+  admin_id: string;
+  members: string;
 };
 
-export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code' | 'admin'>;
+export type FormattedGroup = Omit<i.Group, 'members'> & {
+  members: string[];
+};
+
+export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'> & {
+  userId: string;
+};
+
+export type UpdateGroup = {
+  id: string;
+  values: Partial<Omit<i.Group, 'id' | 'created_at' | 'invite_code' | 'qrcode'>>;
+};

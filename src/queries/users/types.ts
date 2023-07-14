@@ -6,7 +6,6 @@ export type User = {
   name: string;
   created_at: string;
   finished_onboarding: boolean;
-  group: string | null;
 };
 
 export type CreateUserProps = {
@@ -16,5 +15,5 @@ export type CreateUserProps = {
 
 export type UpdateUserProps = {
   email: string;
-  values: Partial<i.User>;
+  values: Partial<Omit<i.User, 'id' | 'created_at'>>;
 };

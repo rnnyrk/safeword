@@ -35,7 +35,7 @@ export default function CreateGroup() {
     const { data: group, error } = await createGroup({
       name: data.name,
       invite_code: groupCode,
-      admin: user.id,
+      userId: user.id,
     });
 
     if (error) {

@@ -12,6 +12,7 @@ type UserType = i.User | null | undefined;
 type SupabaseContextProps = {
   loggedIn: boolean;
   user: UserType;
+  setUser: (user: UserType) => void;
   signOut: () => Promise<void>;
   getAppleOAuthUrl: () => Promise<string | null>;
   getGoogleOAuthUrl: () => Promise<string | null>;
@@ -21,6 +22,7 @@ type SupabaseContextProps = {
 export const SupabaseContext = createContext<SupabaseContextProps>({
   loggedIn: false,
   user: null,
+  setUser: () => {},
   signOut: async () => {},
   getAppleOAuthUrl: async () => '',
   getGoogleOAuthUrl: async () => '',
@@ -75,7 +77,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
     console.info({ name });
 
     // Fetch user, is not existing, create the
-    const data = await getUserByEmail(email);
+    const { data, error } = await getUserByEmail(email);
 
     if (data) {
       setUser(data);
@@ -157,6 +159,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       value={{
         loggedIn,
         user,
+        setUser,
         signOut,
         getAppleOAuthUrl,
         getGoogleOAuthUrl,

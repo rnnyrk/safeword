@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Group, GroupGrid } from 'modules/groups';
 
 export default function HomeScreen() {
