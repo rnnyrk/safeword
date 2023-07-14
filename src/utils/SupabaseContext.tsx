@@ -1,5 +1,6 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSegments } from 'expo-router';
 import jwt_decode, { JwtPayload } from 'jwt-decode';
 
@@ -107,8 +108,6 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
   // Check if the user still has an exisiting session
   useEffect(() => {
-    // signOut();
-
     (async () => {
       const { data, error } = await supabase.auth.getSession();
 
