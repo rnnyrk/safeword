@@ -9,7 +9,7 @@ export default function OnboardingScreen() {
   const router = useRouter();
   const { user } = useSupabase();
 
-  // if (!user) return null;
+  if (!user) return null;
 
   return (
     <>

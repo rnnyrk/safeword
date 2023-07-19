@@ -11,8 +11,6 @@ export default function SettingsScreen() {
   const { user } = useSupabase();
   const { data: groups } = useGroupsOfUser(user?.id);
 
-  console.log({ groups, user });
-
   return (
     <Container>
       <Text

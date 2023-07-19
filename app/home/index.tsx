@@ -6,8 +6,6 @@ export default function GroupsScreen() {
   const { user } = useSupabase();
   const { data: groups } = useGroupsOfUser(user?.id);
 
-  console.log({ groups, user });
-
   return (
     <GroupGrid>
       {groups && groups
