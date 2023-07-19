@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
+import { Link, useRouter } from 'expo-router';
+import { Pressable, View } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
 import { windowWidth } from 'src/utils';
@@ -20,7 +21,8 @@ const safeWords: string[] = [
   'Zolder',
 ];
 
-export function GroupSafeword() {
+export function GroupSafeword({ groupId }: GroupSafewordProps) {
+  const router = useRouter();
   const [currentSafeWord, setCurrentSafeWord] = useState<string | undefined>(undefined);
 
   const randomizeSafeWord = () => {
@@ -39,6 +41,14 @@ export function GroupSafeword() {
       groupSize={groupSize}
       entering={FadeInUp.duration(750).delay(250)}
     >
+      <View style={{ width: '100%', marginBottom: 32 }}>
+        <Text
+          color="gray"
+          size={20}
+        >
+          {formatDate()}
+        </Text>
+      </View>
       <GroupSafewordContent style={{ position: 'relative', zIndex: 50 }}>
         <Text
           color="darkGray"
@@ -60,12 +70,31 @@ export function GroupSafeword() {
             <Refresh />
           </Pressable>
         </GroupSafewordWord>
-        <Text
-          color="gray"
-          size={20}
+        <Pressable
+          onPress={() =>
+            router.push({
+              pathname: '/home/[groupId]/send',
+              params: {
+                groupId,
+              },
+            })
+          }
         >
-          {formatDate()}
-        </Text>
+          <Text
+            color="gray"
+            size={20}
+          >
+            Safeword versturen
+          </Text>
+        </Pressable>
+        {/* <Link
+            href={{
+              pathname: '/home/[groupId]/send',
+              params: {
+                groupId,
+              },
+            }}
+          > </Link>*/}
       </GroupSafewordContent>
 
       <BubbleStroke
@@ -76,3 +105,7 @@ export function GroupSafeword() {
     </GroupSafewordContainer>
   );
 }
+
+type GroupSafewordProps = {
+  groupId: string;
+};
