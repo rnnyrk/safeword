@@ -5,11 +5,11 @@ import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
-export default function Onboarding() {
+export default function OnboardingScreen() {
   const router = useRouter();
   const { user } = useSupabase();
 
-  // if (!user) return null;
+  if (!user) return null;
 
   return (
     <>

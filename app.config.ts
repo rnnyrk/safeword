@@ -1,49 +1,62 @@
-import { ExpoConfig } from 'expo/config';
+import path from 'path';
+import type { ConfigContext, ExpoConfig } from '@expo/config';
 
-module.exports = {
-  scheme: 'comsafeword',
-  name: 'SafeWord',
+import { ClientEnv, Env } from './env';
+
+export default ({ config }: ConfigContext): ExpoConfig => ({
+  ...config,
+  scheme: Env.BUNDLE_ID,
+  name: Env.NAME,
+  description: `${Env.NAME} Mobile App`,
   slug: 'safeword',
-  originalFullName: 'rnnyrk/safeword',
-  currentFullName: 'rnnyrk/safeword',
-  version: '1.0.0',
+  version: Env.VERSION.toString(),
+  orientation: 'portrait',
+  icon: path.resolve(__dirname, 'src/assets/images/icon.png'),
+  userInterfaceStyle: 'automatic',
+  splash: {
+    image: path.resolve(__dirname, 'src/assets/images/splash.png'),
+    resizeMode: 'contain',
+    backgroundColor: '#FFFFFF',
+  },
   updates: {
-    url: 'https://u.expo.dev/f2bf9a40-fc96-45d0-8a9c-1c3af0e39835',
+    fallbackToCacheTimeout: 0,
+  },
+  assetBundlePatterns: ['**/*'],
+  ios: {
+    supportsTablet: false,
+    bundleIdentifier: Env.BUNDLE_ID,
+    associatedDomains: ['applinks:dev.getsafeword.app', 'applinks:getsafeword.app'],
   },
   android: {
-    package: 'com.safeword',
-    runtimeVersion: {
-      policy: 'sdkVersion',
+    adaptiveIcon: {
+      foregroundImage: path.resolve(__dirname, 'src/assets/images/adaptive-icon.png'),
+      backgroundColor: '#FFFFFF',
     },
-  },
-  ios: {
-    bundleIdentifier: 'com.safeword',
-    runtimeVersion: '1.0.0',
-    associatedDomains: ['applinks:dev.getsafeword.app', 'applinks:getsafeword.app'],
-    config: {
-      usesNonExemptEncryption: false,
-    },
-  },
-  icon: './src/assets/images/icon.png',
-  splash: {
-    image: './src/assets/images/splash.png',
-    resizeMode: 'contain',
-    backgroundColor: '#ffffff',
-  },
-  extra: {
-    eas: {
-      projectId: 'f2bf9a40-fc96-45d0-8a9c-1c3af0e39835',
-    },
+    package: Env.PACKAGE,
   },
   plugins: [
     [
       'expo-router',
       {
-        asyncRoutes: {
-          default: 'development',
-          android: false,
-        },
         origin: 'https://dev.getsafeword.app',
+      },
+    ],
+    [
+      'app-icon-badge',
+      {
+        enabled: Env.APP_ENV === 'production' ? false : true,
+        badges: [
+          {
+            text: Env.APP_ENV,
+            type: 'banner',
+            color: 'white',
+          },
+          {
+            text: Env.VERSION.toString(),
+            type: 'ribbon',
+            color: 'white',
+          },
+        ],
       },
     ],
     [
@@ -59,5 +72,10 @@ module.exports = {
     tsconfigPaths: true,
     typedRoutes: true,
   },
-  owner: 'ronnyrr',
-} as ExpoConfig;
+  extra: {
+    ...ClientEnv,
+    eas: {
+      projectId: Env.EAS_PROJECT_ID,
+    },
+  },
+});

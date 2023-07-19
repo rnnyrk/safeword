@@ -40,7 +40,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       style={{ flex: 1, marginTop: 24 }}
     >
       <DrawerItem
-        label="Mijn groepen"
+        label="Mijn groep"
         onPress={() => navigation.navigate('index')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
@@ -61,7 +61,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
   );
 }
 
-export default function DrawerLayout() {
+export default function HomeScreen() {
   return (
     <Drawer
       initialRouteName="index"

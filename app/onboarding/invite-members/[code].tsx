@@ -18,7 +18,7 @@ type InviteMembersForm = {
   }[];
 };
 
-export default function InviteMembers() {
+export default function InviteMembersScreen() {
   const router = useRouter();
   const params = useSearchParams<{ code: string; name: string }>();
   const { user, setUser } = useSupabase();

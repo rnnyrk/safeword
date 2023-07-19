@@ -16,7 +16,7 @@ type JoinGroupForm = {
   code: string;
 };
 
-export default function JoinGroup() {
+export default function JoinGroupScreen() {
   const router = useRouter();
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);

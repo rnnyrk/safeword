@@ -1,1 +1,3 @@
-export const getApiUrl = process.env.EXPO_PUBLIC_SITE_URL;
+import { Env } from './env';
+
+export const getApiUrl = Env.EXPO_PUBLIC_SITE_URL;
