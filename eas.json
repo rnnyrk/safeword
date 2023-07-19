@@ -1,35 +1,66 @@
 {
   "cli": {
-    "version": ">= 3.13.3",
-    "promptToConfigurePushNotifications": false
+    "version": ">= 3.13.3"
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle",
+        "android": {
+          "image": "default"
+        }
+      },
+      "env": {
+        "APP_ENV": "development"
       }
     },
-    "development-simulator": {
+    "simulator": {
       "developmentClient": true,
       "distribution": "internal",
       "ios": {
         "simulator": true
       },
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle",
+        "android": {
+          "image": "default"
+        }
+      },
+      "env": {
+        "APP_ENV": "development"
       }
     },
-    "preview": {
+    "staging": {
+      "channel": "staging",
       "distribution": "internal",
-      "channel": "preview",
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle",
+        "android": {
+          "image": "default"
+        }
+      },
+      "env": {
+        "APP_ENV": "staging",
+        "FLIPPER_DISABLE": "1"
       }
     },
     "production": {
-      "channel": "production"
+      "channel": "production",
+      "android": {
+        "buildType": "app-bundle",
+        "android": {
+          "image": "default"
+        }
+      },
+      "env": {
+        "APP_ENV": "production",
+        "FLIPPER_DISABLE": "1"
+      }
     }
+  },
+  "submit": {
+    "production": {}
   }
 }
