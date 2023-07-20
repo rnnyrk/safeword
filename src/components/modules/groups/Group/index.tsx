@@ -24,7 +24,7 @@ export function Group({ name, groupId, size = 'small', type }: GroupProps) {
     <Pressable
       onPress={() =>
         router.push({
-          pathname: '/home/[groupId]',
+          pathname: '/home/[groupId]/',
           params: { groupId },
         })
       }

@@ -1,6 +1,7 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerItem } from '@react-navigation/drawer';
 import { Drawer } from 'expo-router/drawer';
+import { StatusBar } from 'expo-status-bar';
 import { ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -63,27 +64,30 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
 
 export default function HomeScreen() {
   return (
-    <Drawer
-      initialRouteName="index"
-      screenOptions={{
-        header: () => <LogoHeader showDrawer />,
-        drawerPosition: 'right',
-        drawerStyle: {
-          width: windowWidth * 0.9,
-          backgroundColor: theme.colors.primary,
-        },
-      }}
-      drawerContent={(props: DrawerContentComponentProps) => {
-        return (
-          <CustomDrawerContent
-            drawerPosition="right"
-            {...props}
-          />
-        );
-      }}
-    >
-      <Drawer.Screen name="index" />
-      <Drawer.Screen name="settings" />
-    </Drawer>
+    <>
+      <StatusBar style="dark" />
+      <Drawer
+        initialRouteName="index"
+        screenOptions={{
+          header: () => <LogoHeader showDrawer />,
+          drawerPosition: 'right',
+          drawerStyle: {
+            width: windowWidth * 0.9,
+            backgroundColor: theme.colors.primary,
+          },
+        }}
+        drawerContent={(props: DrawerContentComponentProps) => {
+          return (
+            <CustomDrawerContent
+              drawerPosition="right"
+              {...props}
+            />
+          );
+        }}
+      >
+        <Drawer.Screen name="index" />
+        <Drawer.Screen name="settings" />
+      </Drawer>
+    </>
   );
 }

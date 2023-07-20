@@ -1,16 +1,15 @@
 {
   "cli": {
-    "version": ">= 3.13.3"
+    "version": ">= 3.15.1",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "app-bundle",
-        "android": {
-          "image": "default"
-        }
+        "buildType": "apk",
+        "image": "default"
       },
       "env": {
         "APP_ENV": "development"
@@ -23,10 +22,8 @@
         "simulator": true
       },
       "android": {
-        "buildType": "app-bundle",
-        "android": {
-          "image": "default"
-        }
+        "buildType": "apk",
+        "image": "default"
       },
       "env": {
         "APP_ENV": "development"
@@ -34,12 +31,9 @@
     },
     "staging": {
       "channel": "staging",
-      "distribution": "internal",
       "android": {
-        "buildType": "app-bundle",
-        "android": {
-          "image": "default"
-        }
+        "buildType": "apk",
+        "image": "default"
       },
       "env": {
         "APP_ENV": "staging",
@@ -50,9 +44,7 @@
       "channel": "production",
       "android": {
         "buildType": "app-bundle",
-        "android": {
-          "image": "default"
-        }
+        "image": "default"
       },
       "env": {
         "APP_ENV": "production",
@@ -61,6 +53,19 @@
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "android": {},
+      "ios": {
+        "appleId": "info@ronnyrook.nl",
+        "appleTeamId": "WPYLA7AC24",
+        "language": "nl-NL"
+      }
+    },
+    "staging": {
+      "extends": "production"
+    },
+    "development": {
+      "extends": "production"
+    }
   }
 }

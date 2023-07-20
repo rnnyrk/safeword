@@ -10,6 +10,8 @@ export default function GroupScreen() {
   const params = useSearchParams<{ groupId: string }>();
   const { data: group } = useGroupById(params.groupId);
 
+  if (!group) return null;
+
   return (
     <Container>
       <Text
@@ -20,7 +22,16 @@ export default function GroupScreen() {
       >
         Safeword versturen
       </Text>
-      <Button onPress={() => router.push('/home/')}>Terug naar het groepen</Button>
+      <Button
+        onPress={() =>
+          router.push({
+            pathname: '/home/[groupId]/',
+            params: { groupId: group.id },
+          })
+        }
+      >
+        Terug naar het groepen
+      </Button>
     </Container>
   );
 }
