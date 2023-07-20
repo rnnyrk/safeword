@@ -33,7 +33,7 @@
     "@react-navigation/drawer": "6.6.3",
     "@supabase/supabase-js": "2.26.0",
     "@tanstack/react-query": "4.29.23",
-    "app-icon-badge": "^0.0.13",
+    "app-icon-badge": "0.0.13",
     "expo": "^49.0.3",
     "expo-application": "~5.3.0",
     "expo-build-properties": "~0.8.3",
