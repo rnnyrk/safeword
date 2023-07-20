@@ -1,13 +1,14 @@
 {
   "cli": {
-    "version": ">= 3.15.1"
+    "version": ">= 3.15.1",
+    "promptToConfigurePushNotifications": false
   },
   "build": {
     "development": {
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "buildType": "app-bundle",
+        "buildType": "apk",
         "image": "default"
       },
       "env": {
@@ -21,7 +22,7 @@
         "simulator": true
       },
       "android": {
-        "buildType": "app-bundle",
+        "buildType": "apk",
         "image": "default"
       },
       "env": {
@@ -32,7 +33,7 @@
       "channel": "staging",
       "distribution": "internal",
       "android": {
-        "buildType": "app-bundle",
+        "buildType": "apk",
         "image": "default"
       },
       "env": {
