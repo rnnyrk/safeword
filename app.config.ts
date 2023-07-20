@@ -25,6 +25,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ios: {
     supportsTablet: false,
     bundleIdentifier: Env.BUNDLE_ID,
+    buildNumber: Env.BUILD_VERSION.toString(),
     associatedDomains: ['applinks:dev.getsafeword.app', 'applinks:getsafeword.app'],
   },
   android: {
@@ -33,6 +34,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#FFFFFF',
     },
     package: Env.PACKAGE,
+    versionCode: Env.BUILD_VERSION,
   },
   plugins: [
     [
