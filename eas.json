@@ -30,7 +30,6 @@
       }
     },
     "staging": {
-      "channel": "staging",
       "android": {
         "buildType": "apk",
         "image": "default"
@@ -41,7 +40,6 @@
       }
     },
     "production": {
-      "channel": "production",
       "android": {
         "buildType": "app-bundle",
         "image": "default"

@@ -27,6 +27,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     bundleIdentifier: Env.BUNDLE_ID,
     buildNumber: Env.BUILD_VERSION.toString(),
     associatedDomains: ['applinks:dev.getsafeword.app', 'applinks:getsafeword.app'],
+    config: {
+      usesNonExemptEncryption: false,
+    },
   },
   android: {
     adaptiveIcon: {
