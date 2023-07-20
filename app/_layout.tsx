@@ -7,6 +7,7 @@ import {
 } from '@expo-google-fonts/lexend-deca';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components/native';
 
@@ -47,6 +48,7 @@ export default function AppLayout() {
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <SupabaseProvider>
+            <StatusBar style="dark" />
             <Stack
               initialRouteName="index"
               screenOptions={{ header: () => null }}
