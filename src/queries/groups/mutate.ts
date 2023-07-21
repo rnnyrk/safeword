@@ -1,7 +1,8 @@
 import type * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { supabase } from 'src/utils';
+import { getNewSafeword, supabase } from 'src/utils';
 
 export async function createGroup({
   userId,
@@ -15,8 +16,9 @@ export async function createGroup({
       members: [userId],
       name,
       invite_code,
+      current_word: getNewSafeword(),
     })
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
+    .select();
 
   return {
     data: data as unknown as i.Group,
@@ -28,14 +30,20 @@ export async function updateGroup({
   id,
   values,
 }: i.UpdateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
-  const { data, error } = await supabase
-    .from('groups')
-    .update(values)
-    .eq('id', id)
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members');
+  const { data, error } = await supabase.from('groups').update(values).eq('id', id).select();
 
   return {
     data: data as unknown as i.Group,
     error,
   };
+}
+
+export function useUpdateGroup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, values }: i.UpdateGroup) => updateGroup({ id, values }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['groups']);
+    },
+  });
 }

@@ -15,7 +15,7 @@ export async function fetchGroupsOfUser(userId: string): Promise<i.FormattedGrou
   // @TODO - fix this query with array includes/contains instead of textSearch
   const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word')
     .textSearch('members', userId);
 
   if (error) {
@@ -35,11 +35,7 @@ export function useGroupsOfUser(userId?: string) {
 }
 
 export async function fetchGroupById(id: string): Promise<i.FormattedGroup | null> {
-  const { data, error } = await supabase
-    .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
-    .eq('id', id)
-    .single<i.Group>();
+  const { data, error } = await supabase.from('groups').select().eq('id', id).single<i.Group>();
 
   if (error) {
     console.error(error);
@@ -63,7 +59,7 @@ export async function getGroupByInviteCode(
 ): Promise<{ data: i.FormattedGroup | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+    .select()
     .eq('invite_code', code)
     .single<i.Group>();
 
