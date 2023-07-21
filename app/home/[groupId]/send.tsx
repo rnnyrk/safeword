@@ -20,7 +20,7 @@ export default function GroupScreen() {
   return (
     <Container>
       <AnimatedGroup size={groupSize}>
-        <SendSafeword />
+        <SendSafeword group={group} />
         <Bubble
           $position="absolute"
           fill={theme.colors.primary}
@@ -29,7 +29,17 @@ export default function GroupScreen() {
         />
       </AnimatedGroup>
 
-      <BackButton style={{ marginTop: 32 }}>Terug naar het overzicht</BackButton>
+      <BackButton
+        style={{ marginTop: 32 }}
+        onPress={() =>
+          router.push({
+            pathname: '/home/[groupId]/',
+            params: { groupId: group.id },
+          })
+        }
+      >
+        Terug naar het overzicht
+      </BackButton>
     </Container>
   );
 }

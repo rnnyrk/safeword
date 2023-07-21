@@ -82,7 +82,7 @@ export default function InviteMembersScreen() {
       console.error(error);
       throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }
 

@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'expo-router';
+import { useSearchParams } from 'expo-router';
 
 import { useGroupById } from 'queries/groups';
 import { BackButton } from 'common/interaction';
@@ -7,9 +7,10 @@ import { Text } from 'common/typography';
 import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
-  const router = useRouter();
   const params = useSearchParams<{ groupId: string }>();
   const { data: group } = useGroupById(params.groupId);
+
+  if (!group) return null;
 
   return (
     <Container>

@@ -7,11 +7,11 @@ import { Text } from 'common/typography';
 
 import { BackButtonContainer } from './styled';
 
-export function BackButton({ children, style }: BackButtonProps) {
+export function BackButton({ children, onPress, style }: BackButtonProps) {
   const router = useRouter();
 
   return (
-    <Pressable onPress={() => router.back()}>
+    <Pressable onPress={onPress ? onPress : () => router.back()}>
       <BackButtonContainer style={style}>
         <ArrowLeft fill={theme.colors.primary} />
         <Text
@@ -28,5 +28,6 @@ export function BackButton({ children, style }: BackButtonProps) {
 
 type BackButtonProps = {
   children: React.ReactNode;
+  onPress?: () => void;
   style?: any;
 };

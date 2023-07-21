@@ -1,6 +1,6 @@
 import type * as i from 'types';
 
-import { AvailableSafewords } from 'modules/groups/GroupSafeword';
+import { AvailableSafewords } from 'utils';
 
 export type GroupType = 'family' | 'friends' | 'work' | 'other';
 
@@ -19,7 +19,7 @@ export type Group = {
 };
 
 export type FormattedGroup = Omit<i.Group, 'members'> & {
-  members: string[];
+  members: i.User[];
 };
 
 export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'> & {

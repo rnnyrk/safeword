@@ -1,22 +1,59 @@
+import type * as i from 'types';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 import { SelectList } from 'react-native-dropdown-select-list';
 
+import theme from 'styles/theme';
+import { getApiUrl } from 'utils';
 import { Text } from 'common/typography';
 
 import { SendSafewordContainer, SendSafewordInput } from './styled';
 
-export function SendSafeword() {
-  const [selected, setSelected] = useState<string>('');
+export function SendSafeword({ group }: SendSafewordProps) {
+  const router = useRouter();
 
-  const data = [
-    { key: '1', value: 'Mobiles' },
-    { key: '2', value: 'Appliances' },
-    { key: '3', value: 'Cameras' },
-    { key: '4', value: 'Computers' },
-    { key: '5', value: 'Vegetables' },
-    { key: '6', value: 'Diary Products' },
-    { key: '7', value: 'Drinks' },
-  ];
+  const data = group.members.map((member) => ({
+    key: member.id,
+    value: member.name,
+  }));
+
+  const [selected, setSelected] = useState<string>(data[0].key);
+  const [isLoading, setLoading] = useState(false);
+
+  async function onSendSafeword() {
+    setLoading(true);
+
+    try {
+      const selectedUser = group.members.find((member) => member.id === selected);
+      if (!selected || !selectedUser) return;
+
+      const req = await fetch(`${getApiUrl}/api/send`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          word: group.current_word,
+          toEmail: selectedUser?.email,
+        }),
+      });
+
+      const mailResponse = await req.json();
+
+      // @TODO add toast of success?
+      router.push({
+        pathname: '/home/[groupId]/',
+        params: { groupId: group.id },
+      });
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <SendSafewordContainer>
@@ -28,33 +65,52 @@ export function SendSafeword() {
         Safeword versturen
       </Text>
 
-      <SendSafewordInput>
-        <SelectList
-          setSelected={(val: string) => setSelected(val)}
-          defaultOption={data[0]}
-          searchPlaceholder="Zoeken.."
-          data={data}
-          save="value"
-          boxStyles={{
-            backgroundColor: 'white',
-            borderColor: 'white',
-            marginTop: 12,
-          }}
-          dropdownStyles={{
-            backgroundColor: 'white',
-            borderColor: 'white',
-          }}
-        />
-      </SendSafewordInput>
+      {!isLoading && (
+        <>
+          <Pressable onPress={onSendSafeword}>
+            <Text
+              align="center"
+              color="white"
+              size={18}
+              style={{ marginTop: 102 }}
+            >
+              Versturen
+            </Text>
+          </Pressable>
 
-      <Text
-        align="center"
-        color="white"
-        size={18}
-        style={{ marginTop: 102 }}
-      >
-        Versturen
-      </Text>
+          <SendSafewordInput>
+            <SelectList
+              setSelected={(key: string) => setSelected(key)}
+              defaultOption={data[0]}
+              searchPlaceholder="Zoeken.."
+              data={data}
+              save="key"
+              boxStyles={{
+                backgroundColor: 'white',
+                borderColor: 'white',
+                marginTop: 12,
+              }}
+              dropdownStyles={{
+                backgroundColor: theme.colors.whiteOff,
+                borderColor: theme.colors.whiteOff,
+                zIndex: 100,
+              }}
+              inputStyles={{
+                fontFamily: theme.fonts.LexendDeca[800],
+                color: theme.colors.darkGray,
+              }}
+              dropdownTextStyles={{
+                fontFamily: theme.fonts.LexendDeca[800],
+                color: theme.colors.darkGray,
+              }}
+            />
+          </SendSafewordInput>
+        </>
+      )}
     </SendSafewordContainer>
   );
 }
+
+type SendSafewordProps = {
+  group: i.FormattedGroup;
+};
