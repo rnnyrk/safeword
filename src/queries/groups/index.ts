@@ -4,18 +4,18 @@ import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from 'src/utils';
 
-function formatGroup(group: i.Group): i.FormattedGroup {
+function formatGroup(group: i.Group, usersOfGroup: i.User[]): i.FormattedGroup {
   return {
     ...group,
-    members: group.members.split(','),
+    members: usersOfGroup,
   };
 }
 
-export async function fetchGroupsOfUser(userId: string): Promise<i.FormattedGroup[] | null> {
+export async function fetchGroupsOfUser(userId: string): Promise<i.Group[] | null> {
   // @TODO - fix this query with array includes/contains instead of textSearch
   const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word')
     .textSearch('members', userId);
 
   if (error) {
@@ -23,7 +23,7 @@ export async function fetchGroupsOfUser(userId: string): Promise<i.FormattedGrou
     return null;
   }
 
-  return data ? data.map(formatGroup) : null;
+  return data;
 }
 
 export function useGroupsOfUser(userId?: string) {
@@ -35,18 +35,19 @@ export function useGroupsOfUser(userId?: string) {
 }
 
 export async function fetchGroupById(id: string): Promise<i.FormattedGroup | null> {
-  const { data, error } = await supabase
-    .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
-    .eq('id', id)
-    .single<i.Group>();
+  const { data, error } = await supabase.from('groups').select().eq('id', id).single<i.Group>();
 
-  if (error) {
-    console.error(error);
+  const { data: usersOfGroup, error: usersError } = await supabase
+    .from('users')
+    .select()
+    .filter('id', 'in', `(${data?.members})`);
+
+  if (error || usersError) {
+    console.error(error || usersError);
     return null;
   }
 
-  return formatGroup(data);
+  return formatGroup(data, usersOfGroup as i.User[]);
 }
 
 export function useGroupById(groupId?: string) {
@@ -60,15 +61,15 @@ export function useGroupById(groupId?: string) {
 // @TODO only used once in onboarding, is RQ needed?
 export async function getGroupByInviteCode(
   code: string,
-): Promise<{ data: i.FormattedGroup | null; error: PostgrestError | null }> {
+): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members')
+    .select()
     .eq('invite_code', code)
     .single<i.Group>();
 
   return {
-    data: data ? formatGroup(data) : null,
+    data,
     error,
   };
 }

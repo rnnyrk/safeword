@@ -1,28 +1,36 @@
 import { useRouter, useSearchParams } from 'expo-router';
 
 import { useGroupById } from 'queries/groups';
-import { Button } from 'common/interaction';
-import { Container } from 'common/layout';
-import { Text } from 'common/typography';
+import theme from 'styles/theme';
+import { windowWidth } from 'utils';
+import { BackButton } from 'common/interaction';
+import { AnimatedGroup, Container } from 'common/layout';
+import { Bubble } from 'common/svg';
+import { SendSafeword } from 'modules/groups/SendSafeword';
 
 export default function GroupScreen() {
   const router = useRouter();
   const params = useSearchParams<{ groupId: string }>();
   const { data: group } = useGroupById(params.groupId);
 
+  const groupSize = windowWidth - 40;
+
   if (!group) return null;
 
   return (
     <Container>
-      <Text
-        align="center"
-        color="darkGray"
-        size={48}
-        style={{ marginTop: 24 }}
-      >
-        Safeword versturen
-      </Text>
-      <Button
+      <AnimatedGroup size={groupSize}>
+        <SendSafeword group={group} />
+        <Bubble
+          $position="absolute"
+          fill={theme.colors.primary}
+          width={groupSize}
+          height={groupSize}
+        />
+      </AnimatedGroup>
+
+      <BackButton
+        style={{ marginTop: 32 }}
         onPress={() =>
           router.push({
             pathname: '/home/[groupId]/',
@@ -30,8 +38,8 @@ export default function GroupScreen() {
           })
         }
       >
-        Terug naar het groepen
-      </Button>
+        Terug naar het overzicht
+      </BackButton>
     </Container>
   );
 }

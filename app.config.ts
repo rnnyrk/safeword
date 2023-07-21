@@ -43,7 +43,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       'expo-router',
       {
-        origin: 'https://dev.getsafeword.app',
+        origin:
+          Env.APP_ENV === 'production' ? 'https://getsafeword.app' : 'https://dev.getsafeword.app',
       },
     ],
     [

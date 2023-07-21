@@ -7,7 +7,7 @@ import { Menu, Safeword } from 'common/svg';
 
 import { LogoHeaderContainer } from './styled';
 
-export const LogoHeader = ({ showDrawer = false }: LogoHeaderProps) => {
+export function LogoHeader({ showDrawer = false }: LogoHeaderProps) {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
@@ -29,7 +29,7 @@ export const LogoHeader = ({ showDrawer = false }: LogoHeaderProps) => {
       )}
     </LogoHeaderContainer>
   );
-};
+}
 
 type LogoHeaderProps = {
   showDrawer?: boolean;

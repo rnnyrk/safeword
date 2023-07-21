@@ -5,10 +5,9 @@ import { FadeInUp } from 'react-native-reanimated';
 
 import { windowWidth } from 'src/utils';
 import theme from 'styles/theme';
-import { Bubble, Lock, Work } from 'common/svg';
+import { AnimatedGroup } from 'common/layout';
+import { Bubble } from 'common/svg';
 import { Text } from 'common/typography';
-
-import { GroupContent, GroupIcon } from './styled';
 
 export function Group({ name, groupId, size = 'small', type }: GroupProps) {
   const router = useRouter();
@@ -31,28 +30,12 @@ export function Group({ name, groupId, size = 'small', type }: GroupProps) {
     >
       {({ pressed }) => {
         return (
-          <GroupContent
-            groupSize={groupSize}
-            size={size}
+          <AnimatedGroup
+            size={groupSize}
+            center
             entering={FadeInUp.duration(750).delay(250)}
           >
             <View style={{ position: 'relative', zIndex: 50 }}>
-              {/* <GroupIcon>
-                {type === 'family' && (
-                  <Lock
-                    width={isSmall ? 15 : 20}
-                    height={isSmall ? 30 : 40}
-                    fill={theme.colors.gray}
-                  />
-                )}
-                {type === 'work' && (
-                  <Work
-                    width={isSmall ? 25 : 30}
-                    height={isSmall ? 30 : 40}
-                    fill={theme.colors.gray}
-                  />
-                )}
-              </GroupIcon> */}
               <Text
                 color="white"
                 align="center"
@@ -68,7 +51,7 @@ export function Group({ name, groupId, size = 'small', type }: GroupProps) {
               width={groupSize}
               height={groupSize}
             />
-          </GroupContent>
+          </AnimatedGroup>
         );
       }}
     </Pressable>

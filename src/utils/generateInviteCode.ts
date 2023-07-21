@@ -1,4 +1,4 @@
-export function generateInviteCode(length: number) {
+export function getInviteCode(length: number) {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const charactersLength = characters.length;

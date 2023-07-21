@@ -1,6 +1,10 @@
 import type * as i from 'types';
 
+import { AvailableSafewords } from 'utils';
+
 export type GroupType = 'family' | 'friends' | 'work' | 'other';
+
+export type SafeWords = (typeof AvailableSafewords)[number];
 
 export type Group = {
   id: string;
@@ -11,10 +15,11 @@ export type Group = {
   type?: i.GroupType;
   admin_id: string;
   members: string;
+  current_word: i.SafeWords;
 };
 
 export type FormattedGroup = Omit<i.Group, 'members'> & {
-  members: string[];
+  members: i.User[];
 };
 
 export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'> & {

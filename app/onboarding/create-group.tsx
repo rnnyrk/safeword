@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 
 import { createGroup } from 'queries/groups/mutate';
-import { generateInviteCode, validation } from 'src/utils';
+import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { Button } from 'common/interaction';
@@ -30,7 +30,7 @@ export default function CreateGroupScreen() {
   async function onSubmitGroup(data: GroupForm) {
     if (!user) return;
 
-    const groupCode = generateInviteCode(6);
+    const groupCode = getInviteCode(6);
 
     const { data: group, error } = await createGroup({
       name: data.name,

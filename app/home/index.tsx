@@ -6,18 +6,18 @@ export default function GroupsScreen() {
   const { user } = useSupabase();
   const { data: groups } = useGroupsOfUser(user?.id);
 
+  if (!groups) return null;
+
   return (
-    <GroupGrid>
-      {groups && groups
-        ? groups.map((group) => (
-            <Group
-              key={group.id}
-              name={group.name}
-              groupId={group.id}
-              size={groups.length > 1 ? 'small' : 'large'}
-            />
-          ))
-        : null}
+    <GroupGrid groupsLength={groups.length}>
+      {groups.map((group) => (
+        <Group
+          key={group.id}
+          name={group.name}
+          groupId={group.id}
+          size={groups.length > 1 ? 'small' : 'large'}
+        />
+      ))}
     </GroupGrid>
   );
 }
