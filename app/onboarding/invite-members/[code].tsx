@@ -77,7 +77,7 @@ export default function InviteMembersScreen() {
         setUser(updatedUser[0]);
       }
 
-      router.push('/home/');
+      router.replace('/home/');
     } catch (error) {
       console.error(error);
       throw error;

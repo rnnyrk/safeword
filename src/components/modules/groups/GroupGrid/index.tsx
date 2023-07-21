@@ -1,9 +1,10 @@
 import { GroupGridContainer } from './styled';
 
-export function GroupGrid({ children }: GroupGridProps) {
-  return <GroupGridContainer>{children}</GroupGridContainer>;
-};
+export function GroupGrid({ children, groupsLength }: GroupGridProps) {
+  return <GroupGridContainer groupsLength={groupsLength}>{children}</GroupGridContainer>;
+}
 
-type GroupGridProps = {
+export type GroupGridProps = {
   children: React.ReactNode;
+  groupsLength: number;
 };

@@ -1,22 +1,43 @@
 import { useEffect, useState } from 'react';
-import { Link, useRouter } from 'expo-router';
-import { Pressable, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { Pressable } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
 import { windowWidth } from 'src/utils';
 import { formatDate } from 'src/utils/dates';
+import { AnimatedGroup } from 'common/layout';
 import { BubbleStroke, Refresh } from 'common/svg';
 import { Text } from 'common/typography';
 
-import { GroupSafewordContainer, GroupSafewordContent, GroupSafewordWord } from './styled';
+import {
+  GroupSafewordContainer,
+  GroupSafewordContent,
+  GroupSafewordDate,
+  GroupSafewordWord,
+} from './styled';
 
 const safeWords: string[] = [
   'Auto',
+  'Avond',
   'Banaan',
+  'Bureau',
+  'Dansen',
+  'Deur',
+  'Hand',
   'Huis',
+  'Jas',
+  'Jurk',
+  'Oplader',
+  'Oven',
+  'Plant',
+  'Pizza',
   'Snelweg',
   'Strand',
+  'Tafel',
+  'Tosti',
   'Vrijdag',
+  'Vlek',
+  'Was',
   'Winkel',
   'Zolder',
 ];
@@ -37,72 +58,66 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
   const groupSize = windowWidth - 20;
 
   return (
-    <GroupSafewordContainer
-      groupSize={groupSize}
-      entering={FadeInUp.duration(750).delay(250)}
-    >
-      <View style={{ width: '100%', marginBottom: 32 }}>
+    <>
+      <GroupSafewordDate>
         <Text
           color="gray"
-          size={20}
+          size={18}
         >
           {formatDate()}
         </Text>
-      </View>
-      <GroupSafewordContent style={{ position: 'relative', zIndex: 50 }}>
-        <Text
-          color="darkGray"
-          size={20}
-        >
-          Ons SafeWord is
-        </Text>
-        <GroupSafewordWord>
+      </GroupSafewordDate>
+      <AnimatedGroup
+        size={groupSize}
+        entering={FadeInUp.duration(750).delay(250)}
+      >
+        <GroupSafewordContent style={{ position: 'relative', zIndex: 50 }}>
           <Text
-            color="primary"
-            size={56}
-            marginTop={16}
-            marginRight={16}
-            marginBottom={16}
-          >
-            {currentSafeWord}
-          </Text>
-          <Pressable onPress={randomizeSafeWord}>
-            <Refresh />
-          </Pressable>
-        </GroupSafewordWord>
-        <Pressable
-          onPress={() =>
-            router.push({
-              pathname: '/home/[groupId]/send',
-              params: {
-                groupId,
-              },
-            })
-          }
-        >
-          <Text
-            color="gray"
+            color="darkGray"
             size={20}
           >
-            Safeword versturen
+            Ons SafeWord is
           </Text>
-        </Pressable>
-        {/* <Link
-            href={{
-              pathname: '/home/[groupId]/send',
-              params: {
-                groupId,
-              },
-            }}
-          > </Link>*/}
-      </GroupSafewordContent>
+          <GroupSafewordWord>
+            <Text
+              color="primary"
+              size={56}
+              marginTop={24}
+              marginRight={8}
+              marginBottom={24}
+            >
+              {currentSafeWord}
+            </Text>
+            <Pressable onPress={randomizeSafeWord}>
+              <Refresh />
+            </Pressable>
+          </GroupSafewordWord>
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: '/home/[groupId]/send',
+                params: {
+                  groupId,
+                },
+              })
+            }
+          >
+            <Text
+              color="gray"
+              size={16}
+            >
+              Safeword versturen
+            </Text>
+          </Pressable>
+        </GroupSafewordContent>
 
-      <BubbleStroke
-        $position="absolute"
-        width={groupSize}
-        height={groupSize}
-      />
-    </GroupSafewordContainer>
+        <BubbleStroke
+          $position="absolute"
+          width={groupSize}
+          height={groupSize}
+        />
+      </AnimatedGroup>
+    </>
   );
 }
 

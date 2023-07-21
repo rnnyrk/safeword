@@ -1,15 +1,11 @@
-import Animated from 'react-native-reanimated';
 import styled from 'styled-components/native';
 
-export const GroupSafewordContainer = styled(Animated.View)<GroupSafewordContainerProps>`
-  height: ${({ groupSize }) => groupSize + 'px'};
-  width: ${({ groupSize }) => groupSize + 'px'};
-  margin-bottom: 24px;
+export const GroupSafewordDate = styled.View`
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 32px;
 `;
-
-type GroupSafewordContainerProps = {
-  groupSize: number;
-};
 
 export const GroupSafewordContent = styled.View`
   position: relative;

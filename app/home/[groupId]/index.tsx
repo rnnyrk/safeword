@@ -1,7 +1,7 @@
 import { useRouter, useSearchParams } from 'expo-router';
 
 import { useGroupById } from 'queries/groups';
-import { Button } from 'common/interaction';
+import { BackButton } from 'common/interaction';
 import { Container } from 'common/layout';
 import { Text } from 'common/typography';
 import { GroupSafeword } from 'modules/groups';
@@ -22,7 +22,7 @@ export default function GroupScreen() {
       >
         {group?.name}
       </Text>
-      <Button onPress={() => router.back()}>Terug naar het overzicht</Button>
+      <BackButton style={{ marginTop: 16 }}>Terug naar het overzicht</BackButton>
     </Container>
   );
 }
