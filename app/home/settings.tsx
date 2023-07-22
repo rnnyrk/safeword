@@ -1,25 +1,47 @@
-import { useRouter } from 'expo-router';
-
 import { useGroupsOfUser } from 'queries/groups';
 import { useSupabase } from 'utils/SupabaseContext';
-import { Button } from 'common/interaction/Button';
+import { Accordion } from 'common/interaction';
 import { Container } from 'common/layout';
 import { Text } from 'common/typography';
+import { GroupItem } from 'modules/settings';
 
 export default function SettingsScreen() {
-  const router = useRouter();
   const { user } = useSupabase();
   const { data: groups } = useGroupsOfUser(user?.id);
 
+  if (!groups || !groups.length || !user) return null;
+
   return (
-    <Container>
+    <Container alignItems="flex-start">
       <Text
-        align="center"
-        color="darkGray"
-        size={48}
+        size={32}
+        color="gray"
+        marginTop={40}
+        marginBottom={16}
       >
-        Settings
+        Account
       </Text>
+
+      <Text color="darkGray">{user.name}</Text>
+      <Text color="darkGray">{user.email}</Text>
+
+      <Text
+        size={32}
+        color="gray"
+        marginTop={64}
+      >
+        Groep beheren
+      </Text>
+      <Accordion.Root style={{ marginTop: 16 }}>
+        {groups.map((group, index) => (
+          <Accordion.Item
+            key={`group_${index}`}
+            title={group.name}
+          >
+            <GroupItem groupId={group.id} />
+          </Accordion.Item>
+        ))}
+      </Accordion.Root>
     </Container>
   );
 }

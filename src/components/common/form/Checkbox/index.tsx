@@ -1,10 +1,9 @@
-import * as React from 'react';
 import { Animated, TouchableWithoutFeedback } from 'react-native';
 
 import theme from 'styles/theme';
 import { Check } from 'common/svg';
 
-import { CheckContainer, CheckboxTouchableContent, Label, CheckboxBox } from './styled';
+import { CheckboxBox, CheckboxTouchableContent, CheckContainer, Label } from './styled';
 
 export const Checkbox: React.FC<CheckboxProps> = ({ isActive, onChange, children }) => {
   const animatedValue = React.useRef(new Animated.Value(0)).current;

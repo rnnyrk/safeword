@@ -1,5 +1,4 @@
 import type * as i from 'types';
-import * as React from 'react';
 
 import { FormField } from '../FormField';
 import { InputIcon, InputWrapper, StyledInput } from './styled';

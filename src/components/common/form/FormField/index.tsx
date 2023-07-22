@@ -1,5 +1,4 @@
 import type * as i from 'types';
-import * as React from 'react';
 import { Animated, Pressable } from 'react-native';
 
 import theme from 'styles/theme';

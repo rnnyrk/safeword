@@ -13,6 +13,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   orientation: 'portrait',
   icon: path.resolve(__dirname, 'src/assets/images/icon.png'),
   userInterfaceStyle: 'automatic',
+  backgroundColor: '#FFFFFF',
   splash: {
     image: path.resolve(__dirname, 'src/assets/images/splash.png'),
     resizeMode: 'contain',

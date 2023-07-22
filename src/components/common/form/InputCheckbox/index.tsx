@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FieldError } from 'react-hook-form';
 
 import { Checkbox } from '../Checkbox';
@@ -15,7 +14,10 @@ export const InputCheckbox: React.FC<InputCheckboxProps> = ({
 
   return (
     <>
-      <Checkbox onChange={handleOnChange} isActive={value}>
+      <Checkbox
+        onChange={handleOnChange}
+        isActive={value}
+      >
         {children}
       </Checkbox>
       {error && (
