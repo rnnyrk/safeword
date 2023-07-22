@@ -45,7 +45,9 @@ export default function CreateGroupScreen() {
 
     router.push({
       pathname: '/onboarding/invite-members/[code]',
-      params: { code: groupCode },
+      params: {
+        code: groupCode,
+      },
     });
   }
 

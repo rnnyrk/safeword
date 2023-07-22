@@ -1,5 +1,6 @@
 import type * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from 'src/utils';
 
@@ -13,7 +14,7 @@ export async function createUser({
       email,
       name,
     })
-    .select('id, email, name, finished_onboarding, created_at');
+    .select('id, email, name, group_1, created_at');
 
   return {
     data: data as unknown as i.User[],
@@ -29,10 +30,20 @@ export async function updateUser({
     .from('users')
     .update(values)
     .eq('email', email)
-    .select('id, email, name, finished_onboarding, created_at');
+    .select('id, email, name, group_1, created_at');
 
   return {
     data: data as unknown as i.User[],
     error,
   };
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ email, values }: i.UpdateUserProps) => updateUser({ email, values }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['user']);
+    },
+  });
 }

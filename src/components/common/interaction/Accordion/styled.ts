@@ -31,4 +31,5 @@ export const AccordionItemContent = styled.Pressable`
   padding: 16px;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.primaryLight};
+  overflow: hidden;
 `;

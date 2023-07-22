@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 
+import { useGroupByCode } from 'queries/groups';
 import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
@@ -21,6 +22,8 @@ type InviteMembersForm = {
 export default function InviteMembersScreen() {
   const router = useRouter();
   const params = useSearchParams<{ code: string; name: string }>();
+  const { data: group } = useGroupByCode(params.code);
+
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
 
@@ -47,7 +50,7 @@ export default function InviteMembersScreen() {
     setLoading(true);
 
     try {
-      if (!user) return;
+      if (!user || !group) return;
 
       const req = await fetch(`${getApiUrl}/api/mail`, {
         method: 'POST',
@@ -65,7 +68,9 @@ export default function InviteMembersScreen() {
 
       const { data: updatedUser, error } = await updateUser({
         email: user?.email,
-        values: { finished_onboarding: true },
+        values: {
+          group_1: group.id,
+        },
       });
 
       if (error) {

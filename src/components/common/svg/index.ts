@@ -9,6 +9,7 @@ export * from './Check';
 export * from './Gsuite';
 export * from './Lock';
 export * from './Menu';
+export * from './Min';
 export * from './Refresh';
 export * from './Safeword';
 export * from './Work';

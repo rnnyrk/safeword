@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 
-import { getGroupByInviteCode } from 'queries/groups';
-import { updateGroup } from 'queries/groups/mutate';
-import { updateUser } from 'queries/users/mutate';
+import { fetchGroupByInviteCode } from 'queries/groups';
+import { useUpdateGroup } from 'queries/groups/mutate';
+import { useUpdateUser } from 'queries/users/mutate';
 import { validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -20,6 +20,8 @@ export default function JoinGroupScreen() {
   const router = useRouter();
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
+  const { mutateAsync: onUpdateGroup } = useUpdateGroup();
+  const { mutateAsync: onUpdateUser } = useUpdateUser();
 
   const {
     control,
@@ -36,30 +38,33 @@ export default function JoinGroupScreen() {
 
     try {
       // First fetch the group by the invite code, and check if already a member
-      const { data: group } = await getGroupByInviteCode(data.code);
+      const group = await fetchGroupByInviteCode(data.code);
 
       if (!group || !user) {
         console.error('No group or user found');
         return;
       }
 
-      if (group.members.includes(user.id)) {
+      const membersArray = group.members.split(',');
+      if (membersArray.includes(user.id)) {
         console.error('User is already a member of this group');
         return;
       }
 
       // Add current user to the group
-      const { data: updatedGroup, error: updateGroupError } = await updateGroup({
+      await onUpdateGroup({
         id: group.id,
         values: {
-          members: [...group.members, user.id].join(','),
+          members: [...membersArray, user.id].join(','),
         },
       });
 
       // Update the user, because onboarding is now finished
-      const { data: updatedUser, error: updateUserError } = await updateUser({
+      const { data: updatedUser } = await onUpdateUser({
         email: user?.email,
-        values: { finished_onboarding: true },
+        values: {
+          group_1: group.id,
+        },
       });
 
       if (updatedUser) {

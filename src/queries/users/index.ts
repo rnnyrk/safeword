@@ -7,7 +7,7 @@ import { supabase } from 'src/utils';
 export async function fetchUserByEmail(email: string): Promise<i.User | null> {
   const { data, error } = await supabase
     .from('users')
-    .select('id, email, name, finished_onboarding, created_at')
+    .select('id, email, name, group_1, created_at')
     .eq('email', email)
     .single();
 
@@ -32,7 +32,7 @@ export async function getUserByEmail(
 ): Promise<{ data: i.User | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('users')
-    .select('id, email, name, finished_onboarding, created_at')
+    .select('id, email, name, group_1, created_at')
     .eq('email', email)
     .single();
 
