@@ -1,9 +1,8 @@
-import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
 
-export const ArrowDownSvg = ({
+export const ArrowDown = ({
   fill = '#000000',
   width = 20,
   height = 20,
