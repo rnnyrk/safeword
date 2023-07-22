@@ -27,4 +27,5 @@ type AppleProps = {
   width?: number;
   height?: number;
   style?: any;
+  $position?: 'absolute' | 'static';
 };

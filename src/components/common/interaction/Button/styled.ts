@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components/native';
 
-import { ButtonVariantsType, ButtonWrapperProps, IconType } from './types';
+import { type ButtonVariantsType, type ButtonWrapperProps, type IconType } from './types';
 
 export const ButtonIcon = styled.View<IconType>`
   width: 16px;
@@ -21,10 +21,20 @@ export const ButtonIcon = styled.View<IconType>`
     `}
 `;
 
-export const ButtonContainer = styled.Pressable`
+export const ButtonContainer = styled.Pressable<ButtonContainerProps>`
   min-height: 48px;
   width: 200px;
+
+  ${({ variant }) =>
+    variant === 'social' &&
+    css`
+      width: 100%;
+      height: 60px;
+      margin-bottom: 16px;
+    `}
 `;
+
+type ButtonContainerProps = ButtonVariantsType;
 
 export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   flex: 1;
@@ -57,7 +67,7 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   ${({ variant, isPressed, theme }) =>
     variant === 'social' &&
     css`
-      align-items: center;
+      width: 100%;
       border: 3px solid ${theme.colors.gray};
       background-color: ${theme.colors.white};
       border-radius: 8px;

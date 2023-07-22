@@ -1,6 +1,4 @@
-import { cloneElement } from 'react';
-
-import { ButtonLoader } from './components';
+import { DotLoader } from '../../layout';
 import { ButtonContainer, ButtonIcon, ButtonLabel, ButtonWrapper } from './styled';
 import { ButtonProps } from './types';
 
@@ -29,6 +27,7 @@ export const Button = ({
       onPress={onPress}
       style={style}
       disabled={isDisabled}
+      variant={variant}
     >
       {({ pressed }) => {
         return (
@@ -37,7 +36,7 @@ export const Button = ({
             isPressed={pressed}
           >
             {isLoading ? (
-              <ButtonLoader />
+              <DotLoader color={isDisabled ? 'black' : 'white'} />
             ) : (
               <>
                 {icon && (

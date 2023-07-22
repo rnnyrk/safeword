@@ -1,15 +1,16 @@
 import { Animated, Easing } from 'react-native';
 
+import { type DotLoaderProps } from '.';
 import { DotContainer } from './styled';
 
-export const Dot: React.FC<DotProps> = ({ delay }) => {
+export const Dot = ({ color, delay }: DotProps) => {
   const opacityValue = new Animated.Value(0);
 
   Animated.loop(
     Animated.timing(opacityValue, {
       toValue: 100,
       duration: 1400,
-      delay: delay,
+      delay,
       easing: Easing.ease,
       useNativeDriver: true,
     }),
@@ -20,9 +21,14 @@ export const Dot: React.FC<DotProps> = ({ delay }) => {
     outputRange: [0.0, 1.0, 0.0],
   });
 
-  return <DotContainer style={{ opacity }} />;
+  return (
+    <DotContainer
+      style={{ opacity }}
+      color={color}
+    />
+  );
 };
 
-type DotProps = {
+type DotProps = Pick<DotLoaderProps, 'color'> & {
   delay: number;
 };
