@@ -9,6 +9,7 @@ export type User = {
 };
 
 export type CreateUserProps = {
+  id: string;
   email: string;
   name: string;
 };

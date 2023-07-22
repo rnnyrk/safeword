@@ -4,6 +4,7 @@ import { FadeInUp, FadeOutDown, Layout } from 'react-native-reanimated';
 import { useGroupById } from 'queries/groups';
 import { useUpdateGroup } from 'queries/groups/mutate';
 import { useSupabase } from 'utils/SupabaseContext';
+import { useToast } from 'common/interaction';
 import { Min } from 'common/svg';
 import { Text } from 'common/typography';
 
@@ -11,6 +12,8 @@ import { GroupMemberItem, GroupMemberItemText } from './styled';
 
 export function GroupItem({ groupId }: GroupItemProps) {
   const { user } = useSupabase();
+  const toast = useToast();
+
   const { data: group } = useGroupById(groupId);
   const { mutateAsync: onUpdateGroup, isLoading: isUpdating } = useUpdateGroup();
 
@@ -18,7 +21,6 @@ export function GroupItem({ groupId }: GroupItemProps) {
     Alert.alert('Uit de groep zetten', `Weet je zeker dat je ${name} uit de groep wilt zetten?`, [
       {
         text: 'Annuleren',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
       {
@@ -28,14 +30,18 @@ export function GroupItem({ groupId }: GroupItemProps) {
 
           const newGroupMembers = group.members.filter((member) => member.id !== memberId);
 
-          await onUpdateGroup({
+          const { error: updateGroupError } = await onUpdateGroup({
             id: group.id,
             values: {
               members: newGroupMembers.map((member) => member.id).join(','),
             },
           });
 
-          // @TODO toast on error?
+          if (!updateGroupError) {
+            toast.show({ message: 'Gebruiker verwijderen mislukt' });
+            console.error('Error updating group after removing user');
+            return;
+          }
         },
       },
     ]);
@@ -47,7 +53,7 @@ export function GroupItem({ groupId }: GroupItemProps) {
     <>
       {group.members.map((member, index) => {
         const isLast = index === group.members.length - 1;
-        const isAdmin = member.id === group.admin_id;
+        const isAdminRow = member.id === group.admin_id;
         const isLoggedInAdmin = user.id === group.admin_id;
 
         return (
@@ -58,21 +64,22 @@ export function GroupItem({ groupId }: GroupItemProps) {
             exiting={FadeOutDown}
             layout={Layout.springify()}
           >
-            <GroupMemberItemText>
+            <GroupMemberItemText isLoggedInAdmin={isLoggedInAdmin}>
               <Text
                 size={16}
-                color={isAdmin ? 'primary' : 'black'}
+                color={isAdminRow ? 'primary' : 'black'}
               >
-                {member.name} {isAdmin ? `(beheerder)` : null}
+                {member.name} {isAdminRow ? `(beheerder)` : null}
               </Text>
               <Text
                 size={16}
                 color="darkGray"
+                fontFamily={400}
               >
                 {member.email}
               </Text>
             </GroupMemberItemText>
-            {isLoggedInAdmin && !isAdmin ? (
+            {isLoggedInAdmin && !isAdminRow ? (
               <Pressable
                 onPress={() => onRemoveUserFromGroup(member.name, member.id)}
                 disabled={isUpdating}

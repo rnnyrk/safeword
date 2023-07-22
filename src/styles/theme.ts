@@ -2,16 +2,18 @@ import 'styled-components';
 
 const theme = {
   colors: {
-    primary: '#00a7c1',
+    primary: '#00A7C1',
     primaryHover: '#63B6C9',
-    primaryLight: '#D7FEFE',
+    primaryLight: '#53bac9',
     black: '#1D191F',
     gray: '#CCCCCC',
+    lightGray: '#EEEEEE',
     darkGray: '#808080',
     white: '#FFFFFF',
     whiteOff: '#EEEEEE',
     orange: '#F6662B',
-    red: '#EB3456',
+    red: '#CF1D3D',
+    green: '#64CF1D',
   },
 
   ui: {

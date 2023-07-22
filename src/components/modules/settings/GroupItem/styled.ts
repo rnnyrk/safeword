@@ -11,7 +11,11 @@ type GroupMemberItemProps = {
   isLast?: boolean;
 };
 
-export const GroupMemberItemText = styled.View`
+export const GroupMemberItemText = styled.View<GroupMemberItemTextProps>`
   flex: 1;
-  margin-right: 32px;
+  margin-right: ${({ isLoggedInAdmin }) => (isLoggedInAdmin ? 32 : 0)}px;
 `;
+
+type GroupMemberItemTextProps = {
+  isLoggedInAdmin: boolean;
+};

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { fetchGroupByInviteCode } from 'queries/groups';
 import { useUpdateGroup } from 'queries/groups/mutate';
@@ -8,9 +9,10 @@ import { useUpdateUser } from 'queries/users/mutate';
 import { validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { Button } from 'common/interaction';
+import { ActionButton, useToast } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
+import { OnboardingLayout } from 'modules/onboarding';
 
 type JoinGroupForm = {
   code: string;
@@ -18,15 +20,19 @@ type JoinGroupForm = {
 
 export default function JoinGroupScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const toast = useToast();
+
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
+
   const { mutateAsync: onUpdateGroup } = useUpdateGroup();
   const { mutateAsync: onUpdateUser } = useUpdateUser();
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       code: '',
@@ -41,6 +47,7 @@ export default function JoinGroupScreen() {
       const group = await fetchGroupByInviteCode(data.code);
 
       if (!group || !user) {
+        toast.show({ message: 'Groep niet gevonden' });
         console.error('No group or user found');
         return;
       }
@@ -76,50 +83,55 @@ export default function JoinGroupScreen() {
       console.error(error);
       throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }
 
   return (
     <>
-      <LogoHeader />
+      <LogoHeader showBackButton />
       <Container>
-        <Text
-          align="center"
-          color="primary"
-          size={24}
-        >
-          Groep joinen
-        </Text>
-        <Text
-          align="center"
-          color="darkGray"
-          size={24}
-          style={{ marginTop: 4 }}
-        >
-          Voer de sleutelcode in die je via e-mail hebt ontvangen
-        </Text>
+        <OnboardingLayout.Content>
+          <Text
+            color="primary"
+            size={32}
+          >
+            Groep joinen
+          </Text>
+          <Text
+            color="darkGray"
+            size={18}
+            fontFamily={400}
+            style={{ marginTop: 8 }}
+          >
+            Voer de sleutelcode in die je via e-mail hebt ontvangen
+          </Text>
 
-        <Controller
-          name="code"
-          control={control}
-          rules={{ ...validation.required }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              error={errors.code}
-            />
-          )}
-        />
+          <Controller
+            name="code"
+            control={control}
+            rules={{ ...validation.required }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.code}
+              />
+            )}
+          />
+        </OnboardingLayout.Content>
 
-        <Button
-          onPress={handleSubmit(onSubmitCode)}
-          isDisabled={isLoading}
-        >
-          Versturen
-        </Button>
+        <OnboardingLayout.Action insets={insets}>
+          <ActionButton
+            onPress={handleSubmit(onSubmitCode)}
+            isDisabled={isLoading || !isValid}
+            direction="right"
+            textSize={24}
+          >
+            Groep joinen
+          </ActionButton>
+        </OnboardingLayout.Action>
       </Container>
     </>
   );

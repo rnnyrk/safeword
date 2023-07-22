@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
 import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { Button } from 'common/interaction';
+import { ActionButton } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
+import { OnboardingLayout } from 'modules/onboarding';
 
 type GroupForm = {
   name: string;
@@ -15,12 +18,15 @@ type GroupForm = {
 
 export default function CreateGroupScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+
   const { user } = useSupabase();
+  const [isLoading, setLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       name: '',
@@ -29,6 +35,7 @@ export default function CreateGroupScreen() {
 
   async function onSubmitGroup(data: GroupForm) {
     if (!user) return;
+    setLoading(true);
 
     const groupCode = getInviteCode(6);
 
@@ -43,6 +50,8 @@ export default function CreateGroupScreen() {
       throw error;
     }
 
+    setLoading(false);
+
     router.push({
       pathname: '/onboarding/invite-members/[code]',
       params: {
@@ -53,40 +62,42 @@ export default function CreateGroupScreen() {
 
   return (
     <>
-      <LogoHeader />
-      <Container>
-        <Text
-          align="center"
-          color="primary"
-          size={24}
-        >
-          Groep aanmaken
-        </Text>
-        <Text
-          align="center"
-          color="darkGray"
-          size={24}
-          style={{ marginTop: 4 }}
-        >
-          Kies een naam
-        </Text>
+      <LogoHeader showBackButton />
+      <Container alignItems="flex-start">
+        <OnboardingLayout.Content>
+          <Text
+            color="primary"
+            size={32}
+          >
+            Groep aanmaken
+          </Text>
+          <Controller
+            name="name"
+            control={control}
+            rules={{ ...validation.required }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                placeholder="Naam van de groep"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={errors.name}
+                style={{ width: '100%' }}
+              />
+            )}
+          />
+        </OnboardingLayout.Content>
 
-        <Controller
-          name="name"
-          control={control}
-          rules={{ ...validation.required }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              placeholder="Naam van de groep"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              error={errors.name}
-            />
-          )}
-        />
-
-        <Button onPress={handleSubmit(onSubmitGroup)}>Versturen</Button>
+        <OnboardingLayout.Action insets={insets}>
+          <ActionButton
+            onPress={handleSubmit(onSubmitGroup)}
+            isDisabled={isLoading || !isValid}
+            direction="right"
+            textSize={24}
+          >
+            Aanmaken
+          </ActionButton>
+        </OnboardingLayout.Action>
       </Container>
     </>
   );

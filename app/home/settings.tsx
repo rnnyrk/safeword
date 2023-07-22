@@ -23,7 +23,12 @@ export default function SettingsScreen() {
       </Text>
 
       <Text color="darkGray">{user.name}</Text>
-      <Text color="darkGray">{user.email}</Text>
+      <Text
+        color="darkGray"
+        fontFamily={400}
+      >
+        {user.email}
+      </Text>
 
       <Text
         size={32}

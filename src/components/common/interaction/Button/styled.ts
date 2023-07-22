@@ -22,7 +22,7 @@ export const ButtonIcon = styled.View<IconType>`
 `;
 
 export const ButtonContainer = styled.Pressable`
-  height: 48px;
+  min-height: 48px;
   width: 200px;
 `;
 
@@ -31,13 +31,14 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
   align-items: center;
   justify-content: center;
   flex-direction: row;
+  padding: 8px 16px;
   background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: 4px;
+  border-radius: 8px;
 
   ${({ isPressed, theme }) =>
     isPressed &&
     css`
-      background-color: ${theme.colors.primaryHover};
+      background-color: ${theme.colors.primaryLight};
     `}
 
   ${({ variant, isPressed, theme }) =>
@@ -49,7 +50,7 @@ export const ButtonWrapper = styled.View<ButtonWrapperProps>`
       ${isPressed &&
       css`
         border: 4px solid ${theme.colors.primaryHover};
-        background-color: ${theme.colors.gray};
+        background-color: ${theme.colors.primaryHover};
       `}
     `}
 

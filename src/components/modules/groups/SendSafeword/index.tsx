@@ -6,17 +6,24 @@ import { SelectList } from 'react-native-dropdown-select-list';
 
 import theme from 'styles/theme';
 import { getApiUrl } from 'utils';
+import { useSupabase } from 'utils/SupabaseContext';
+import { useToast } from 'common/interaction';
 import { Text } from 'common/typography';
 
 import { SendSafewordContainer, SendSafewordInput } from './styled';
 
 export function SendSafeword({ group }: SendSafewordProps) {
   const router = useRouter();
+  const toast = useToast();
+  const { user } = useSupabase();
 
-  const data = group.members.map((member) => ({
-    key: member.id,
-    value: member.name,
-  }));
+  // Filter out the current logged in user
+  const data = group.members
+    .filter((member) => member.id !== user?.id)
+    .map((member) => ({
+      key: member.id,
+      value: member.name,
+    }));
 
   const [selected, setSelected] = useState<string>(data[0].key);
   const [isLoading, setLoading] = useState(false);
@@ -42,7 +49,11 @@ export function SendSafeword({ group }: SendSafewordProps) {
 
       const mailResponse = await req.json();
 
-      // @TODO add toast of success?
+      toast.show({
+        message: 'Safeword verstuurd',
+        variant: 'success',
+      });
+
       router.push({
         pathname: '/home/[groupId]/',
         params: { groupId: group.id },

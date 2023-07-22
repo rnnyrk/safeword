@@ -63,6 +63,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
 
   async function getSupabaseUser(token: string) {
     const decodedToken = jwt_decode(token) as JwtPayload;
+    if (!decodedToken.sub) throw new Error('No user id found in token');
 
     const email = decodedToken.email;
     let name =
@@ -81,6 +82,7 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
       setUser(data);
     } else if (!data) {
       const { data: newUser, error: newUserError } = await createUser({
+        id: decodedToken.sub,
         email,
         name,
       });

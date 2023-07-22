@@ -5,6 +5,12 @@ import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
+const OnboardingButtonStyle = {
+  width: 300,
+  height: 64,
+  marginTop: 16,
+};
+
 export default function OnboardingScreen() {
   const router = useRouter();
   const { user } = useSupabase();
@@ -17,7 +23,7 @@ export default function OnboardingScreen() {
       <Container>
         <Text
           align="center"
-          color="darkGray"
+          color="primary"
           size={24}
         >
           Welkom {user?.name || user?.email}!
@@ -25,25 +31,24 @@ export default function OnboardingScreen() {
         <Text
           align="center"
           color="darkGray"
-          size={24}
-          style={{ marginTop: 4 }}
+          size={20}
+          fontFamily={400}
+          style={{ marginTop: 8, marginBottom: 16 }}
         >
           Wat wil je als eerste doen?
         </Text>
 
         <Button
           onPress={() => router.push('/onboarding/create-group')}
-          variant="secondary"
-          style={{ width: 300, marginTop: 16 }}
+          style={OnboardingButtonStyle}
         >
-          <Text color="primary">Een groep aanmaken</Text>
+          <Text color="white">Een groep aanmaken</Text>
         </Button>
         <Button
           onPress={() => router.push('/onboarding/join-group')}
-          variant="secondary"
-          style={{ width: 300, marginTop: 16 }}
+          style={OnboardingButtonStyle}
         >
-          <Text color="primary">Een groep joinen</Text>
+          <Text color="white">Een groep joinen</Text>
         </Button>
       </Container>
     </>

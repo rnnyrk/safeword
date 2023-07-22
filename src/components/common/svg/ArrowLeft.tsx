@@ -7,8 +7,12 @@ export const ArrowLeft = ({
   width = 20,
   height = 20,
   $position = 'static',
+  style,
 }: ArrowLeftSvgProps) => (
-  <SvgWrapper $position={$position}>
+  <SvgWrapper
+    $position={$position}
+    style={style}
+  >
     <Svg
       width={width}
       height={height}
@@ -31,6 +35,7 @@ export const ArrowLeft = ({
 );
 
 type ArrowLeftSvgProps = {
+  style?: any;
   fill?: string;
   width?: number;
   height?: number;

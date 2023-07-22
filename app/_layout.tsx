@@ -13,6 +13,7 @@ import { ThemeProvider } from 'styled-components/native';
 
 import theme from 'styles/theme';
 import { SupabaseProvider } from 'utils/SupabaseContext';
+import { ToastProvider } from 'common/interaction';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -39,20 +40,20 @@ export default function AppLayout() {
     }
   }, [fontsLoaded]);
 
-  if (!fontsLoaded) {
-    return null;
-  }
+  if (!fontsLoaded) return null;
 
   return (
     <SafeAreaProvider>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <SupabaseProvider>
-            <StatusBar style="dark" />
-            <Stack
-              initialRouteName="index"
-              screenOptions={{ header: () => null }}
-            />
+            <ToastProvider>
+              <StatusBar style="dark" />
+              <Stack
+                initialRouteName="index"
+                screenOptions={{ header: () => null }}
+              />
+            </ToastProvider>
           </SupabaseProvider>
         </QueryClientProvider>
       </ThemeProvider>

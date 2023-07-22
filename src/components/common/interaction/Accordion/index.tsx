@@ -1,4 +1,5 @@
 import { useReducer } from 'react';
+import Animated, { useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 import { ArrowDown } from 'common/svg';
 import { Text } from 'common/typography';
@@ -22,6 +23,12 @@ export type AccordionRootProps = {
 const AccordionItem = ({ children, title }: AccordionItemProps) => {
   const [show, toggle] = useReducer((open) => !open, false);
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ rotate: withTiming(`${show ? 180 : 0}deg`) }],
+    };
+  });
+
   return (
     <AccordionItemContainer>
       <AccordionItemHeader
@@ -34,11 +41,13 @@ const AccordionItem = ({ children, title }: AccordionItemProps) => {
         >
           {title}
         </Text>
-        <ArrowDown
-          width={24}
-          height={24}
-          fill="#FFFFFF"
-        />
+        <Animated.View style={animatedStyle}>
+          <ArrowDown
+            width={24}
+            height={24}
+            fill="#FFFFFF"
+          />
+        </Animated.View>
       </AccordionItemHeader>
       {show && <AccordionItemContent>{children}</AccordionItemContent>}
     </AccordionItemContainer>

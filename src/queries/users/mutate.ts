@@ -5,12 +5,14 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from 'src/utils';
 
 export async function createUser({
+  id,
   email,
   name,
 }: i.CreateUserProps): Promise<{ data: i.User[] | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('users')
     .insert({
+      id,
       email,
       name,
     })

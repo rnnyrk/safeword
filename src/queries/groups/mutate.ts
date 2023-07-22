@@ -36,8 +36,6 @@ export async function updateGroup({
     .eq('id', id)
     .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word');
 
-  console.log({ data, error });
-
   return {
     data: data as unknown as i.Group,
     error,

@@ -2,16 +2,18 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'expo-router';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupByCode } from 'queries/groups';
 import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { Button } from 'common/interaction';
+import { ActionButton, Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
-import { Add } from 'common/svg';
+import { Add, Min } from 'common/svg';
 import { Text } from 'common/typography';
+import { OnboardingLayout } from 'modules/onboarding';
 
 type InviteMembersForm = {
   members: {
@@ -21,6 +23,8 @@ type InviteMembersForm = {
 
 export default function InviteMembersScreen() {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
+
   const params = useSearchParams<{ code: string; name: string }>();
   const { data: group } = useGroupByCode(params.code);
 
@@ -30,7 +34,7 @@ export default function InviteMembersScreen() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm({
     defaultValues: {
       members: [
@@ -93,73 +97,78 @@ export default function InviteMembersScreen() {
 
   return (
     <>
-      <LogoHeader />
+      <LogoHeader showBackButton />
       <Container>
-        <Text
-          align="center"
-          color="primary"
-          size={24}
-        >
-          Groep aanmaken
-        </Text>
-        <Text
-          align="center"
-          color="darkGray"
-          size={24}
-          style={{ marginTop: 4, marginBottom: 16 }}
-        >
-          Uitnodigingen versturen
-        </Text>
+        <OnboardingLayout.Content>
+          <Text
+            color="primary"
+            size={32}
+          >
+            Groep aanmaken
+          </Text>
+          <Text
+            color="darkGray"
+            size={18}
+            fontFamily={400}
+            style={{ marginTop: 8, marginBottom: 16 }}
+          >
+            Nodig je huisgenoten uit om deel te nemen aan de groep.
+          </Text>
 
-        {fields.map((field, index) => {
-          return (
-            <Controller
-              key={`members.${index}.email`}
-              name={`members.${index}.email`}
-              control={control}
-              rules={{ ...validation.required }}
-              render={({ field: { onChange, onBlur, value } }) => {
-                return (
-                  <Input
-                    marginBottom="4px"
-                    marginTop="4px"
-                    style={{ width: windowWidth - 64 }}
-                    placeholder="naam@email.com"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    autoCapitalize="none"
-                    error={errors.members?.[index]?.email}
-                    icon={
-                      <Add
-                        width={24}
-                        height={24}
-                      />
-                    }
-                    onIconClick={() => remove(index)}
-                  />
-                );
-              }}
+          {fields.map((field, index) => {
+            return (
+              <Controller
+                key={`members.${index}.email`}
+                name={`members.${index}.email`}
+                control={control}
+                rules={{ ...validation.required }}
+                render={({ field: { onChange, onBlur, value } }) => {
+                  return (
+                    <Input
+                      marginBottom="4px"
+                      marginTop="4px"
+                      style={{ width: windowWidth - 64 }}
+                      placeholder="naam@email.com"
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      autoCapitalize="none"
+                      error={errors.members?.[index]?.email}
+                      icon={
+                        <Min
+                          width={24}
+                          height={24}
+                        />
+                      }
+                      onIconClick={() => remove(index)}
+                    />
+                  );
+                }}
+              />
+            );
+          })}
+
+          <Pressable
+            onPress={() => append({ email: '' })}
+            style={{ marginTop: 16, marginBottom: 16 }}
+          >
+            <Add
+              width={40}
+              height={40}
             />
-          );
-        })}
+          </Pressable>
+        </OnboardingLayout.Content>
 
-        <Pressable
-          onPress={() => append({ email: '' })}
-          style={{ marginTop: 16, marginBottom: 16 }}
-        >
-          <Add
-            width={40}
-            height={40}
-          />
-        </Pressable>
-
-        <Button
-          onPress={handleSubmit(onInviteMembers)}
-          isDisabled={isLoading}
-        >
-          Uitnodigen
-        </Button>
+        <OnboardingLayout.Action insets={insets}>
+          <ActionButton
+            onPress={handleSubmit(onInviteMembers)}
+            isDisabled={isLoading || !isValid}
+            direction="right"
+            textSize={24}
+          >
+            Uitnodigen
+          </ActionButton>
+        </OnboardingLayout.Action>
       </Container>
     </>
   );
