@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components/native';
 
 export const FormFieldWrapper = styled.Pressable<FormFieldWrapperProps>`
   margin: 20px 0;
+  width: 100%;
 
   ${({ marginBottom }) =>
     marginBottom &&

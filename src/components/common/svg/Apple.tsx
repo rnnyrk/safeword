@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
@@ -28,4 +27,5 @@ type AppleProps = {
   width?: number;
   height?: number;
   style?: any;
+  $position?: 'absolute' | 'static';
 };

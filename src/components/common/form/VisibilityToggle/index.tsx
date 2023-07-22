@@ -1,8 +1,6 @@
-import * as React from 'react';
-
 import { ToggleContainer, ToggleText } from './styled';
 
-export const VisibilityToggle: React.FC<VisibilityToggleProps> = ({ isToggled }) => {
+export const VisibilityToggle = ({ isToggled }: VisibilityToggleProps) => {
   return (
     <ToggleContainer>
       <ToggleText>{isToggled ? 'Hide' : 'Show'}</ToggleText>

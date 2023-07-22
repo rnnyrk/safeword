@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from 'expo-router';
 import { useGroupById } from 'queries/groups';
 import theme from 'styles/theme';
 import { windowWidth } from 'utils';
-import { BackButton } from 'common/interaction';
+import { ActionButton } from 'common/interaction';
 import { AnimatedGroup, Container } from 'common/layout';
 import { Bubble } from 'common/svg';
 import { SendSafeword } from 'modules/groups/SendSafeword';
@@ -29,7 +29,7 @@ export default function GroupScreen() {
         />
       </AnimatedGroup>
 
-      <BackButton
+      <ActionButton
         style={{ marginTop: 32 }}
         onPress={() =>
           router.push({
@@ -39,7 +39,7 @@ export default function GroupScreen() {
         }
       >
         Terug naar het overzicht
-      </BackButton>
+      </ActionButton>
     </Container>
   );
 }

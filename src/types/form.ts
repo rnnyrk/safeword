@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { FieldError, RegisterOptions } from 'react-hook-form';
 import { TextInputProps } from 'react-native';
 

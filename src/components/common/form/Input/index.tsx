@@ -1,5 +1,5 @@
 import type * as i from 'types';
-import * as React from 'react';
+import { useState } from 'react';
 
 import { FormField } from '../FormField';
 import { InputIcon, InputWrapper, StyledInput } from './styled';
@@ -20,7 +20,7 @@ export const Input = ({
   onChangeText,
   style,
 }: i.InputProps) => {
-  const [isFocus, setIsFocus] = React.useState(false);
+  const [isFocus, setIsFocus] = useState(false);
   const isActive = isFocus || Boolean(value);
   const IconComponent = icon as React.ReactNode;
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIphone, SecureStoreAdapter } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
@@ -8,9 +9,12 @@ import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Apple, Gsuite } from 'common/svg';
 import { Text } from 'common/typography';
+import { OnboardingLayout } from 'modules/onboarding';
 
 export default function AuthScreen() {
+  const insets = useSafeAreaInsets();
   const { getAppleOAuthUrl, getGoogleOAuthUrl, setOAuthSession } = useSupabase();
+
   const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -100,35 +104,75 @@ export default function AuthScreen() {
     <>
       <StatusBar style="dark" />
       <LogoHeader />
-      <Container>
-        <Button
-          onPress={onSignInWithGoogle}
-          isDisabled={isLoading}
-          variant="social"
-          style={{ marginBottom: 16, width: '100%' }}
-        >
-          <Gsuite
-            width={19}
-            height={19}
-            style={{ marginRight: 16 }}
-          />
-          <Text>{isLoading ? 'Loading...' : 'Inloggen met Google'}</Text>
-        </Button>
-        {isIphone && (
-          <Button
-            onPress={onSignInWithApple}
-            isDisabled={isLoading}
-            variant="social"
-            style={{ marginBottom: 16, width: '100%' }}
+      <Container alignItems="flex-start">
+        <OnboardingLayout.Content>
+          <Text
+            color="primary"
+            size={32}
           >
-            <Apple
-              width={20}
-              height={22}
-              style={{ marginRight: 16 }}
-            />
-            <Text>{isLoading ? 'Loading...' : 'Inloggen met Apple'}</Text>
+            Welkom
+          </Text>
+          <Text
+            color="darkGray"
+            size={18}
+            fontFamily={400}
+            style={{ marginTop: 8 }}
+          >
+            Wanneer je een account aanmaakt, ga je akkoord met onze voorwaarden.
+          </Text>
+          <Text>
+            <Text
+              color="primaryLight"
+              size={18}
+              fontFamily={400}
+            >
+              Safeword is in beta.
+            </Text>
+            <Text
+              color="darkGray"
+              size={18}
+              fontFamily={400}
+            >
+              {' '}
+              Voor feedback info@getsafeword.app
+            </Text>
+          </Text>
+        </OnboardingLayout.Content>
+
+        <OnboardingLayout.Action insets={insets}>
+          <Button
+            onPress={onSignInWithGoogle}
+            isDisabled={isLoading}
+            isLoading={isLoading}
+            variant="social"
+            icon={
+              <Gsuite
+                width={19}
+                height={19}
+                style={{ marginRight: 32 }}
+              />
+            }
+          >
+            <Text>Inloggen met Google</Text>
           </Button>
-        )}
+          {isIphone && (
+            <Button
+              onPress={onSignInWithApple}
+              isDisabled={isLoading}
+              isLoading={isLoading}
+              variant="social"
+              icon={
+                <Apple
+                  width={20}
+                  height={22}
+                  style={{ marginRight: 32 }}
+                />
+              }
+            >
+              <Text>Inloggen met Apple</Text>
+            </Button>
+          )}
+        </OnboardingLayout.Action>
       </Container>
     </>
   );

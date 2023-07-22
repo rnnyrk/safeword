@@ -1,5 +1,4 @@
 import type * as i from 'types';
-import { PostgrestError } from '@supabase/supabase-js';
 import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from 'src/utils';
@@ -58,18 +57,25 @@ export function useGroupById(groupId?: string) {
   });
 }
 
-// @TODO only used once in onboarding, is RQ needed?
-export async function getGroupByInviteCode(
-  code: string,
-): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
+export async function fetchGroupByInviteCode(code: string): Promise<i.Group | null> {
   const { data, error } = await supabase
     .from('groups')
     .select()
     .eq('invite_code', code)
     .single<i.Group>();
 
-  return {
-    data,
-    error,
-  };
+  if (error) {
+    console.error(error);
+    return null;
+  }
+
+  return data;
+}
+
+export function useGroupByCode(code?: string) {
+  return useQuery({
+    queryKey: ['groups', code],
+    queryFn: ({ queryKey }) => fetchGroupByInviteCode(queryKey[1]!),
+    enabled: Boolean(code),
+  });
 }

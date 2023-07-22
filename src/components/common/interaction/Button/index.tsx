@@ -1,33 +1,6 @@
-import { ButtonLoader } from './components';
+import { DotLoader } from '../../layout';
 import { ButtonContainer, ButtonIcon, ButtonLabel, ButtonWrapper } from './styled';
-import { ButtonContentProps, ButtonProps } from './types';
-
-const ButtonContent = ({
-  children,
-  icon,
-  isLoading,
-  iconOnly,
-  iconPosition,
-  variant,
-}: ButtonContentProps) => (
-  <>
-    {isLoading ? (
-      <ButtonLoader />
-    ) : (
-      <>
-        {icon && (
-          <ButtonIcon
-            iconOnly={iconOnly}
-            iconPosition={iconPosition}
-          >
-            {icon}
-          </ButtonIcon>
-        )}
-        <ButtonLabel variant={variant}>{children}</ButtonLabel>
-      </>
-    )}
-  </>
-);
+import { ButtonProps } from './types';
 
 export const Button = ({
   children,
@@ -47,20 +20,14 @@ export const Button = ({
     variant,
   };
 
-  const buttonContentProps = {
-    children,
-    icon,
-    isLoading,
-    iconOnly: !children && Boolean(icon),
-    iconPosition,
-    variant,
-  };
+  const iconOnly = !children && Boolean(icon);
 
   return (
     <ButtonContainer
       onPress={onPress}
       style={style}
       disabled={isDisabled}
+      variant={variant}
     >
       {({ pressed }) => {
         return (
@@ -68,7 +35,21 @@ export const Button = ({
             {...styledButtonProps}
             isPressed={pressed}
           >
-            <ButtonContent {...buttonContentProps} />
+            {isLoading ? (
+              <DotLoader color={isDisabled ? 'black' : 'white'} />
+            ) : (
+              <>
+                {icon && (
+                  <ButtonIcon
+                    iconOnly={iconOnly}
+                    iconPosition={iconPosition}
+                  >
+                    {icon}
+                  </ButtonIcon>
+                )}
+                <ButtonLabel variant={variant}>{children}</ButtonLabel>
+              </>
+            )}
           </ButtonWrapper>
         );
       }}

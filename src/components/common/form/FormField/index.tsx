@@ -1,5 +1,5 @@
 import type * as i from 'types';
-import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import { Animated, Pressable } from 'react-native';
 
 import theme from 'styles/theme';
@@ -18,7 +18,7 @@ export const FormField = ({
   hasValue,
   onPress,
 }: i.FormFieldProps) => {
-  const animatedValue = React.useRef(new Animated.Value(0)).current;
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   const animateTransition = (reverse = false) => {
     return Animated.timing(animatedValue, {
@@ -28,7 +28,7 @@ export const FormField = ({
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     animateTransition(!isActive && !hasValue).start();
   }, [isActive, hasValue]);
 

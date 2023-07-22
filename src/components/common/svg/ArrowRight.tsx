@@ -1,4 +1,3 @@
-import React from 'react';
 import Svg, { Path } from 'react-native-svg';
 
 import { SvgWrapper } from './styled';
@@ -8,8 +7,12 @@ export const ArrowRight = ({
   width = 20,
   height = 20,
   $position = 'static',
+  style,
 }: ArrowRightSvgProps) => (
-  <SvgWrapper $position={$position}>
+  <SvgWrapper
+    $position={$position}
+    style={style}
+  >
     <Svg
       width={width}
       height={height}
@@ -36,4 +39,5 @@ type ArrowRightSvgProps = {
   width?: number;
   height?: number;
   $position?: 'static' | 'absolute';
+  style?: any;
 };
