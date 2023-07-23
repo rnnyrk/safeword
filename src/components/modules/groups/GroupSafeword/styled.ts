@@ -16,6 +16,7 @@ export const GroupSafewordContent = styled.View`
 `;
 
 export const GroupSafewordWord = styled.View`
+  position: relative;
   flex-direction: row;
   align-items: center;
 `;

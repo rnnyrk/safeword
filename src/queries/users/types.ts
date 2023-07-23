@@ -5,7 +5,7 @@ export type User = {
   email: string;
   name: string;
   created_at: string;
-  group_1: string;
+  group_1: string | null;
 };
 
 export type CreateUserProps = {

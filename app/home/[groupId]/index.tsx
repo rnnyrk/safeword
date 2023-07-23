@@ -1,4 +1,4 @@
-import { useSearchParams } from 'expo-router';
+import { useRouter, useSearchParams } from 'expo-router';
 
 import { useGroupById } from 'queries/groups';
 import { ActionButton } from 'common/interaction';
@@ -7,6 +7,7 @@ import { Text } from 'common/typography';
 import { GroupSafeword } from 'modules/groups';
 
 export default function GroupScreen() {
+  const router = useRouter();
   const params = useSearchParams<{ groupId: string }>();
   const { data: group } = useGroupById(params.groupId);
 
@@ -23,7 +24,21 @@ export default function GroupScreen() {
       >
         {group?.name}
       </Text>
-      <ActionButton style={{ marginTop: 16 }}>Terug naar het overzicht</ActionButton>
+
+      <ActionButton
+        style={{ marginTop: 16 }}
+        direction="right"
+        onPress={() =>
+          router.push({
+            pathname: '/home/[groupId]/send',
+            params: {
+              groupId: params.groupId,
+            },
+          })
+        }
+      >
+        Safeword versturen
+      </ActionButton>
     </Container>
   );
 }

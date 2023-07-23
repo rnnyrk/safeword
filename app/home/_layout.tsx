@@ -1,5 +1,6 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerItem } from '@react-navigation/drawer';
+import { usePathname } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView } from 'react-native';
@@ -63,13 +64,20 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
 }
 
 export default function HomeScreen() {
+  const pathname = usePathname();
+
   return (
     <>
       <StatusBar style="dark" />
       <Drawer
         initialRouteName="index"
         screenOptions={{
-          header: () => <LogoHeader showDrawer />,
+          header: () => (
+            <LogoHeader
+              showBackButton={pathname === '/home' ? false : true}
+              showDrawer
+            />
+          ),
           drawerPosition: 'right',
           drawerStyle: {
             width: windowWidth * 0.9,

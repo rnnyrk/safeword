@@ -24,7 +24,7 @@ export function LogoHeader({ showBackButton = false, showDrawer = false }: LogoH
           )}
         </Pressable>
       ) : (
-        <View />
+        <View style={{ width: 20 }} />
       )}
       <Safeword width={200} />
       {showDrawer ? (

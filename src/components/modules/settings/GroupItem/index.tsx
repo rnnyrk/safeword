@@ -3,6 +3,7 @@ import { FadeInUp, FadeOutDown, Layout } from 'react-native-reanimated';
 
 import { useGroupById } from 'queries/groups';
 import { useUpdateGroup } from 'queries/groups/mutate';
+import { useUpdateUser } from 'queries/users/mutate';
 import { useSupabase } from 'utils/SupabaseContext';
 import { useToast } from 'common/interaction';
 import { Min } from 'common/svg';
@@ -15,9 +16,12 @@ export function GroupItem({ groupId }: GroupItemProps) {
   const toast = useToast();
 
   const { data: group } = useGroupById(groupId);
-  const { mutateAsync: onUpdateGroup, isLoading: isUpdating } = useUpdateGroup();
+  const { mutateAsync: onUpdateGroup, isLoading: isUpdatingGroup } = useUpdateGroup();
+  const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
 
-  async function onRemoveUserFromGroup(name: string, memberId: string) {
+  const isUpdating = isUpdatingGroup || isUpdatingUser;
+
+  async function onRemoveUserFromGroup(name: string, removeMemberId: string) {
     Alert.alert('Uit de groep zetten', `Weet je zeker dat je ${name} uit de groep wilt zetten?`, [
       {
         text: 'Annuleren',
@@ -28,7 +32,13 @@ export function GroupItem({ groupId }: GroupItemProps) {
         onPress: async () => {
           if (!group?.members) return;
 
-          const newGroupMembers = group.members.filter((member) => member.id !== memberId);
+          const newGroupMembers = group.members.filter((member) => member.id !== removeMemberId);
+          const removeMember = group.members.find((member) => member.id === removeMemberId);
+
+          if (!removeMember) {
+            console.error('Could not find member to remove');
+            return;
+          }
 
           const { error: updateGroupError } = await onUpdateGroup({
             id: group.id,
@@ -37,7 +47,15 @@ export function GroupItem({ groupId }: GroupItemProps) {
             },
           });
 
-          if (!updateGroupError) {
+          // @TODO werkt niet door RLS op users tabel update == op email match
+          const { data: updatedUser, error: updateUserError } = await onUpdateUser({
+            email: removeMember.email,
+            values: {
+              group_1: null,
+            },
+          });
+
+          if (updateGroupError || updateUserError) {
             toast.show({ message: 'Gebruiker verwijderen mislukt' });
             console.error('Error updating group after removing user');
             return;
