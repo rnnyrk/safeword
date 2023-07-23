@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { type DotLoaderProps } from '.';
 import { DotContainer } from './styled';
 
-export const Dot = ({ color, delay }: DotProps) => {
+export const Dot = ({ color, delay, isLast, size }: DotProps) => {
   const opacityValue = new Animated.Value(0);
 
   Animated.loop(
@@ -25,10 +25,13 @@ export const Dot = ({ color, delay }: DotProps) => {
     <DotContainer
       style={{ opacity }}
       color={color}
+      isLast={isLast}
+      size={size}
     />
   );
 };
 
-type DotProps = Pick<DotLoaderProps, 'color'> & {
+export type DotProps = Pick<DotLoaderProps, 'color' | 'size'> & {
   delay: number;
+  isLast?: boolean;
 };

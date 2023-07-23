@@ -8,6 +8,7 @@ import theme from 'styles/theme';
 import { getApiUrl } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { useToast } from 'common/interaction';
+import { DotLoader } from 'common/layout';
 import { Text } from 'common/typography';
 
 import { SendSafewordContainer, SendSafewordInput } from './styled';
@@ -76,7 +77,12 @@ export function SendSafeword({ group }: SendSafewordProps) {
         Safeword versturen
       </Text>
 
-      {!isLoading && (
+      {isLoading ? (
+        <DotLoader
+          size="large"
+          style={{ marginTop: 32 }}
+        />
+      ) : (
         <>
           <Pressable onPress={onSendSafeword}>
             <Text
