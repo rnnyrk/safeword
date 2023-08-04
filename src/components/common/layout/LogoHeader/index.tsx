@@ -20,7 +20,7 @@ export function LogoHeader({ showBackButton = false, showDrawer = false }: LogoH
           onPress={() => router.back()}
         >
           {({ pressed }) => (
-            <ArrowLeft fill={pressed ? theme.colors.darkGray : theme.colors.gray} />
+            <ArrowLeft fill={pressed ? theme.colors.primary : theme.colors.darkGray} />
           )}
         </Pressable>
       ) : (

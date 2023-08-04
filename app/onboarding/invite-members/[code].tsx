@@ -9,7 +9,7 @@ import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { ActionButton, Button } from 'common/interaction';
+import { ActionButton } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
 import { Add, Min } from 'common/svg';
 import { Text } from 'common/typography';

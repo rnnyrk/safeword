@@ -14,43 +14,56 @@ export function ActionButton({
   onPress,
   textSize,
   style,
+  variant = 'primary',
 }: ActionButtonProps) {
   const router = useRouter();
+
+  let textColor: 'primary' | 'gray' = 'primary';
+  if (isDisabled) {
+    textColor = 'gray';
+  }
 
   return (
     <Pressable
       onPress={onPress ? onPress : () => router.back()}
       disabled={isDisabled}
     >
-      <ActionButtonContainer style={style}>
-        {direction === 'left' && (
-          <ArrowLeft
-            fill={theme.colors[isDisabled ? 'gray' : 'primary']}
-            style={{ marginRight: 8 }}
-          />
-        )}
-        <Text
-          color={isDisabled ? 'gray' : 'primary'}
-          size={textSize || 18}
+      {({ pressed }) => (
+        <ActionButtonContainer
+          style={style}
+          variant={variant}
+          isPressed={pressed}
         >
-          {children}
-        </Text>
-        {direction === 'right' && (
-          <ArrowRight
-            fill={theme.colors[isDisabled ? 'gray' : 'primary']}
-            style={{ marginLeft: 8 }}
-          />
-        )}
-      </ActionButtonContainer>
+          {direction === 'left' && (
+            <ArrowLeft
+              fill={theme.colors[textColor]}
+              style={{ marginRight: 8 }}
+            />
+          )}
+          <Text
+            color={textColor}
+            size={textSize || 18}
+          >
+            {children}
+          </Text>
+          {direction === 'right' && (
+            <ArrowRight
+              fill={theme.colors[textColor]}
+              style={{ marginLeft: 8 }}
+            />
+          )}
+        </ActionButtonContainer>
+      )}
     </Pressable>
   );
 }
 
-type ActionButtonProps = {
+export type ActionButtonProps = {
   children: React.ReactNode;
   isDisabled?: boolean;
   direction?: 'left' | 'right';
   textSize?: TextProps['size'];
   onPress?: () => void;
   style?: any;
+  variant?: 'primary' | 'secondary';
 };

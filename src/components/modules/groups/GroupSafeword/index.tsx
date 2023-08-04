@@ -35,7 +35,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
     <>
       <GroupSafewordDate>
         <Text
-          color="gray"
+          color="darkGray"
           size={18}
         >
           {formatDate()}

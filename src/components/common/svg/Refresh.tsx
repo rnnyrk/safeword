@@ -5,7 +5,7 @@ import theme from 'styles/theme';
 import { SvgWrapper } from './styled';
 
 export const Refresh = ({
-  fill = theme.colors.gray,
+  fill = theme.colors.darkGray,
   width = 36,
   height = 36,
   $position = 'static',
