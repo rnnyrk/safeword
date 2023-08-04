@@ -1,12 +1,13 @@
 import type * as i from 'types';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
 import { getApiUrl } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, useToast } from 'common/interaction';
-import { AnimatedGroup } from 'common/layout';
+import { AnimatedGroup, FormLayout } from 'common/layout';
 import { Bubble } from 'common/svg';
 
 import { SendSafewordDropdown } from './SendSafewordDropdown';
@@ -14,6 +15,7 @@ import { SendSafewordDropdown } from './SendSafewordDropdown';
 export function SendSafeword({ group, groupSize }: SendSafewordProps) {
   const router = useRouter();
   const toast = useToast();
+  const insets = useSafeAreaInsets();
   const { user } = useSupabase();
 
   // Filter out the current logged in user
@@ -67,23 +69,27 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
 
   return (
     <>
-      <AnimatedGroup size={groupSize}>
-        <SendSafewordDropdown {...{ data, isLoading, setSelected }} />
-        <Bubble
-          $position="absolute"
-          fill={theme.colors.primary}
-          width={groupSize}
-          height={groupSize}
-        />
-      </AnimatedGroup>
+      <FormLayout.Content>
+        <AnimatedGroup size={groupSize}>
+          <SendSafewordDropdown {...{ data, isLoading, setSelected }} />
+          <Bubble
+            $position="absolute"
+            fill={theme.colors.primary}
+            width={groupSize}
+            height={groupSize}
+          />
+        </AnimatedGroup>
+      </FormLayout.Content>
 
-      <ActionButton
-        style={{ marginTop: 32 }}
-        direction="right"
-        onPress={onSendSafeword}
-      >
-        Versturen
-      </ActionButton>
+      <FormLayout.Action insets={insets}>
+        <ActionButton
+          direction="right"
+          onPress={onSendSafeword}
+          textSize={22}
+        >
+          Versturen
+        </ActionButton>
+      </FormLayout.Action>
     </>
   );
 }

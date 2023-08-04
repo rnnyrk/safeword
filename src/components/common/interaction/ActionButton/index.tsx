@@ -18,42 +18,48 @@ export function ActionButton({
 }: ActionButtonProps) {
   const router = useRouter();
 
-  let textColor: 'primary' | 'gray' = 'primary';
-  if (isDisabled) {
-    textColor = 'gray';
-  }
-
   return (
     <Pressable
       onPress={onPress ? onPress : () => router.back()}
       disabled={isDisabled}
     >
-      {({ pressed }) => (
-        <ActionButtonContainer
-          style={style}
-          variant={variant}
-          isPressed={pressed}
-        >
-          {direction === 'left' && (
-            <ArrowLeft
-              fill={theme.colors[textColor]}
-              style={{ marginRight: 8 }}
-            />
-          )}
-          <Text
-            color={textColor}
-            size={textSize || 18}
+      {({ pressed }) => {
+        let textColor: TextProps['color'] = 'primary';
+        if (isDisabled) {
+          textColor = 'gray';
+        }
+
+        if (variant === 'secondary' && pressed) {
+          textColor = 'primaryLight';
+        }
+
+        return (
+          <ActionButtonContainer
+            style={style}
+            variant={variant}
+            isPressed={pressed}
           >
-            {children}
-          </Text>
-          {direction === 'right' && (
-            <ArrowRight
-              fill={theme.colors[textColor]}
-              style={{ marginLeft: 8 }}
-            />
-          )}
-        </ActionButtonContainer>
-      )}
+            {direction === 'left' && (
+              <ArrowLeft
+                fill={theme.colors[textColor]}
+                style={{ marginRight: 8 }}
+              />
+            )}
+            <Text
+              color={textColor}
+              size={textSize || 22}
+            >
+              {children}
+            </Text>
+            {direction === 'right' && (
+              <ArrowRight
+                fill={theme.colors[textColor]}
+                style={{ marginLeft: 8 }}
+              />
+            )}
+          </ActionButtonContainer>
+        );
+      }}
     </Pressable>
   );
 }

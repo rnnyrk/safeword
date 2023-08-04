@@ -10,10 +10,9 @@ import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { ActionButton } from 'common/interaction';
-import { Container, LogoHeader } from 'common/layout';
+import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Add, Min } from 'common/svg';
 import { Text } from 'common/typography';
-import { OnboardingLayout } from 'modules/onboarding';
 
 type InviteMembersForm = {
   members: {
@@ -99,7 +98,7 @@ export default function InviteMembersScreen() {
     <>
       <LogoHeader showBackButton />
       <Container>
-        <OnboardingLayout.Content>
+        <FormLayout.Content>
           <Text
             color="primary"
             size={32}
@@ -127,7 +126,7 @@ export default function InviteMembersScreen() {
                     <Input
                       marginBottom="4px"
                       marginTop="4px"
-                      style={{ width: windowWidth - 64 }}
+                      style={{ width: windowWidth - 64 + 'px' }}
                       placeholder="naam@email.com"
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -157,18 +156,18 @@ export default function InviteMembersScreen() {
               height={40}
             />
           </Pressable>
-        </OnboardingLayout.Content>
+        </FormLayout.Content>
 
-        <OnboardingLayout.Action insets={insets}>
+        <FormLayout.Action insets={insets}>
           <ActionButton
             onPress={handleSubmit(onInviteMembers)}
             isDisabled={isLoading || !isValid}
             direction="right"
-            textSize={24}
+            textSize={22}
           >
             Uitnodigen
           </ActionButton>
-        </OnboardingLayout.Action>
+        </FormLayout.Action>
       </Container>
     </>
   );

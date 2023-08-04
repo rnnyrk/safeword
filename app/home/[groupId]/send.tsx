@@ -14,7 +14,7 @@ export default function GroupScreen() {
   if (!group) return null;
 
   return (
-    <Container>
+    <Container alignItems="flex-start">
       <SendSafeword
         group={group}
         groupSize={groupSize}

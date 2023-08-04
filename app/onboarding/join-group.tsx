@@ -10,9 +10,8 @@ import { validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { ActionButton, useToast } from 'common/interaction';
-import { Container, LogoHeader } from 'common/layout';
+import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
-import { OnboardingLayout } from 'modules/onboarding';
 
 type JoinGroupForm = {
   code: string;
@@ -91,7 +90,7 @@ export default function JoinGroupScreen() {
     <>
       <LogoHeader showBackButton />
       <Container>
-        <OnboardingLayout.Content>
+        <FormLayout.Content>
           <Text
             color="primary"
             size={32}
@@ -120,18 +119,18 @@ export default function JoinGroupScreen() {
               />
             )}
           />
-        </OnboardingLayout.Content>
+        </FormLayout.Content>
 
-        <OnboardingLayout.Action insets={insets}>
+        <FormLayout.Action insets={insets}>
           <ActionButton
             onPress={handleSubmit(onSubmitCode)}
             isDisabled={isLoading || !isValid}
             direction="right"
-            textSize={24}
+            textSize={22}
           >
             Groep joinen
           </ActionButton>
-        </OnboardingLayout.Action>
+        </FormLayout.Action>
       </Container>
     </>
   );
