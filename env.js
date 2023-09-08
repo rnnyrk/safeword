@@ -17,6 +17,7 @@ const z = require('zod');
 const packageJSON = require('./package.json');
 const path = require('path');
 const APP_ENV = process.env.APP_ENV ?? 'development';
+
 const envPath = path.resolve(__dirname, `.env.${APP_ENV}`);
 
 let APP_KEY_SUFFIX = 'DEV';
@@ -41,7 +42,7 @@ require('dotenv').config({
 const BUNDLE_ID = 'com.safeword'; // ios bundle id
 const PACKAGE = 'com.safeword'; // android package name
 const NAME = APP_KEY_SUFFIX === 'PROD' ? 'Safeword' : `Safeword ${APP_KEY_SUFFIX}`; // app name
-const BUILD_VERSION = 3;
+const BUILD_VERSION = 4;
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV
