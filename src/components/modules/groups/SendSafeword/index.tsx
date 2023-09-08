@@ -1,21 +1,21 @@
 import type * as i from 'types';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import { Pressable } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
 import { getApiUrl } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
-import { useToast } from 'common/interaction';
-import { DotLoader } from 'common/layout';
-import { Text } from 'common/typography';
+import { ActionButton, useToast } from 'common/interaction';
+import { AnimatedGroup, FormLayout } from 'common/layout';
+import { Bubble } from 'common/svg';
 
-import { SendSafewordContainer, SendSafewordInput } from './styled';
+import { SendSafewordDropdown } from './SendSafewordDropdown';
 
-export function SendSafeword({ group }: SendSafewordProps) {
+export function SendSafeword({ group, groupSize }: SendSafewordProps) {
   const router = useRouter();
   const toast = useToast();
+  const insets = useSafeAreaInsets();
   const { user } = useSupabase();
 
   // Filter out the current logged in user
@@ -68,66 +68,33 @@ export function SendSafeword({ group }: SendSafewordProps) {
   }
 
   return (
-    <SendSafewordContainer>
-      <Text
-        align="center"
-        color="white"
-        size={18}
-      >
-        Safeword versturen
-      </Text>
+    <>
+      <FormLayout.Content>
+        <AnimatedGroup size={groupSize}>
+          <SendSafewordDropdown {...{ data, isLoading, setSelected }} />
+          <Bubble
+            $position="absolute"
+            fill={theme.colors.primary}
+            width={groupSize}
+            height={groupSize}
+          />
+        </AnimatedGroup>
+      </FormLayout.Content>
 
-      {isLoading ? (
-        <DotLoader
-          size="large"
-          style={{ marginTop: 32 }}
-        />
-      ) : (
-        <>
-          <Pressable onPress={onSendSafeword}>
-            <Text
-              align="center"
-              color="white"
-              size={18}
-              style={{ marginTop: 102 }}
-            >
-              Versturen
-            </Text>
-          </Pressable>
-
-          <SendSafewordInput>
-            <SelectList
-              setSelected={(key: string) => setSelected(key)}
-              defaultOption={data[0]}
-              searchPlaceholder="Zoeken.."
-              data={data}
-              save="key"
-              boxStyles={{
-                backgroundColor: 'white',
-                borderColor: 'white',
-                marginTop: 12,
-              }}
-              dropdownStyles={{
-                backgroundColor: theme.colors.whiteOff,
-                borderColor: theme.colors.whiteOff,
-                zIndex: 100,
-              }}
-              inputStyles={{
-                fontFamily: theme.fonts.LexendDeca[800],
-                color: theme.colors.darkGray,
-              }}
-              dropdownTextStyles={{
-                fontFamily: theme.fonts.LexendDeca[800],
-                color: theme.colors.darkGray,
-              }}
-            />
-          </SendSafewordInput>
-        </>
-      )}
-    </SendSafewordContainer>
+      <FormLayout.Action insets={insets}>
+        <ActionButton
+          direction="right"
+          onPress={onSendSafeword}
+          textSize={22}
+        >
+          Versturen
+        </ActionButton>
+      </FormLayout.Action>
+    </>
   );
 }
 
 type SendSafewordProps = {
   group: i.FormattedGroup;
+  groupSize: number;
 };

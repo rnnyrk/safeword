@@ -11,6 +11,10 @@
 
 ### Commands
 
+Always
+
+- Update the `BUILD_VERSION` in `env.js` before creating a new build
+
 - Create a build for a simulator
 
   - iOS `eas build --profile development-simulator --platform ios`
@@ -22,3 +26,9 @@
   - Android `eas build --profile development --platform android`
 
 Connect manually to the development server via `http://127.0.0.1:8081`
+
+#### Create production build
+
+- `npx expo logout`
+- `npx expo login`
+- `APP_ENV=production eas submit -p ios`

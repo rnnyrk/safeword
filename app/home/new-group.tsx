@@ -8,14 +8,14 @@ import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { ActionButton } from 'common/interaction';
-import { Container, FormLayout, LogoHeader } from 'common/layout';
+import { Container, FormLayout } from 'common/layout';
 import { Text } from 'common/typography';
 
 type GroupForm = {
   name: string;
 };
 
-export default function CreateGroupScreen() {
+export default function NewGroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
@@ -34,41 +34,40 @@ export default function CreateGroupScreen() {
 
   async function onSubmitGroup(data: GroupForm) {
     if (!user) return;
-    setLoading(true);
+    // setLoading(true);
 
-    const groupCode = getInviteCode(6);
+    // const groupCode = getInviteCode(6);
 
-    const { data: group, error } = await createGroup({
-      name: data.name,
-      invite_code: groupCode,
-      userId: user.id,
-    });
+    // const { data: group, error } = await createGroup({
+    //   name: data.name,
+    //   invite_code: groupCode,
+    //   userId: user.id,
+    // });
 
-    if (error) {
-      console.error(error);
-      throw error;
-    }
+    // if (error) {
+    //   console.error(error);
+    //   throw error;
+    // }
 
-    setLoading(false);
+    // setLoading(false);
 
-    router.push({
-      pathname: '/onboarding/invite-members/[code]',
-      params: {
-        code: groupCode,
-      },
-    });
+    // router.push({
+    //   pathname: '/onboarding/invite-members/[code]',
+    //   params: {
+    //     code: groupCode,
+    //   },
+    // });
   }
 
   return (
     <>
-      <LogoHeader showBackButton />
       <Container alignItems="flex-start">
         <FormLayout.Content>
           <Text
             color="primary"
             size={32}
           >
-            Groep aanmaken
+            Nieuwe groep
           </Text>
           <Controller
             name="name"

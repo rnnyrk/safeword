@@ -6,10 +6,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { isIphone, SecureStoreAdapter } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
-import { Container, LogoHeader } from 'common/layout';
+import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Apple, Gsuite } from 'common/svg';
 import { Text } from 'common/typography';
-import { OnboardingLayout } from 'modules/onboarding';
 
 export default function AuthScreen() {
   const insets = useSafeAreaInsets();
@@ -105,7 +104,7 @@ export default function AuthScreen() {
       <StatusBar style="dark" />
       <LogoHeader />
       <Container alignItems="flex-start">
-        <OnboardingLayout.Content>
+        <FormLayout.Content>
           <Text
             color="primary"
             size={32}
@@ -137,9 +136,9 @@ export default function AuthScreen() {
               Voor feedback info@getsafeword.app
             </Text>
           </Text>
-        </OnboardingLayout.Content>
+        </FormLayout.Content>
 
-        <OnboardingLayout.Action insets={insets}>
+        <FormLayout.Action insets={insets}>
           <Button
             onPress={onSignInWithGoogle}
             isDisabled={isLoading}
@@ -172,7 +171,7 @@ export default function AuthScreen() {
               <Text>Inloggen met Apple</Text>
             </Button>
           )}
-        </OnboardingLayout.Action>
+        </FormLayout.Action>
       </Container>
     </>
   );
