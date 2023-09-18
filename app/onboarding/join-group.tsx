@@ -53,6 +53,7 @@ export default function JoinGroupScreen() {
 
       const membersArray = group.members.split(',');
       if (membersArray.includes(user.id)) {
+        toast.show({ message: 'U bent onderdeel van deze groep' });
         console.error('User is already a member of this group');
         return;
       }
