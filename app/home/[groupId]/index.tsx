@@ -30,21 +30,23 @@ export default function GroupScreen() {
         </Text>
       </View>
 
-      <ActionButton
-        style={{ marginBottom: insets.bottom }}
-        direction="right"
-        variant="secondary"
-        onPress={() =>
-          router.push({
-            pathname: '/home/[groupId]/send',
-            params: {
-              groupId: params.groupId,
-            },
-          })
-        }
-      >
-        Safeword versturen
-      </ActionButton>
+      {group.members.length > 1 && (
+        <ActionButton
+          style={{ marginBottom: insets.bottom }}
+          direction="right"
+          variant="secondary"
+          onPress={() =>
+            router.push({
+              pathname: '/home/[groupId]/send',
+              params: {
+                groupId: params.groupId,
+              },
+            })
+          }
+        >
+          Safeword versturen
+        </ActionButton>
+      )}
     </Container>
   );
 }

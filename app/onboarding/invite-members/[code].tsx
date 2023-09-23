@@ -111,7 +111,8 @@ export default function InviteMembersScreen() {
             fontFamily={400}
             style={{ marginTop: 8, marginBottom: 16 }}
           >
-            Nodig je huisgenoten uit om deel te nemen aan de groep.
+            Nodig de mensen uit die je wilt verzamelen in deze groep. Alle genodigden van de groep
+            kunnen ook elkaar zien
           </Text>
 
           {fields.map((field, index) => {

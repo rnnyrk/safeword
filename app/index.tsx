@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIphone, SecureStoreAdapter } from 'utils';
@@ -23,6 +24,13 @@ export default function AuthScreen() {
       WebBrowser.coolDownAsync();
     };
   }, []);
+
+  function onOpenLink(type: 'terms' | 'privacy') {
+    const url =
+      type === 'terms' ? 'https://getsafeword.app/terms' : 'https://getsafeword.app/privacy';
+
+    WebBrowser.openBrowserAsync(url);
+  }
 
   function extractParamsFromUrl(url: string) {
     const params = new URLSearchParams(url.split('#')[1]);
@@ -107,25 +115,41 @@ export default function AuthScreen() {
         <FormLayout.Content>
           <Text
             color="primary"
-            size={32}
+            size={28}
           >
-            Welkom
+            Welkom bij SafeWord
           </Text>
           <Text
-            color="darkGray"
-            size={18}
+            color="primaryLight"
             fontFamily={400}
-            style={{ marginTop: 8 }}
+            size={18}
+            style={{ marginTop: 2 }}
           >
-            Wanneer je een account aanmaakt, ga je akkoord met onze voorwaarden.
+            Realtime verificatie voor elk gesprek.
           </Text>
-          <Text>
+          <View
+            style={{
+              marginTop: 24,
+              display: 'flex',
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}
+          >
             <Text
-              color="primaryLight"
+              color="darkGray"
               size={18}
               fontFamily={400}
             >
-              Safeword is in beta.
+              Maak nu een account aan en probeer het zelf, bij het maken van een account ga je
+              akkoord met onze{' '}
+            </Text>
+            <Text
+              color="primary"
+              size={18}
+              fontFamily={400}
+              onPress={() => onOpenLink('terms')}
+            >
+              algemene voorwaarden
             </Text>
             <Text
               color="darkGray"
@@ -133,9 +157,31 @@ export default function AuthScreen() {
               fontFamily={400}
             >
               {' '}
-              Voor feedback info@getsafeword.app
+              en{' '}
             </Text>
-          </Text>
+            <Text
+              color="primary"
+              size={18}
+              fontFamily={400}
+              onPress={() => onOpenLink('privacy')}
+            >
+              privacy statement
+            </Text>
+            <Text
+              color="darkGray"
+              size={18}
+              fontFamily={400}
+            >
+              . SafeWord is
+            </Text>
+            <Text
+              color="darkGray"
+              size={18}
+              fontFamily={400}
+            >
+              is nog in Beta, voor feedback mail graag naar info@getsafeword.app
+            </Text>
+          </View>
         </FormLayout.Content>
 
         <FormLayout.Action insets={insets}>
