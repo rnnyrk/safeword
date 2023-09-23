@@ -27,8 +27,19 @@ Always
 
 Connect manually to the development server via `http://127.0.0.1:8081`
 
+### Create Testflight (ACC) / Android App Tester build
+
+- `npm run prebuild:staging`
+- `npm run build:staging:ios`
+- `npm run build:staging:android`
+- `APP_ENV=staging eas submit -p ios`
+- `APP_ENV=staging eas submit -p android`
+
 #### Create production build
+
+If logged in to the wrong account
 
 - `npx expo logout`
 - `npx expo login`
+
 - `APP_ENV=production eas submit -p ios`
