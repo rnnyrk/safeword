@@ -35,7 +35,14 @@ export function Group({ name, groupId, size = 'small', type }: GroupProps) {
             center
             entering={FadeInUp.duration(750).delay(250)}
           >
-            <View style={{ position: 'relative', zIndex: 50 }}>
+            <View
+              style={{
+                position: 'relative',
+                zIndex: 50,
+                paddingRight: 8,
+                paddingLeft: 8,
+              }}
+            >
               <Text
                 color="white"
                 align="center"

@@ -27,7 +27,6 @@ export default function GroupsScreen() {
           />
         ))}
       </GroupGrid>
-
       {/* <ActionButton
         style={{ marginBottom: insets.bottom }}
         direction="right"
