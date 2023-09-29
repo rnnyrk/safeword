@@ -18,3 +18,16 @@ export type UpdateUserProps = {
   email: string;
   values: Partial<Omit<i.User, 'id' | 'created_at'>>;
 };
+
+export type AdminUser = {
+  id: string;
+  user_id: string;
+  created_by: string;
+  group_id: string;
+  created_at: string;
+};
+
+export type CreateAdminProps = {
+  userId: string;
+  groupId: string;
+};

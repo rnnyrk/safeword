@@ -59,12 +59,16 @@ export default function JoinGroupScreen() {
       }
 
       // Add current user to the group
-      await onUpdateGroup({
+      const { data: updatedGroup, error: updatedGroupError } = await onUpdateGroup({
         id: group.id,
         values: {
           members: [...membersArray, user.id].join(','),
         },
       });
+
+      if (updatedGroupError) {
+        console.error(updatedGroupError);
+      }
 
       // Update the user, because onboarding is now finished
       const { data: updatedUser } = await onUpdateUser({

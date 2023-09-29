@@ -4,6 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
+import { createAdmin } from 'queries/users/mutate';
 import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -38,15 +39,25 @@ export default function CreateGroupScreen() {
 
     const groupCode = getInviteCode(6);
 
-    const { data: group, error } = await createGroup({
+    const { data: group, error: createGroupError } = await createGroup({
       name: data.name,
       invite_code: groupCode,
       userId: user.id,
     });
 
-    if (error) {
-      console.error(error);
-      throw error;
+    if (createGroupError) {
+      console.error(createGroupError);
+      throw createGroupError;
+    }
+
+    const { data: admin, error: createAdminError } = await createAdmin({
+      userId: user.id,
+      groupId: group![0].id,
+    });
+
+    if (createAdminError) {
+      console.error(createAdminError);
+      throw createAdminError;
     }
 
     setLoading(false);

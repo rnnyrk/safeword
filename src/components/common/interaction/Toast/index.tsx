@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Pressable } from 'react-native';
-import { FadeInUp, FadeOutUp, Layout } from 'react-native-reanimated';
+import { FadeInUp, FadeOutUp } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from 'common/typography';
