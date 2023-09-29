@@ -49,3 +49,23 @@ export function useUpdateUser() {
     },
   });
 }
+
+// Create user on admin table
+export async function createAdmin({
+  userId,
+  groupId,
+}: i.CreateAdminProps): Promise<{ data: i.AdminUser[] | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('admins')
+    .insert({
+      user_id: userId,
+      created_by: userId,
+      group_id: groupId,
+    })
+    .select('user_id, group_id, created_by');
+
+  return {
+    data: data as unknown as i.AdminUser[],
+    error,
+  };
+}

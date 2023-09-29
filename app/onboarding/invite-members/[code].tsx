@@ -69,16 +69,16 @@ export default function InviteMembersScreen() {
 
       const mailResponse = await req.json();
 
-      const { data: updatedUser, error } = await updateUser({
-        email: user?.email,
+      const { data: updatedUser, error: updatedUserError } = await updateUser({
+        email: user.email,
         values: {
           group_1: group.id,
         },
       });
 
-      if (error) {
-        console.error(error);
-        throw error;
+      if (updatedUserError) {
+        console.error(updatedUserError);
+        throw updatedUserError;
       }
 
       if (updatedUser) {

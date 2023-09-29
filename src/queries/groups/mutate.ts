@@ -8,7 +8,7 @@ export async function createGroup({
   userId,
   name,
   invite_code,
-}: i.CreateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
+}: i.CreateGroup): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
     .insert({
@@ -21,7 +21,7 @@ export async function createGroup({
     .select();
 
   return {
-    data: data as unknown as i.Group,
+    data: data as unknown as i.Group[],
     error,
   };
 }
@@ -29,7 +29,7 @@ export async function createGroup({
 export async function updateGroup({
   id,
   values,
-}: i.UpdateGroup): Promise<{ data: i.Group | null; error: PostgrestError | null }> {
+}: i.UpdateGroup): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
   const { data, error } = await supabase
     .from('groups')
     .update(values)
@@ -37,7 +37,7 @@ export async function updateGroup({
     .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word');
 
   return {
-    data: data as unknown as i.Group,
+    data: data as unknown as i.Group[],
     error,
   };
 }
