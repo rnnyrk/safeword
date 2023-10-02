@@ -172,14 +172,7 @@ export default function AuthScreen() {
               size={18}
               fontFamily={400}
             >
-              . SafeWord is
-            </Text>
-            <Text
-              color="darkGray"
-              size={18}
-              fontFamily={400}
-            >
-              is nog in Beta, voor feedback mail graag naar info@getsafeword.app
+              .
             </Text>
           </View>
         </FormLayout.Content>
