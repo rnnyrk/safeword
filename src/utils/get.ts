@@ -21,6 +21,7 @@ export function getInviteCode(length: number) {
 export const AvailableSafewords = [
   'Auto',
   'Avond',
+  'Aardbei',
   'Banaan',
   'Bureau',
   'Dansen',
@@ -29,10 +30,17 @@ export const AvailableSafewords = [
   'Huis',
   'Jas',
   'Jurk',
+  'Kamer',
+  'Kast',
+  'Kaasboer',
   'Oplader',
   'Oven',
   'Plant',
   'Pizza',
+  'Poes',
+  'Schoen',
+  'Slaapkamer',
+  'Slagroom',
   'Snelweg',
   'Strand',
   'Tafel',
@@ -41,6 +49,7 @@ export const AvailableSafewords = [
   'Vlek',
   'Was',
   'Winkel',
+  'Woning',
   'Zolder',
 ] as const;
 
