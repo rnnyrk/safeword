@@ -14,7 +14,7 @@ export function SendSafewordDropdown({ data, isLoading, setSelected }: SendSafew
         color="white"
         size={18}
       >
-        Safeword sturen naar
+        SafeWord sturen naar
       </Text>
 
       {isLoading ? (

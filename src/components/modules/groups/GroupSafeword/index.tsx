@@ -91,7 +91,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
               color="gray"
               size={16}
             >
-              Safeword versturen
+              SafeWord versturen
             </Text>
           </Pressable> */}
         </GroupSafewordContent>
