@@ -1,4 +1,4 @@
-# Safeword
+# SafeWord
 
 - Expo
 - [`expo-router`](https://expo.github.io/router)

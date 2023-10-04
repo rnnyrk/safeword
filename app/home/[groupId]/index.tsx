@@ -44,7 +44,7 @@ export default function GroupScreen() {
             })
           }
         >
-          Safeword versturen
+          SafeWord versturen
         </ActionButton>
       )}
     </Container>

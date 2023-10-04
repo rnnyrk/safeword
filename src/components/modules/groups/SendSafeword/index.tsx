@@ -51,7 +51,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
       const mailResponse = await req.json();
 
       toast.show({
-        message: 'Safeword verstuurd',
+        message: 'SafeWord verstuurd',
         variant: 'success',
       });
 
