@@ -28,8 +28,8 @@ export default function AuthScreen() {
   function onOpenLink(type: 'terms' | 'privacy') {
     const url =
       type === 'terms'
-        ? 'https://getsafeword.app/algemene-voorwaarden.pdf'
-        : 'https://getsafeword.app/privacy-policy.pdf';
+        ? 'https://getsafeword.app/algemene-voorwaarden'
+        : 'https://getsafeword.app/privacy-policy';
 
     WebBrowser.openBrowserAsync(url);
   }
