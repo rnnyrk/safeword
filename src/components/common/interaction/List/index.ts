@@ -110,6 +110,9 @@ const ListSubtext = styled(Text).attrs({
   family: 'tradeGothicBold',
   size: 14,
 })<ListSubtextType>`
+  max-width: 100%;
+  height: 24px;
+  overflow-x: hidden;
   color: ${({ theme }) => theme.colors.gray};
 
   ${({ isPressed }) =>

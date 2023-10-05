@@ -13,6 +13,7 @@ export const ActionButtonContainer = styled.View<ActionButtonContainerProps>`
     css`
       width: ${windowWidth - 40}px;
       padding: 16px 32px;
+      height: 70px;
       justify-content: center;
       border-radius: 8px;
       border: 2px solid ${isPressed ? theme.colors.primaryLight : theme.colors.mediumGray};
@@ -23,6 +24,7 @@ export const ActionButtonContainer = styled.View<ActionButtonContainerProps>`
     variant === 'alternative' &&
     css`
       width: ${windowWidth - 40}px;
+      height: 70px;
       padding: 16px 32px;
       justify-content: center;
       border-radius: 8px;

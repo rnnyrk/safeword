@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'expo-router';
+import { useSearchParams } from 'expo-router';
 import { Alert, Pressable, ScrollView } from 'react-native';
 import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,12 +17,8 @@ import { Text } from 'common/typography';
 
 export default function SettingsGroupScreen() {
   const toast = useToast();
-  const router = useRouter();
   const insets = useSafeAreaInsets();
   const params = useSearchParams<{ groupId: string }>();
-  const { user } = useSupabase();
-  const [code, setCode] = useState<string | undefined>(undefined);
-  let codeTimeout: NodeJS.Timeout | null = null;
 
   const { data: group } = useGroupById(params.groupId);
   const { mutateAsync: onUpdateGroup, isLoading: isUpdatingGroup } = useUpdateGroup();
@@ -30,6 +26,12 @@ export default function SettingsGroupScreen() {
   const { mutateAsync: onRegenerateCode, isLoading: isRegeneratingCode } = useRegenerateGroupCode();
 
   const isUpdating = isUpdatingGroup || isUpdatingUser;
+
+  const { user } = useSupabase();
+  const isAdmin = user?.id === group?.admin_id;
+
+  const [code, setCode] = useState<string | undefined>(undefined);
+  let codeTimeout: NodeJS.Timeout | null = null;
 
   async function onRemoveUserFromGroup(name: string, removeMemberId: string) {
     Alert.alert('Uit de groep zetten', `Weet je zeker dat je ${name} uit de groep wilt zetten?`, [
@@ -119,7 +121,8 @@ export default function SettingsGroupScreen() {
             {group?.name}
           </Text>
           <Text
-            size={16}
+            color="darkGray"
+            size={18}
             fontFamily={400}
             marginBottom={32}
           >
@@ -170,21 +173,22 @@ export default function SettingsGroupScreen() {
         </ScrollView>
       </FormLayout.Content>
 
-      <FormLayout.Action insets={insets}>
-        <ActionButton
-          direction="right"
-          isLoading={isRegeneratingCode}
-          isDisabled={!group || isRegeneratingCode || Boolean(code)}
-          icon={isRegeneratingCode || code ? undefined : 'refresh'}
-          onPress={onRegenerateGroupCode}
-          textSize={22}
-          variant="alternative"
-          style={{ height: 70 }}
-          subChildren={code ? <Countdown /> : null}
-        >
-          {code ? code : 'Nieuwe groepscode'}
-        </ActionButton>
-      </FormLayout.Action>
+      {isAdmin && (
+        <FormLayout.Action insets={insets}>
+          <ActionButton
+            direction="right"
+            isLoading={isRegeneratingCode}
+            isDisabled={!group || isRegeneratingCode || Boolean(code)}
+            icon={isRegeneratingCode || code ? undefined : 'refresh'}
+            onPress={onRegenerateGroupCode}
+            textSize={22}
+            variant="alternative"
+            subChildren={code ? <Countdown /> : null}
+          >
+            {code ? code : 'Nieuwe groepscode'}
+          </ActionButton>
+        </FormLayout.Action>
+      )}
     </Container>
   );
 }

@@ -12,14 +12,14 @@ const getIcon = ({ direction, icon, textColor }: GetIconProps) => {
   const style = direction === 'left' ? { marginRight: 8 } : { marginLeft: 8 };
 
   if (icon === 'arrow') {
-    if (direction === 'left' && !icon) {
+    if (direction === 'left') {
       return (
         <ArrowLeft
           fill={theme.colors[textColor || 'black']}
           style={style}
         />
       );
-    } else if (direction === 'right' && !icon) {
+    } else if (direction === 'right') {
       return (
         <ArrowRight
           fill={theme.colors[textColor || 'black']}

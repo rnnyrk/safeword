@@ -105,7 +105,8 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
                 SafeWord vesturen
               </Text>
               <Text
-                size={16}
+                color="darkGray"
+                size={18}
                 fontFamily={400}
                 marginBottom={32}
               >
