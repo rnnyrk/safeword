@@ -9,8 +9,12 @@ export const Refresh = ({
   width = 36,
   height = 36,
   $position = 'static',
+  style,
 }: RefreshProps) => (
-  <SvgWrapper $position={$position}>
+  <SvgWrapper
+    $position={$position}
+    style={style}
+  >
     <Svg
       width={width}
       height={height}
@@ -29,4 +33,5 @@ type RefreshProps = {
   width?: number;
   height?: number;
   $position?: 'static' | 'absolute';
+  style?: any;
 };

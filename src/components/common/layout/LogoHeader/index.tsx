@@ -1,4 +1,4 @@
-import { useNavigation, useRouter } from 'expo-router';
+import { Href, useNavigation, useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -7,7 +7,11 @@ import { ArrowLeft, Menu, Safeword } from 'common/svg';
 
 import { LogoHeaderContainer } from './styled';
 
-export function LogoHeader({ showBackButton = false, showDrawer = false }: LogoHeaderProps) {
+export function LogoHeader({
+  showBackButton = false,
+  backUrl,
+  showDrawer = false,
+}: LogoHeaderProps) {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const navigation = useNavigation();
@@ -17,7 +21,7 @@ export function LogoHeader({ showBackButton = false, showDrawer = false }: LogoH
       {showBackButton ? (
         <Pressable
           hitSlop={10}
-          onPress={() => router.back()}
+          onPress={() => (backUrl ? router.replace(backUrl) : router.back())}
         >
           {({ pressed }) => (
             <ArrowLeft fill={pressed ? theme.colors.primary : theme.colors.darkGray} />
@@ -44,6 +48,7 @@ export function LogoHeader({ showBackButton = false, showDrawer = false }: LogoH
 }
 
 type LogoHeaderProps = {
+  backUrl?: Href<string>;
   showBackButton?: boolean;
   showDrawer?: boolean;
 };

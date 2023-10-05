@@ -3,6 +3,7 @@ import { useSearchParams } from 'expo-router';
 import { useGroupById } from 'queries/groups';
 import { windowWidth } from 'utils';
 import { Container } from 'common/layout';
+import { Text } from 'common/typography';
 import { SendSafeword } from 'modules/groups/SendSafeword';
 
 export default function GroupScreen() {

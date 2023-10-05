@@ -145,6 +145,7 @@ if (parsed.success === false) {
 }
 
 const Env = parsed.data;
+
 const ClientEnv = client.parse(clientEnvVariables);
 
 module.exports = {

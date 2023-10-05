@@ -4,7 +4,7 @@ import theme from 'styles/theme';
 
 import { SvgWrapper } from './styled';
 
-export const Min = ({ width = 20, height = 20, $position = 'static', style }: MinProps) => (
+export const Min = ({ fill, width = 20, height = 20, $position = 'static', style }: MinProps) => (
   <SvgWrapper
     $position={$position}
     style={style}
@@ -18,7 +18,7 @@ export const Min = ({ width = 20, height = 20, $position = 'static', style }: Mi
         cx={55.6}
         cy={55.6}
         r={55.6}
-        fill={theme.colors.primary}
+        fill={fill || theme.colors.primary}
       />
       <Path
         d="M82.6 59.2h-54c-2.7 0-4.9-2.2-4.9-4.9s2.2-4.9 4.9-4.9h53.9c2.7 0 4.9 2.2 4.9 4.9.1 2.7-2.1 4.9-4.8 4.9z"
@@ -31,6 +31,7 @@ export const Min = ({ width = 20, height = 20, $position = 'static', style }: Mi
 type MinProps = {
   width?: number;
   height?: number;
+  fill?: string;
   $position?: 'static' | 'absolute';
   style?: any;
 };
