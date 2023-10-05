@@ -126,8 +126,13 @@ export default function SettingsGroupScreen() {
             fontFamily={400}
             marginBottom={32}
           >
-            Beheer je groepsleden, of genereer een nieuwe groepscode om mensen bij je groep te
-            voegen.
+            {isAdmin && (
+              <>
+                Beheer je groepsleden, of genereer een nieuwe groepscode om mensen bij je groep te
+                voegen.
+              </>
+            )}
+            {!isAdmin && <>Een overzicht van je groepsleden.</>}
           </Text>
 
           {group.members.map((member, index) => {

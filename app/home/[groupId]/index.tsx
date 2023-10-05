@@ -34,7 +34,7 @@ export default function GroupScreen() {
         <ActionButton
           style={{ marginBottom: insets.bottom }}
           direction="right"
-          variant="secondary"
+          variant="alternative"
           onPress={() =>
             router.push({
               pathname: '/home/[groupId]/send',
