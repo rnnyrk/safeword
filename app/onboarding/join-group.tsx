@@ -128,10 +128,11 @@ export default function JoinGroupScreen() {
 
         <FormLayout.Action insets={insets}>
           <ActionButton
-            onPress={handleSubmit(onSubmitCode)}
-            isDisabled={isLoading || !isValid}
             direction="right"
-            textSize={22}
+            isDisabled={isLoading || !isValid}
+            isLoading={isLoading}
+            onPress={handleSubmit(onSubmitCode)}
+            variant="alternative"
           >
             Groep joinen
           </ActionButton>

@@ -2,18 +2,61 @@ import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 
 import theme from 'styles/theme';
-import { ArrowLeft, ArrowRight } from 'common/svg';
+import { DotLoader } from 'common/layout';
+import { ArrowLeft, ArrowRight, Refresh } from 'common/svg';
 import { Text, type TextProps } from 'common/typography';
 
 import { ActionButtonContainer } from './styled';
 
+const getIcon = ({ direction, icon, textColor }: GetIconProps) => {
+  const style = direction === 'left' ? { marginRight: 8 } : { marginLeft: 8 };
+
+  if (icon === 'arrow') {
+    if (direction === 'left') {
+      return (
+        <ArrowLeft
+          fill={theme.colors[textColor || 'black']}
+          style={style}
+        />
+      );
+    } else if (direction === 'right') {
+      return (
+        <ArrowRight
+          fill={theme.colors[textColor || 'black']}
+          style={style}
+        />
+      );
+    }
+  }
+
+  if (icon === 'refresh') {
+    return (
+      <Refresh
+        fill={theme.colors[textColor || 'black']}
+        style={style}
+      />
+    );
+  }
+
+  return null;
+};
+
+type GetIconProps = {
+  direction: ActionButtonProps['direction'];
+  icon?: ActionButtonProps['icon'];
+  textColor: TextProps['color'];
+};
+
 export function ActionButton({
   children,
-  isDisabled,
   direction = 'left',
+  isDisabled,
+  isLoading,
   onPress,
+  icon = 'arrow',
   textSize,
   style,
+  subChildren,
   variant = 'primary',
 }: ActionButtonProps) {
   const router = useRouter();
@@ -30,32 +73,29 @@ export function ActionButton({
         }
 
         if (variant === 'secondary' && pressed) {
-          textColor = 'primaryLight';
+          textColor = 'white';
         }
 
         return (
           <ActionButtonContainer
             style={style}
             variant={variant}
-            isPressed={pressed}
+            isPressed={!isDisabled && pressed ? true : false}
           >
-            {direction === 'left' && (
-              <ArrowLeft
-                fill={theme.colors[textColor]}
-                style={{ marginRight: 8 }}
-              />
-            )}
-            <Text
-              color={textColor}
-              size={textSize || 22}
-            >
-              {children}
-            </Text>
-            {direction === 'right' && (
-              <ArrowRight
-                fill={theme.colors[textColor]}
-                style={{ marginLeft: 8 }}
-              />
+            {isLoading && <DotLoader color={isDisabled ? 'black' : 'white'} />}
+
+            {!isLoading && (
+              <>
+                {direction === 'left' && getIcon({ direction, icon, textColor })}
+                <Text
+                  color={textColor}
+                  size={textSize || 22}
+                >
+                  {children}
+                </Text>
+                {subChildren && subChildren}
+                {direction === 'right' && getIcon({ direction, icon, textColor })}
+              </>
             )}
           </ActionButtonContainer>
         );
@@ -66,10 +106,13 @@ export function ActionButton({
 
 export type ActionButtonProps = {
   children: React.ReactNode;
-  isDisabled?: boolean;
   direction?: 'left' | 'right';
-  textSize?: TextProps['size'];
+  isDisabled?: boolean;
+  isLoading?: boolean;
+  icon?: 'arrow' | 'refresh' | null;
   onPress?: () => void;
+  textSize?: TextProps['size'];
   style?: any;
-  variant?: 'primary' | 'secondary';
+  subChildren?: React.ReactNode;
+  variant?: 'primary' | 'secondary' | 'alternative';
 };

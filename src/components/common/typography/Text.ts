@@ -15,7 +15,9 @@ export const Text = styled.Text<TextProps>`
 
 export type TextProps = {
   align?: 'left' | 'center' | 'right';
-  color?: i.ColorsFromTheme<'primary' | 'primaryLight' | 'gray' | 'darkGray' | 'white' | 'black'>;
+  color?: i.ColorsFromTheme<
+    'primary' | 'primaryLight' | 'gray' | 'darkGray' | 'mediumGray' | 'white' | 'black'
+  >;
   marginTop?: number;
   marginRight?: number;
   marginBottom?: number;

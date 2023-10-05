@@ -49,7 +49,7 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       />
       <DrawerItem
         label="Instellingen"
-        onPress={() => navigation.navigate('settings')}
+        onPress={() => navigation.navigate('settings/index')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
@@ -94,7 +94,7 @@ export default function HomeScreen() {
         }}
       >
         <Drawer.Screen name="index" />
-        <Drawer.Screen name="settings" />
+        <Drawer.Screen name="settings/index" />
       </Drawer>
     </>
   );

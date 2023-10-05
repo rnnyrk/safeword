@@ -161,10 +161,11 @@ export default function InviteMembersScreen() {
 
         <FormLayout.Action insets={insets}>
           <ActionButton
-            onPress={handleSubmit(onInviteMembers)}
-            isDisabled={isLoading || !isValid}
             direction="right"
-            textSize={22}
+            isDisabled={isLoading || !isValid}
+            isLoading={isLoading}
+            onPress={handleSubmit(onInviteMembers)}
+            variant="alternative"
           >
             Uitnodigen
           </ActionButton>

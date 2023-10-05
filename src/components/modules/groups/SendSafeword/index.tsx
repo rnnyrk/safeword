@@ -1,16 +1,16 @@
 import type * as i from 'types';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
 import { getApiUrl } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
-import { ActionButton, useToast } from 'common/interaction';
-import { AnimatedGroup, FormLayout } from 'common/layout';
-import { Bubble } from 'common/svg';
-
-import { SendSafewordDropdown } from './SendSafewordDropdown';
+import { ActionButton, List, useToast } from 'common/interaction';
+import { DotLoader, FormLayout } from 'common/layout';
+import { Check } from 'common/svg';
+import { Text } from 'common/typography';
 
 export function SendSafeword({ group, groupSize }: SendSafewordProps) {
   const router = useRouter();
@@ -19,21 +19,22 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
   const { user } = useSupabase();
 
   // Filter out the current logged in user
-  const data = group.members
+  const members = group.members
     .filter((member) => member.id !== user?.id)
     .map((member) => ({
       key: member.id,
-      value: member.name,
+      name: member.name,
+      email: member.email,
     }));
 
-  const [selected, setSelected] = useState<string>(data[0].key);
+  const [selected, setSelected] = useState<string[] | null>(null);
   const [isLoading, setLoading] = useState(false);
 
   async function onSendSafeword() {
     setLoading(true);
 
     try {
-      const selectedUser = group.members.find((member) => member.id === selected);
+      const selectedUser = group.members.find((member) => selected?.includes(member.id));
       if (!selected || !selectedUser) return;
 
       const req = await fetch(`${getApiUrl}/api/send`, {
@@ -67,23 +68,87 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
     }
   }
 
+  function onSelectGroupMembers(key: string) {
+    const prevSelected = [...(selected || [])];
+    const index = prevSelected.indexOf(key);
+
+    if (index > -1) {
+      prevSelected.splice(index, 1);
+      setSelected(prevSelected);
+      return;
+    } else {
+      setSelected((prevSelected) => [...(prevSelected || []), key]);
+    }
+  }
+
   return (
     <>
       <FormLayout.Content>
-        <AnimatedGroup size={groupSize}>
-          <SendSafewordDropdown {...{ data, isLoading, setSelected }} />
-          <Bubble
-            $position="absolute"
-            fill={theme.colors.primary}
-            width={groupSize}
-            height={groupSize}
-          />
-        </AnimatedGroup>
+        <ScrollView style={{ paddingTop: 64 }}>
+          {isLoading && (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <DotLoader
+                size="large"
+                color="primary"
+                style={{ marginTop: 32 }}
+              />
+            </View>
+          )}
+
+          {!isLoading && (
+            <>
+              <Text
+                color="primaryLight"
+                marginBottom={4}
+                size={32}
+              >
+                SafeWord vesturen
+              </Text>
+              <Text
+                color="darkGray"
+                size={18}
+                fontFamily={400}
+                marginBottom={32}
+              >
+                Geen telefoon bij de hand? Geen probleem stuur je beveiligde SafeWord direct door
+                naar de email van de bekende en verifier zo zijn identiteit.
+              </Text>
+              {members.length > 0 &&
+                members.map((member, index) => (
+                  <Pressable
+                    key={`member_${index}`}
+                    onPress={() => onSelectGroupMembers(member.key)}
+                  >
+                    {({ pressed }) => (
+                      <List.Item
+                        isPressed={pressed}
+                        size="large"
+                      >
+                        <List.Check active={selected?.includes(member.key)}>
+                          {member.key && <Check fill={theme.colors.white} />}
+                        </List.Check>
+                        <List.Content>
+                          <List.Text
+                            size={18}
+                            isPressed={pressed}
+                          >
+                            {member.name}
+                          </List.Text>
+                          <List.Subtext>{member.email}</List.Subtext>
+                        </List.Content>
+                      </List.Item>
+                    )}
+                  </Pressable>
+                ))}
+            </>
+          )}
+        </ScrollView>
       </FormLayout.Content>
 
       <FormLayout.Action insets={insets}>
         <ActionButton
           direction="right"
+          variant="alternative"
           onPress={onSendSafeword}
           textSize={22}
         >
