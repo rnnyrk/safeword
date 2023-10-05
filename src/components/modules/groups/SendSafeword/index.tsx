@@ -149,6 +149,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
         <ActionButton
           direction="right"
           variant="alternative"
+          isDisabled={isLoading}
           onPress={onSendSafeword}
           textSize={22}
         >
