@@ -109,7 +109,7 @@ export type ActionButtonProps = {
   direction?: 'left' | 'right';
   isDisabled?: boolean;
   isLoading?: boolean;
-  icon?: 'arrow' | 'refresh';
+  icon?: 'arrow' | 'refresh' | null;
   onPress?: () => void;
   textSize?: TextProps['size'];
   style?: any;

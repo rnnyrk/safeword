@@ -62,6 +62,7 @@ export default function SettingsScreen() {
               <List.Item
                 isPressed={pressed}
                 variant="secondary"
+                size="large"
               >
                 <List.Text
                   color="white"

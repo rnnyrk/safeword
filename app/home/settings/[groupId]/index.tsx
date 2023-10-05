@@ -179,7 +179,7 @@ export default function SettingsGroupScreen() {
             direction="right"
             isLoading={isRegeneratingCode}
             isDisabled={!group || isRegeneratingCode || Boolean(code)}
-            icon={isRegeneratingCode || code ? undefined : 'refresh'}
+            icon={isRegeneratingCode || Boolean(code) ? null : 'refresh'}
             onPress={onRegenerateGroupCode}
             textSize={22}
             variant="alternative"
