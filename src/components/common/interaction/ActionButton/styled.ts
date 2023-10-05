@@ -5,6 +5,7 @@ import { windowWidth } from 'utils';
 import { type ActionButtonProps } from '.';
 
 export const ActionButtonContainer = styled.View<ActionButtonContainerProps>`
+  position: relative;
   flex-direction: row;
 
   ${({ theme, variant, isPressed }) =>

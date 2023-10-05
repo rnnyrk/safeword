@@ -1,28 +1,33 @@
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'expo-router';
-import { Alert, Pressable, ScrollView, View } from 'react-native';
-import { FadeInUp, FadeOutDown, Layout } from 'react-native-reanimated';
+import { Alert, Pressable, ScrollView } from 'react-native';
+import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
-import { useUpdateGroup } from 'queries/groups/mutate';
+import { useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
 import { useUpdateUser } from 'queries/users/mutate';
 import theme from 'styles/theme';
+import { getInviteCode } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, List, useToast } from 'common/interaction';
-import { Container, FormLayout } from 'common/layout';
+import { Container, Countdown, FormLayout } from 'common/layout';
 import { Min } from 'common/svg';
 import { Text } from 'common/typography';
 
 export default function SettingsGroupScreen() {
+  const toast = useToast();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const params = useSearchParams<{ groupId: string }>();
   const { user } = useSupabase();
-  const toast = useToast();
+  const [code, setCode] = useState<string | undefined>(undefined);
+  let codeTimeout: NodeJS.Timeout | null = null;
 
   const { data: group } = useGroupById(params.groupId);
   const { mutateAsync: onUpdateGroup, isLoading: isUpdatingGroup } = useUpdateGroup();
   const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
+  const { mutateAsync: onRegenerateCode, isLoading: isRegeneratingCode } = useRegenerateGroupCode();
 
   const isUpdating = isUpdatingGroup || isUpdatingUser;
 
@@ -52,7 +57,6 @@ export default function SettingsGroupScreen() {
             },
           });
 
-          // @TODO werkt niet door RLS op users tabel update == op email match
           const { data: updatedUser, error: updateUserError } = await onUpdateUser({
             email: removeMember.email,
             values: {
@@ -70,7 +74,33 @@ export default function SettingsGroupScreen() {
     ]);
   }
 
-  async function onRegenerateGroupCode() {}
+  async function onRegenerateGroupCode() {
+    if (!group || code) return;
+    const groupCode = getInviteCode(6);
+
+    const { data: updatedGroup, error: regenerateError } = await onRegenerateCode({
+      id: group.id,
+      invite_code: groupCode,
+    });
+
+    if (regenerateError) {
+      toast.show({ message: 'Nieuwe code genereren mislukt' });
+      console.error('Error regenerating code');
+      return;
+    }
+
+    setCode(groupCode);
+    codeTimeout = setTimeout(() => {
+      setCode(undefined);
+      codeTimeout = null;
+    }, 30000);
+  }
+
+  useEffect(() => {
+    return () => {
+      codeTimeout && clearTimeout(codeTimeout);
+    };
+  }, []);
 
   if (!group || !user) return null;
 
@@ -98,7 +128,6 @@ export default function SettingsGroupScreen() {
           </Text>
 
           {group.members.map((member, index) => {
-            const isLast = index === group.members.length - 1;
             const isAdminRow = member.id === group.admin_id;
             const isLoggedInAdmin = user.id === group.admin_id;
 
@@ -144,12 +173,16 @@ export default function SettingsGroupScreen() {
       <FormLayout.Action insets={insets}>
         <ActionButton
           direction="right"
-          variant="alternative"
+          isLoading={isRegeneratingCode}
+          isDisabled={!group || isRegeneratingCode || Boolean(code)}
+          icon={isRegeneratingCode || code ? undefined : 'refresh'}
           onPress={onRegenerateGroupCode}
           textSize={22}
-          icon="refresh"
+          variant="alternative"
+          style={{ height: 70 }}
+          subChildren={code ? <Countdown /> : null}
         >
-          Nieuwe groepscode
+          {code ? code : 'Nieuwe groepscode'}
         </ActionButton>
       </FormLayout.Action>
     </Container>

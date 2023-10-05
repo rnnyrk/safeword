@@ -51,3 +51,32 @@ export function useUpdateGroup() {
     },
   });
 }
+
+export async function regenerateGroupCode({
+  id,
+  invite_code,
+}: i.RegenerateGroupCode): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
+  const { data, error } = await supabase
+    .from('groups')
+    .update({
+      invite_code,
+    })
+    .eq('id', id)
+    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word');
+
+  return {
+    data: data as unknown as i.Group[],
+    error,
+  };
+}
+
+export function useRegenerateGroupCode() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, invite_code }: i.RegenerateGroupCode) =>
+      regenerateGroupCode({ id, invite_code }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['groups']);
+    },
+  });
+}
