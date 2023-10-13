@@ -1,4 +1,5 @@
 import type * as i from 'types';
+import { PostgrestError } from '@supabase/supabase-js';
 
 import { AvailableSafewords } from 'utils';
 
@@ -21,6 +22,8 @@ export type Group = {
 export type FormattedGroup = Omit<i.Group, 'members'> & {
   members: i.User[];
 };
+
+export type GroupReturn = Promise<{ data: i.Group[] | null; error: PostgrestError | null }>;
 
 export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'> & {
   userId: string;

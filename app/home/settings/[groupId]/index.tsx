@@ -1,4 +1,6 @@
+import type * as i from 'types';
 import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'expo-router';
 import { Alert, Pressable, ScrollView } from 'react-native';
 import { FadeOutDown, Layout } from 'react-native-reanimated';
@@ -6,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
 import { useDeleteGroup, useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
-import { useUpdateUser } from 'queries/users/mutate';
+import { deleteAdmin, updateUser, useUpdateUser } from 'queries/users/mutate';
 import theme from 'styles/theme';
 import { getInviteCode } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
@@ -19,6 +21,7 @@ export default function SettingsGroupScreen() {
   const toast = useToast();
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const queryClient = useQueryClient();
   const params = useSearchParams<{ groupId: string }>();
 
   const { data: group } = useGroupById(params.groupId);
@@ -93,23 +96,65 @@ export default function SettingsGroupScreen() {
         {
           text: 'OK',
           onPress: async () => {
-            if (!group) return;
+            if (!group || !user) return;
+
+            // First update the users, because only admins can update users and the admin will be deleted
+            const userPromises: i.UserReturn[] = [];
+
+            // Remove group id from the groups array
+            group.members.forEach(async (member) => {
+              if (!member.groups) return;
+              const filteredUserGroups = member.groups
+                .split(',')
+                .filter((groupId) => groupId !== group.id);
+
+              userPromises.push(
+                updateUser({
+                  email: member.email,
+                  values: {
+                    groups: filteredUserGroups.join(','),
+                  },
+                }),
+              );
+            });
+
+            const updatedUsers = await Promise.all(userPromises);
+
+            // Get current user from updated
+            const updatedCurrentUser = updatedUsers.find((updatedUser) => {
+              if (!updatedUser) return false;
+              return updatedUser?.data?.[0].id === user.id;
+            });
+
+            // After that, remove admin. Because the group can't be deleted if the admin row still exists
+            const { error: deleteAdminError } = await deleteAdmin({
+              userId: user.id,
+              groupId: group.id,
+            });
+
+            if (deleteAdminError) {
+              toast.show({ message: 'Groep verwijderen mislukt' });
+              console.error(deleteAdminError);
+              return;
+            }
 
             const { error: deleteGroupError } = await onDeleteGroup({
               id: group.id,
             });
 
-            // @TODO on users table delete the group_1
-            // @TODO delete group_1 column and make groups column an array of strings instead
-
             if (deleteGroupError) {
               toast.show({ message: 'Groep verwijderen mislukt' });
-              console.error('Error deleting group');
+              console.error(deleteGroupError);
               return;
             }
 
             toast.show({ message: 'Groep verwijderd' });
-            router.push('/onboarding/');
+
+            if (updatedCurrentUser?.data?.[0].groups) {
+              router.push('/home/');
+            } else {
+              router.push('/onboarding/');
+            }
           },
         },
       ],
@@ -133,6 +178,9 @@ export default function SettingsGroupScreen() {
 
     setCode(groupCode);
     codeTimeout = setTimeout(() => {
+      // Refetch the group to get newly joined users
+      queryClient.invalidateQueries(['groups', group.id]);
+
       setCode(undefined);
       codeTimeout = null;
     }, 30000);
@@ -220,17 +268,19 @@ export default function SettingsGroupScreen() {
 
       {isAdmin && (
         <FormLayout.Action insets={insets}>
-          <ActionButton
-            direction="right"
-            icon="delete"
-            isDisabled={!group}
-            isLoading={isDeletingGroup}
-            onPress={onConfirmDeleteGroup}
-            variant="delete"
-            style={{ marginBottom: 16 }}
-          >
-            Groep verwijderen
-          </ActionButton>
+          {!code && (
+            <ActionButton
+              direction="right"
+              icon="delete"
+              isDisabled={!group}
+              isLoading={isDeletingGroup}
+              onPress={onConfirmDeleteGroup}
+              variant="delete"
+              style={{ marginBottom: 16 }}
+            >
+              Groep verwijderen
+            </ActionButton>
+          )}
 
           <ActionButton
             direction="right"

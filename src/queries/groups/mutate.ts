@@ -4,11 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { getNewSafeword, supabase } from 'src/utils';
 
-export async function createGroup({
-  userId,
-  name,
-  invite_code,
-}: i.CreateGroup): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
+export async function createGroup({ userId, name, invite_code }: i.CreateGroup): i.GroupReturn {
   const { data, error } = await supabase
     .from('groups')
     .insert({
@@ -27,10 +23,7 @@ export async function createGroup({
 }
 
 // UPDATE
-export async function updateGroup({
-  id,
-  values,
-}: i.UpdateGroup): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
+export async function updateGroup({ id, values }: i.UpdateGroup): i.GroupReturn {
   const { data, error } = await supabase
     .from('groups')
     .update(values)
@@ -54,12 +47,11 @@ export function useUpdateGroup() {
 }
 
 // DELETE
-export async function deleteGroup({
-  id,
-}: i.DeleteGroup): Promise<{ error: PostgrestError | null }> {
-  const { error } = await supabase.from('groups').delete().eq('id', id);
+export async function deleteGroup({ id }: i.DeleteGroup): i.GroupReturn {
+  const { data, error } = await supabase.from('groups').delete().eq('id', id);
 
   return {
+    data: data as unknown as i.Group[],
     error,
   };
 }
@@ -78,7 +70,7 @@ export function useDeleteGroup() {
 export async function regenerateGroupCode({
   id,
   invite_code,
-}: i.RegenerateGroupCode): Promise<{ data: i.Group[] | null; error: PostgrestError | null }> {
+}: i.RegenerateGroupCode): i.GroupReturn {
   const { data, error } = await supabase
     .from('groups')
     .update({
