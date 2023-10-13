@@ -43,3 +43,7 @@ If logged in to the wrong account
 - `npx expo login`
 
 - `APP_ENV=production eas submit -p ios`
+
+Run on iOS device
+
+- `npx expo run:ios --device`
