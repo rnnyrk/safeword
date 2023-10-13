@@ -1,5 +1,6 @@
 import type * as i from 'types';
 import { useState } from 'react';
+import { TextInputProps } from 'react-native';
 
 import { FormField } from '../FormField';
 import { InputIcon, InputWrapper, StyledInput } from './styled';

@@ -13,10 +13,6 @@ import { ActionButton, useToast } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
-type JoinGroupForm = {
-  code: string;
-};
-
 export default function JoinGroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -33,6 +29,7 @@ export default function JoinGroupScreen() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
+    mode: 'onSubmit',
     defaultValues: {
       code: '',
     },
@@ -114,7 +111,7 @@ export default function JoinGroupScreen() {
           <Controller
             name="code"
             control={control}
-            rules={{ ...validation.required }}
+            rules={{ ...validation.required, ...validation.groupCode }}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 onBlur={onBlur}
@@ -129,7 +126,7 @@ export default function JoinGroupScreen() {
         <FormLayout.Action insets={insets}>
           <ActionButton
             direction="right"
-            isDisabled={isLoading || !isValid}
+            isDisabled={isLoading}
             isLoading={isLoading}
             onPress={handleSubmit(onSubmitCode)}
             variant="secondary"
@@ -141,3 +138,7 @@ export default function JoinGroupScreen() {
     </>
   );
 }
+
+type JoinGroupForm = {
+  code: string;
+};

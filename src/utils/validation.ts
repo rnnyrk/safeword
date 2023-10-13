@@ -20,4 +20,14 @@ export const validation = {
       message: 'Groepsnaam moet minimaal 3 tekens bevatten',
     },
   },
+  groupCode: {
+    minLength: {
+      value: 6,
+      message: 'De code moet 6 tekens bevatten',
+    },
+    maxLength: {
+      value: 6,
+      message: 'De code moet 6 tekens bevatten',
+    },
+  },
 };
