@@ -5,7 +5,6 @@ import { Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupByCode } from 'queries/groups';
-import { updateUser } from 'queries/users/mutate';
 import { getApiUrl, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -14,12 +13,6 @@ import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Add, Min } from 'common/svg';
 import { Text } from 'common/typography';
 
-type InviteMembersForm = {
-  members: {
-    email: string;
-  }[];
-};
-
 export default function InviteMembersScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -27,7 +20,7 @@ export default function InviteMembersScreen() {
   const params = useSearchParams<{ code: string; name: string }>();
   const { data: group } = useGroupByCode(params.code);
 
-  const { user, setUser } = useSupabase();
+  const { user } = useSupabase();
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -69,22 +62,6 @@ export default function InviteMembersScreen() {
 
       const mailResponse = await req.json();
 
-      const { data: updatedUser, error: updatedUserError } = await updateUser({
-        email: user.email,
-        values: {
-          group_1: group.id,
-        },
-      });
-
-      if (updatedUserError) {
-        console.error(updatedUserError);
-        throw updatedUserError;
-      }
-
-      if (updatedUser) {
-        setUser(updatedUser[0]);
-      }
-
       router.replace('/home/');
     } catch (error) {
       console.error(error);
@@ -96,7 +73,7 @@ export default function InviteMembersScreen() {
 
   return (
     <>
-      <LogoHeader showBackButton />
+      <LogoHeader />
       <Container>
         <FormLayout.Content>
           <Text
@@ -162,10 +139,18 @@ export default function InviteMembersScreen() {
         <FormLayout.Action insets={insets}>
           <ActionButton
             direction="right"
+            onPress={() => router.replace('/home/')}
+            variant="primary"
+            style={{ marginBottom: 32 }}
+          >
+            Overslaan
+          </ActionButton>
+          <ActionButton
+            direction="right"
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onInviteMembers)}
-            variant="alternative"
+            variant="secondary"
           >
             Uitnodigen
           </ActionButton>
@@ -174,3 +159,9 @@ export default function InviteMembersScreen() {
     </>
   );
 }
+
+type InviteMembersForm = {
+  members: {
+    email: string;
+  }[];
+};

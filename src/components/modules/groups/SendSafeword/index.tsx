@@ -148,9 +148,9 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
       <FormLayout.Action insets={insets}>
         <ActionButton
           direction="right"
-          variant="alternative"
+          variant="secondary"
+          isDisabled={isLoading}
           onPress={onSendSafeword}
-          textSize={22}
         >
           Versturen
         </ActionButton>

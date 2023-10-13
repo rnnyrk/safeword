@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 
 import theme from 'styles/theme';
 import { DotLoader } from 'common/layout';
-import { ArrowLeft, ArrowRight, Refresh } from 'common/svg';
+import { ArrowLeft, ArrowRight, Delete, Refresh } from 'common/svg';
 import { Text, type TextProps } from 'common/typography';
 
 import { ActionButtonContainer } from './styled';
@@ -32,6 +32,14 @@ const getIcon = ({ direction, icon, textColor }: GetIconProps) => {
   if (icon === 'refresh') {
     return (
       <Refresh
+        fill={theme.colors[textColor || 'black']}
+        style={style}
+      />
+    );
+  }
+  if (icon === 'delete') {
+    return (
+      <Delete
         fill={theme.colors[textColor || 'black']}
         style={style}
       />
@@ -72,8 +80,12 @@ export function ActionButton({
           textColor = 'gray';
         }
 
-        if (variant === 'secondary' && pressed) {
-          textColor = 'white';
+        if (variant === 'secondary' && isDisabled) {
+          textColor = 'darkGray';
+        }
+
+        if (variant === 'delete') {
+          textColor = 'red';
         }
 
         return (
@@ -109,10 +121,10 @@ export type ActionButtonProps = {
   direction?: 'left' | 'right';
   isDisabled?: boolean;
   isLoading?: boolean;
-  icon?: 'arrow' | 'refresh' | null;
+  icon?: 'arrow' | 'refresh' | 'delete' | null;
   onPress?: () => void;
   textSize?: TextProps['size'];
   style?: any;
   subChildren?: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'alternative';
+  variant?: 'primary' | 'secondary' | 'alternative' | 'delete';
 };

@@ -74,7 +74,7 @@ export default function JoinGroupScreen() {
       const { data: updatedUser } = await onUpdateUser({
         email: user?.email,
         values: {
-          group_1: group.id,
+          groups: group.id,
         },
       });
 
@@ -132,7 +132,7 @@ export default function JoinGroupScreen() {
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onSubmitCode)}
-            variant="alternative"
+            variant="secondary"
           >
             Groep joinen
           </ActionButton>

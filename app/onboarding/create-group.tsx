@@ -4,7 +4,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
-import { createAdmin } from 'queries/users/mutate';
+import { createAdmin, updateUser } from 'queries/users/mutate';
 import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
@@ -12,15 +12,11 @@ import { ActionButton } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
-type GroupForm = {
-  name: string;
-};
-
 export default function CreateGroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
 
-  const { user } = useSupabase();
+  const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -39,6 +35,7 @@ export default function CreateGroupScreen() {
 
     const groupCode = getInviteCode(6);
 
+    // Create the group
     const { data: group, error: createGroupError } = await createGroup({
       name: data.name,
       invite_code: groupCode,
@@ -50,9 +47,29 @@ export default function CreateGroupScreen() {
       throw createGroupError;
     }
 
+    const createdGroupId = group![0].id;
+
+    // Update the current user and add the group id to the groups array
+    const { data: updatedUser, error: updatedUserError } = await updateUser({
+      email: user.email,
+      values: {
+        groups: createdGroupId,
+      },
+    });
+
+    if (updatedUserError) {
+      console.error(updatedUserError);
+      throw updatedUserError;
+    }
+
+    if (updatedUser) {
+      setUser(updatedUser[0]);
+    }
+
+    // Create an admin for the group
     const { data: admin, error: createAdminError } = await createAdmin({
       userId: user.id,
-      groupId: group![0].id,
+      groupId: createdGroupId,
     });
 
     if (createAdminError) {
@@ -84,7 +101,7 @@ export default function CreateGroupScreen() {
           <Controller
             name="name"
             control={control}
-            rules={{ ...validation.required }}
+            rules={{ ...validation.required, ...validation.groupName }}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
                 placeholder="Naam van de groep"
@@ -104,7 +121,7 @@ export default function CreateGroupScreen() {
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onSubmitGroup)}
-            variant="alternative"
+            variant="secondary"
           >
             Aanmaken
           </ActionButton>
@@ -113,3 +130,7 @@ export default function CreateGroupScreen() {
     </>
   );
 }
+
+type GroupForm = {
+  name: string;
+};

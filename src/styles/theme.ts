@@ -12,9 +12,10 @@ const theme = {
     darkGray: '#808080',
     white: '#FFFFFF',
     whiteOff: '#EEEEEE',
-    pale: '#F9F9F9',
+    pale: '#E4EEf2',
     orange: '#F6662B',
-    red: '#CF1D3D',
+    red: '#B01212',
+    lightRed: '#F7E4E4',
     green: '#64CF1D',
   },
 

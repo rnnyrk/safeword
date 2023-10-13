@@ -6,8 +6,8 @@ import { SvgWrapper } from './styled';
 
 export const Refresh = ({
   fill = theme.colors.darkGray,
-  width = 36,
-  height = 36,
+  width = 32,
+  height = 32,
   $position = 'static',
   style,
 }: RefreshProps) => (

@@ -4,11 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { supabase } from 'src/utils';
 
-export async function createUser({
-  id,
-  email,
-  name,
-}: i.CreateUserProps): Promise<{ data: i.User[] | null; error: PostgrestError | null }> {
+export async function createUser({ id, email, name }: i.CreateUserProps): i.UserReturn {
   const { data, error } = await supabase
     .from('users')
     .insert({
@@ -16,7 +12,7 @@ export async function createUser({
       email,
       name,
     })
-    .select('id, email, name, group_1, created_at');
+    .select('id, email, name, created_at');
 
   return {
     data: data as unknown as i.User[],
@@ -24,15 +20,12 @@ export async function createUser({
   };
 }
 
-export async function updateUser({
-  email,
-  values,
-}: i.UpdateUserProps): Promise<{ data: i.User[] | null; error: PostgrestError | null }> {
+export async function updateUser({ email, values }: i.UpdateUserProps): i.UserReturn {
   const { data, error } = await supabase
     .from('users')
     .update(values)
     .eq('email', email)
-    .select('id, email, name, group_1, created_at');
+    .select('id, email, name, groups, created_at');
 
   return {
     data: data as unknown as i.User[],
@@ -51,10 +44,7 @@ export function useUpdateUser() {
 }
 
 // Create user on admin table
-export async function createAdmin({
-  userId,
-  groupId,
-}: i.CreateAdminProps): Promise<{ data: i.AdminUser[] | null; error: PostgrestError | null }> {
+export async function createAdmin({ userId, groupId }: i.AdminProps): i.AdminReturn {
   const { data, error } = await supabase
     .from('admins')
     .insert({
@@ -63,6 +53,20 @@ export async function createAdmin({
       group_id: groupId,
     })
     .select('user_id, group_id, created_by');
+
+  return {
+    data: data as unknown as i.AdminUser[],
+    error,
+  };
+}
+
+// delete admin
+export async function deleteAdmin({ userId, groupId }: i.AdminProps): i.AdminReturn {
+  const { data, error } = await supabase
+    .from('admins')
+    .delete()
+    .eq('user_id', userId)
+    .eq('group_id', groupId);
 
   return {
     data: data as unknown as i.AdminUser[],

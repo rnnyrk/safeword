@@ -37,8 +37,8 @@ const ListItemCss = css<ListItemType>`
     isPressed &&
     variant === 'secondary' &&
     css`
-      background-color: ${({ theme }) => theme.colors.primary};
-      border-color: ${({ theme }) => theme.colors.primary};
+      background-color: ${({ theme }) => theme.colors.primaryLight};
+      border-color: ${({ theme }) => theme.colors.primaryLight};
     `}
 
   ${({ variant }) =>
@@ -112,7 +112,7 @@ const ListSubtext = styled(Text).attrs({
 })<ListSubtextType>`
   max-width: 100%;
   height: 24px;
-  overflow-x: hidden;
+  overflow: hidden;
   color: ${({ theme }) => theme.colors.gray};
 
   ${({ isPressed }) =>

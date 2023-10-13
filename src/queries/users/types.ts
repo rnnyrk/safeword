@@ -1,11 +1,12 @@
 import type * as i from 'types';
+import { PostgrestError } from '@supabase/supabase-js';
 
 export type User = {
   id: string;
   email: string;
   name: string;
   created_at: string;
-  group_1: string | null;
+  groups: string | null;
 };
 
 export type CreateUserProps = {
@@ -13,6 +14,8 @@ export type CreateUserProps = {
   email: string;
   name: string;
 };
+
+export type UserReturn = Promise<{ data: i.User[] | null; error: PostgrestError | null }>;
 
 export type UpdateUserProps = {
   email: string;
@@ -27,7 +30,9 @@ export type AdminUser = {
   created_at: string;
 };
 
-export type CreateAdminProps = {
+export type AdminProps = {
   userId: string;
   groupId: string;
 };
+
+export type AdminReturn = Promise<{ data: i.AdminUser[] | null; error: PostgrestError | null }>;
