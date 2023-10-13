@@ -112,7 +112,7 @@ const ListSubtext = styled(Text).attrs({
 })<ListSubtextType>`
   max-width: 100%;
   height: 24px;
-  overflow-x: hidden;
+  overflow: hidden;
   color: ${({ theme }) => theme.colors.gray};
 
   ${({ isPressed }) =>

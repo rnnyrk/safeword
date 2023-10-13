@@ -16,7 +16,7 @@ export async function createUser({
       email,
       name,
     })
-    .select('id, email, name, group_1, created_at');
+    .select('id, email, name, created_at');
 
   return {
     data: data as unknown as i.User[],
@@ -32,7 +32,7 @@ export async function updateUser({
     .from('users')
     .update(values)
     .eq('email', email)
-    .select('id, email, name, group_1, created_at');
+    .select('id, email, name, groups, created_at');
 
   return {
     data: data as unknown as i.User[],

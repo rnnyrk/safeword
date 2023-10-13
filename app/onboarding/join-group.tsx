@@ -74,7 +74,7 @@ export default function JoinGroupScreen() {
       const { data: updatedUser } = await onUpdateUser({
         email: user?.email,
         values: {
-          group_1: group.id,
+          groups: group.id,
         },
       });
 

@@ -14,4 +14,10 @@ export const validation = {
       message: 'Wachtwoord moet minimaal 8 tekens bevatten',
     },
   },
+  groupName: {
+    minLength: {
+      value: 3,
+      message: 'Groepsnaam moet minimaal 3 tekens bevatten',
+    },
+  },
 };

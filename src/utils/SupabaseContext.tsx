@@ -48,7 +48,7 @@ function useProtectedRoute(user: UserType) {
     if (!user) {
       router.replace('/');
     } else if (user && isAppDir) {
-      if (user.group_1) {
+      if (user.groups) {
         router.replace('/home/');
       } else {
         router.replace('/onboarding/');

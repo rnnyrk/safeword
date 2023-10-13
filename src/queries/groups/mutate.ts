@@ -26,6 +26,7 @@ export async function createGroup({
   };
 }
 
+// UPDATE
 export async function updateGroup({
   id,
   values,
@@ -52,6 +53,28 @@ export function useUpdateGroup() {
   });
 }
 
+// DELETE
+export async function deleteGroup({
+  id,
+}: i.DeleteGroup): Promise<{ error: PostgrestError | null }> {
+  const { error } = await supabase.from('groups').delete().eq('id', id);
+
+  return {
+    error,
+  };
+}
+
+export function useDeleteGroup() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id }: i.DeleteGroup) => deleteGroup({ id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['groups']);
+    },
+  });
+}
+
+// REGENERATE CODE
 export async function regenerateGroupCode({
   id,
   invite_code,

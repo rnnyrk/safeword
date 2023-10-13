@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useSearchParams } from 'expo-router';
+import { useRouter, useSearchParams } from 'expo-router';
 import { Alert, Pressable, ScrollView } from 'react-native';
 import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
-import { useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
+import { useDeleteGroup, useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
 import { useUpdateUser } from 'queries/users/mutate';
 import theme from 'styles/theme';
 import { getInviteCode } from 'utils';
@@ -17,10 +17,12 @@ import { Text } from 'common/typography';
 
 export default function SettingsGroupScreen() {
   const toast = useToast();
+  const router = useRouter();
   const insets = useSafeAreaInsets();
   const params = useSearchParams<{ groupId: string }>();
 
   const { data: group } = useGroupById(params.groupId);
+  const { mutateAsync: onDeleteGroup, isLoading: isDeletingGroup } = useDeleteGroup();
   const { mutateAsync: onUpdateGroup, isLoading: isUpdatingGroup } = useUpdateGroup();
   const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
   const { mutateAsync: onRegenerateCode, isLoading: isRegeneratingCode } = useRegenerateGroupCode();
@@ -33,7 +35,7 @@ export default function SettingsGroupScreen() {
   const [code, setCode] = useState<string | undefined>(undefined);
   let codeTimeout: NodeJS.Timeout | null = null;
 
-  async function onRemoveUserFromGroup(name: string, removeMemberId: string) {
+  function onConfirmRemoveUserFromGroup(name: string, removeMemberId: string) {
     Alert.alert('Uit de groep zetten', `Weet je zeker dat je ${name} uit de groep wilt zetten?`, [
       {
         text: 'Annuleren',
@@ -59,10 +61,11 @@ export default function SettingsGroupScreen() {
             },
           });
 
+          // @TODO remove group id from the groups array
           const { data: updatedUser, error: updateUserError } = await onUpdateUser({
             email: removeMember.email,
             values: {
-              group_1: null,
+              groups: null, // so instead of null remove the group id from the array
             },
           });
 
@@ -74,6 +77,43 @@ export default function SettingsGroupScreen() {
         },
       },
     ]);
+  }
+
+  function onConfirmDeleteGroup() {
+    if (!group) return;
+
+    Alert.alert(
+      'Groep verwijderen',
+      `Weet je zeker dat je de groep ${group.name} wilt verwijderen?`,
+      [
+        {
+          text: 'Annuleren',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: async () => {
+            if (!group) return;
+
+            const { error: deleteGroupError } = await onDeleteGroup({
+              id: group.id,
+            });
+
+            // @TODO on users table delete the group_1
+            // @TODO delete group_1 column and make groups column an array of strings instead
+
+            if (deleteGroupError) {
+              toast.show({ message: 'Groep verwijderen mislukt' });
+              console.error('Error deleting group');
+              return;
+            }
+
+            toast.show({ message: 'Groep verwijderd' });
+            router.push('/onboarding/');
+          },
+        },
+      ],
+    );
   }
 
   async function onRegenerateGroupCode() {
@@ -158,7 +198,7 @@ export default function SettingsGroupScreen() {
                 {isLoggedInAdmin && !isAdminRow ? (
                   <List.Action>
                     <Pressable
-                      onPress={() => onRemoveUserFromGroup(member.name, member.id)}
+                      onPress={() => onConfirmRemoveUserFromGroup(member.name, member.id)}
                       disabled={isUpdating}
                     >
                       {({ pressed }) => (
@@ -184,8 +224,8 @@ export default function SettingsGroupScreen() {
             direction="right"
             icon="delete"
             isDisabled={!group}
-            isLoading={isRegeneratingCode}
-            onPress={onRegenerateGroupCode}
+            isLoading={isDeletingGroup}
+            onPress={onConfirmDeleteGroup}
             variant="delete"
             style={{ marginBottom: 16 }}
           >

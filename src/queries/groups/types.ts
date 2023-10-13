@@ -31,6 +31,10 @@ export type UpdateGroup = {
   values: Partial<Omit<i.Group, 'id' | 'created_at' | 'invite_code' | 'qrcode'>>;
 };
 
+export type DeleteGroup = {
+  id: string;
+};
+
 export type RegenerateGroupCode = {
   id: string;
   invite_code: string;
