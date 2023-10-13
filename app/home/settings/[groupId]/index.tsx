@@ -182,12 +182,23 @@ export default function SettingsGroupScreen() {
         <FormLayout.Action insets={insets}>
           <ActionButton
             direction="right"
+            icon="delete"
+            isDisabled={!group}
             isLoading={isRegeneratingCode}
-            isDisabled={!group || isRegeneratingCode || Boolean(code)}
-            icon={isRegeneratingCode || Boolean(code) ? null : 'refresh'}
             onPress={onRegenerateGroupCode}
-            textSize={22}
-            variant="alternative"
+            variant="delete"
+            style={{ marginBottom: 16 }}
+          >
+            Groep verwijderen
+          </ActionButton>
+
+          <ActionButton
+            direction="right"
+            icon={isRegeneratingCode || Boolean(code) ? null : 'refresh'}
+            isDisabled={!group || isRegeneratingCode || Boolean(code)}
+            isLoading={isRegeneratingCode}
+            onPress={onRegenerateGroupCode}
+            variant="secondary"
             subChildren={code ? <Countdown /> : null}
           >
             {code ? code : 'Nieuwe groepscode'}

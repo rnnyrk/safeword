@@ -91,7 +91,7 @@ export default function NewGroupScreen() {
             onPress={handleSubmit(onSubmitGroup)}
             isDisabled={isLoading || !isValid}
             direction="right"
-            variant="alternative"
+            variant="secondary"
           >
             Aanmaken
           </ActionButton>

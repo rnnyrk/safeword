@@ -104,7 +104,7 @@ export default function CreateGroupScreen() {
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onSubmitGroup)}
-            variant="alternative"
+            variant="secondary"
           >
             Aanmaken
           </ActionButton>

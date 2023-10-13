@@ -165,7 +165,7 @@ export default function InviteMembersScreen() {
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onInviteMembers)}
-            variant="alternative"
+            variant="secondary"
           >
             Uitnodigen
           </ActionButton>

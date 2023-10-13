@@ -30,7 +30,7 @@ export default function GroupsScreen() {
       {/* <ActionButton
         style={{ marginBottom: insets.bottom }}
         direction="right"
-        variant="alternative"
+        variant="secondary"
         onPress={() => router.push({ pathname: '/home/new-group' })}
       >
         Nieuwe groep

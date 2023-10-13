@@ -6,6 +6,7 @@ export * from './ArrowRight';
 export * from './Bubble';
 export * from './BubbleStroke';
 export * from './Check';
+export * from './Delete';
 export * from './Gsuite';
 export * from './Lock';
 export * from './Menu';

@@ -132,7 +132,7 @@ export default function JoinGroupScreen() {
             isDisabled={isLoading || !isValid}
             isLoading={isLoading}
             onPress={handleSubmit(onSubmitCode)}
-            variant="alternative"
+            variant="secondary"
           >
             Groep joinen
           </ActionButton>
