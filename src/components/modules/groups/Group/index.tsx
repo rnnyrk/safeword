@@ -16,7 +16,7 @@ export function Group({ name, groupId, size = 'small', type }: GroupProps) {
   let groupSize = windowWidth - 40;
 
   if (isSmall) {
-    groupSize = windowWidth / 2 - 10;
+    groupSize = windowWidth / 2 - 24;
   }
 
   return (
