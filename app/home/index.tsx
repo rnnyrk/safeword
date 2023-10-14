@@ -15,6 +15,8 @@ export default function GroupsScreen() {
 
   if (!groups) return null;
 
+  const amountOfGroups = groups.length;
+
   return (
     <Container>
       <GroupGrid groupsLength={groups.length}>
@@ -27,14 +29,16 @@ export default function GroupsScreen() {
           />
         ))}
       </GroupGrid>
-      {/* <ActionButton
-        style={{ marginBottom: insets.bottom }}
-        direction="right"
-        variant="secondary"
-        onPress={() => router.push({ pathname: '/home/new-group' })}
-      >
-        Nieuwe groep
-      </ActionButton> */}
+      {amountOfGroups < 4 && (
+        <ActionButton
+          style={{ marginBottom: insets.bottom }}
+          direction="right"
+          variant="secondary"
+          onPress={() => router.push({ pathname: '/home/new-group' })}
+        >
+          Nieuwe groep
+        </ActionButton>
+      )}
     </Container>
   );
 }

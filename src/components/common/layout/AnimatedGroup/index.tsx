@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 export const AnimatedGroup = styled(Animated.View)<AnimatedGroupProps>`
   position: relative;
+  margin-bottom: 12px;
   height: ${({ size }) => size + 'px'};
   width: ${({ size }) => size + 'px'};
 

@@ -1,25 +1,26 @@
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { Controller, useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
+import { useUpdateUser } from 'queries/users/mutate';
 import { getInviteCode, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { ActionButton } from 'common/interaction';
+import { ActionButton, useToast } from 'common/interaction';
 import { Container, FormLayout } from 'common/layout';
 import { Text } from 'common/typography';
 
-type GroupForm = {
-  name: string;
-};
-
 export default function NewGroupScreen() {
   const router = useRouter();
+  const toast = useToast();
   const insets = useSafeAreaInsets();
-
   const { user } = useSupabase();
+  const queryClient = useQueryClient();
+
+  const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -34,29 +35,47 @@ export default function NewGroupScreen() {
 
   async function onSubmitGroup(data: GroupForm) {
     if (!user) return;
-    // setLoading(true);
+    setLoading(true);
 
-    // const groupCode = getInviteCode(6);
+    const groupCode = getInviteCode(6);
 
-    // const { data: group, error } = await createGroup({
-    //   name: data.name,
-    //   invite_code: groupCode,
-    //   userId: user.id,
-    // });
+    const { data: group, error: createGroupError } = await createGroup({
+      name: data.name,
+      invite_code: groupCode,
+      userId: user.id,
+    });
 
-    // if (error) {
-    //   console.error(error);
-    //   throw error;
-    // }
+    if (createGroupError) {
+      toast.show({ message: 'Groep verwijderen mislukt' });
+      console.error(createGroupError);
+      return;
+    }
 
-    // setLoading(false);
+    let newGroups = [group![0].id];
+    if (user?.groups) {
+      newGroups = [...user.groups.split(','), group![0].id];
+    }
 
-    // router.push({
-    //   pathname: '/onboarding/invite-members/[code]',
-    //   params: {
-    //     code: groupCode,
-    //   },
-    // });
+    const { data: updatedUser, error: updatedUserError } = await onUpdateUser({
+      email: user.email,
+      values: {
+        groups: newGroups.join(','),
+      },
+    });
+
+    if (updatedUserError) {
+      toast.show({ message: 'Profiel aanpassen mislukt' });
+      console.error(updatedUserError);
+      return;
+    }
+
+    setLoading(false);
+
+    // Invalidate groups to get fetch all new groups
+    queryClient.invalidateQueries(['groups']);
+
+    toast.show({ message: 'Nieuwe groep aangemaakt', variant: 'success' });
+    router.push({ pathname: '/home/' });
   }
 
   return (
@@ -100,3 +119,7 @@ export default function NewGroupScreen() {
     </>
   );
 }
+
+type GroupForm = {
+  name: string;
+};
