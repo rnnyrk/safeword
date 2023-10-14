@@ -148,9 +148,15 @@ export default function SettingsGroupScreen() {
               return;
             }
 
-            toast.show({ message: 'Groep verwijderd' });
+            toast.show({
+              message: 'Groep verwijderen gelukt',
+              variant: 'success',
+            });
 
             if (updatedCurrentUser?.data?.[0].groups) {
+              // If any groups left, invalidate groups to get fetch all remaining groups
+              queryClient.invalidateQueries(['groups']);
+
               router.push('/home/');
             } else {
               router.push('/onboarding/');

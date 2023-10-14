@@ -27,14 +27,14 @@ export default function GroupsScreen() {
           />
         ))}
       </GroupGrid>
-      {/* <ActionButton
+      <ActionButton
         style={{ marginBottom: insets.bottom }}
         direction="right"
         variant="secondary"
         onPress={() => router.push({ pathname: '/home/new-group' })}
       >
         Nieuwe groep
-      </ActionButton> */}
+      </ActionButton>
     </Container>
   );
 }
