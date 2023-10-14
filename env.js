@@ -42,7 +42,7 @@ require('dotenv').config({
 const BUNDLE_ID = 'com.safeword'; // ios bundle id
 const PACKAGE = 'com.safeword'; // android package name
 const NAME = APP_KEY_SUFFIX === 'PROD' ? 'Safeword' : `Safeword ${APP_KEY_SUFFIX}`; // app name
-const BUILD_VERSION = 15;
+const BUILD_VERSION = 16;
 
 /**
  * We declare a function withEnvSuffix that will add a suffix to the variable name based on the APP_ENV
