@@ -18,8 +18,8 @@ export const locales = new I18n(
       group_send: {
         description:
           'No phone at hand? No problem, send your secure SafeWord directly to the email of the acquaintance and verify his identity.',
-        title: 'Send SafeWord',
-        submit: 'Send',
+        title: 'Share SafeWord',
+        submit: 'Share',
       },
       login: {
         label: 'Login with',
