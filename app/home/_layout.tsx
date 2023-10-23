@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
-import { windowWidth } from 'utils';
+import { locales, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { LogoHeader } from 'common/layout';
 
@@ -42,19 +42,19 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
       style={{ flex: 1, marginTop: 24 }}
     >
       <DrawerItem
-        label="Mijn groep"
+        label={locales.t('menu.my_group')}
         onPress={() => navigation.navigate('index')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
       <DrawerItem
-        label="Instellingen"
+        label={locales.t('menu.settings')}
         onPress={() => navigation.navigate('settings')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
       <DrawerItem
-        label="Uitloggen"
+        label={locales.t('menu.logout')}
         onPress={() => signOut()}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
