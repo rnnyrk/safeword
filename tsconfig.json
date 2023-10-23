@@ -32,7 +32,8 @@
       "styles/*": ["src/styles/*"],
       "styles": ["src/styles/index"],
       "env": ["src/utils/env.ts"],
-      "types": ["src/types/index"]
+      "types": ["src/types/index"],
+      "locales/*": ["src/locales/*"]
     },
     "typeRoots": ["node_modules/@types"],
     "lib": ["DOM", "DOM.Iterable", "ESNext"]

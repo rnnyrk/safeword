@@ -5,7 +5,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
-import { getApiUrl } from 'utils';
+import { getApiUrl, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, List, useToast } from 'common/interaction';
 import { DotLoader, FormLayout } from 'common/layout';
@@ -102,7 +102,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
                 marginBottom={4}
                 size={32}
               >
-                SafeWord vesturen
+                {locales.t('group_send.title')}
               </Text>
               <Text
                 color="darkGray"
@@ -110,8 +110,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
                 fontFamily={400}
                 marginBottom={32}
               >
-                Geen telefoon bij de hand? Geen probleem stuur je beveiligde SafeWord direct door
-                naar de email van de bekende en verifier zo zijn identiteit.
+                {locales.t('group_send.description')}
               </Text>
               {members.length > 0 &&
                 members.map((member, index) => (
@@ -152,7 +151,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
           isDisabled={isLoading}
           onPress={onSendSafeword}
         >
-          Versturen
+          {locales.t('group_send.submit')}
         </ActionButton>
       </FormLayout.Action>
     </>

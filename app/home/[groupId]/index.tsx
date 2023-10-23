@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
+import { locales } from 'utils';
 import { ActionButton } from 'common/interaction';
 import { Container } from 'common/layout';
 import { Text } from 'common/typography';
@@ -44,7 +45,7 @@ export default function GroupScreen() {
             })
           }
         >
-          SafeWord versturen
+          {locales.t('group.send_safeword')}
         </ActionButton>
       )}
     </Container>

@@ -17,3 +17,8 @@ declare module '*.mp4' {
   const value: number;
   export = value;
 }
+
+declare module '*.json' {
+  const value: any;
+  export default value;
+}

@@ -10,7 +10,7 @@ import { useGroupById } from 'queries/groups';
 import { useDeleteGroup, useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
 import { deleteAdmin, updateUser, useUpdateUser } from 'queries/users/mutate';
 import theme from 'styles/theme';
-import { getInviteCode } from 'utils';
+import { getInviteCode, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, List, useToast } from 'common/interaction';
 import { Container, Countdown, FormLayout } from 'common/layout';
@@ -220,13 +220,8 @@ export default function SettingsGroupScreen() {
             fontFamily={400}
             marginBottom={32}
           >
-            {isAdmin && (
-              <>
-                Beheer je groepsleden, of genereer een nieuwe groepscode om mensen bij je groep te
-                voegen.
-              </>
-            )}
-            {!isAdmin && <>Een overzicht van je groepsleden.</>}
+            {isAdmin && locales.t('settings_group.manage')}
+            {!isAdmin && locales.t('settings_group.overview')}
           </Text>
 
           {group.members.map((member, index) => {
@@ -245,7 +240,7 @@ export default function SettingsGroupScreen() {
                     size={16}
                     color={isAdminRow ? 'primary' : 'black'}
                   >
-                    {member.name} {isAdminRow ? `(beheerder)` : null}
+                    {member.name} {isAdminRow ? `(${locales.t('settings_group.admin')})` : null}
                   </List.Text>
                   <List.Subtext>{member.email}</List.Subtext>
                 </List.Content>
@@ -284,7 +279,7 @@ export default function SettingsGroupScreen() {
               variant="delete"
               style={{ marginBottom: 16 }}
             >
-              Groep verwijderen
+              {locales.t('settings_group.delete_group')}
             </ActionButton>
           )}
 
@@ -297,7 +292,7 @@ export default function SettingsGroupScreen() {
             variant="secondary"
             subChildren={code ? <Countdown /> : null}
           >
-            {code ? code : 'Nieuwe groepscode'}
+            {code ? code : locales.t('settings_group.new_code')}
           </ActionButton>
         </FormLayout.Action>
       )}
