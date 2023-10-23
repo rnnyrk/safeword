@@ -5,8 +5,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
-import { useUpdateUser } from 'queries/users/mutate';
-import { getInviteCode, validation } from 'src/utils';
+import { createAdmin, useUpdateUser } from 'queries/users/mutate';
+import { getInviteCode, locales, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { ActionButton, useToast } from 'common/interaction';
@@ -46,14 +46,16 @@ export default function NewGroupScreen() {
     });
 
     if (createGroupError) {
-      toast.show({ message: 'Groep verwijderen mislukt' });
+      toast.show({ message: locales.t('new_group.delete_error') });
       console.error(createGroupError);
       return;
     }
 
-    let newGroups = [group![0].id];
+    const createdGroupId = group![0].id;
+
+    let newGroups = [createdGroupId];
     if (user?.groups) {
-      newGroups = [...user.groups.split(','), group![0].id];
+      newGroups = [...user.groups.split(','), createdGroupId];
     }
 
     const { data: updatedUser, error: updatedUserError } = await onUpdateUser({
@@ -64,9 +66,22 @@ export default function NewGroupScreen() {
     });
 
     if (updatedUserError) {
-      toast.show({ message: 'Profiel aanpassen mislukt' });
+      toast.show({ message: locales.t('new_group.update_error') });
       console.error(updatedUserError);
       return;
+    }
+
+    // Create an admin for the group
+    const { data: admin, error: createAdminError } = await createAdmin({
+      userId: user.id,
+      groupId: createdGroupId,
+    });
+
+    if (createAdminError) {
+      // @TODO create-group and new-group (this) submits are exactly the same..
+      toast.show({ message: locales.t('new_group.admin_error') });
+      console.error(createAdminError);
+      throw createAdminError;
     }
 
     setLoading(false);
@@ -74,7 +89,7 @@ export default function NewGroupScreen() {
     // Invalidate groups to get fetch all new groups
     queryClient.invalidateQueries(['groups']);
 
-    toast.show({ message: 'Nieuwe groep aangemaakt', variant: 'success' });
+    toast.show({ message: locales.t('new_group.success'), variant: 'success' });
     router.push({ pathname: '/home/' });
   }
 
@@ -86,7 +101,7 @@ export default function NewGroupScreen() {
             color="primary"
             size={32}
           >
-            Nieuwe groep
+            {locales.t('new_group.label')}
           </Text>
           <Controller
             name="name"
@@ -94,7 +109,7 @@ export default function NewGroupScreen() {
             rules={{ ...validation.required }}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
-                placeholder="Naam van de groep"
+                placeholder={locales.t('new_group.placeholder')}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -112,7 +127,7 @@ export default function NewGroupScreen() {
             direction="right"
             variant="secondary"
           >
-            Aanmaken
+            {locales.t('new_group.submit')}
           </ActionButton>
         </FormLayout.Action>
       </Container>

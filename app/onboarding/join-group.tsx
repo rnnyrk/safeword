@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fetchGroupByInviteCode } from 'queries/groups';
 import { useUpdateGroup } from 'queries/groups/mutate';
 import { useUpdateUser } from 'queries/users/mutate';
-import { validation } from 'src/utils';
+import { locales, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
 import { ActionButton, useToast } from 'common/interaction';
@@ -43,14 +43,14 @@ export default function JoinGroupScreen() {
       const group = await fetchGroupByInviteCode(data.code);
 
       if (!group || !user) {
-        toast.show({ message: 'Groep niet gevonden' });
+        toast.show({ message: locales.t('join_group.notfound_error') });
         console.error('No group or user found');
         return;
       }
 
       const membersArray = group.members.split(',');
       if (membersArray.includes(user.id)) {
-        toast.show({ message: 'U bent onderdeel van deze groep' });
+        toast.show({ message: locales.t('join_group.already_member_error') });
         console.error('User is already a member of this group');
         return;
       }
@@ -64,7 +64,9 @@ export default function JoinGroupScreen() {
       });
 
       if (updatedGroupError) {
+        toast.show({ message: locales.t('join_group.update_group_error') });
         console.error(updatedGroupError);
+        return;
       }
 
       // Update the user, because onboarding is now finished
@@ -97,7 +99,7 @@ export default function JoinGroupScreen() {
             color="primary"
             size={32}
           >
-            Groep joinen
+            {locales.t('join_group.title')}
           </Text>
           <Text
             color="darkGray"
@@ -105,7 +107,7 @@ export default function JoinGroupScreen() {
             fontFamily={400}
             style={{ marginTop: 8 }}
           >
-            Voer de sleutelcode in die je via e-mail hebt ontvangen
+            {locales.t('join_group.description')}
           </Text>
 
           <Controller
@@ -131,7 +133,7 @@ export default function JoinGroupScreen() {
             onPress={handleSubmit(onSubmitCode)}
             variant="secondary"
           >
-            Groep joinen
+            {locales.t('join_group.submit')}
           </ActionButton>
         </FormLayout.Action>
       </Container>

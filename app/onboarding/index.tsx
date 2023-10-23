@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 
+import { locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, LogoHeader } from 'common/layout';
@@ -26,7 +27,7 @@ export default function OnboardingScreen() {
           color="primary"
           size={24}
         >
-          Welkom {user?.name || user?.email}!
+          {locales.t('onboarding.welcome')} {user?.name || user?.email}!
         </Text>
         <Text
           align="center"
@@ -35,20 +36,20 @@ export default function OnboardingScreen() {
           fontFamily={400}
           style={{ marginTop: 8, marginBottom: 16 }}
         >
-          Wat wil je als eerste doen?
+          {locales.t('onboarding.description')}
         </Text>
 
         <Button
           onPress={() => router.push('/onboarding/create-group')}
           style={OnboardingButtonStyle}
         >
-          <Text color="white">Een groep aanmaken</Text>
+          <Text color="white">{locales.t('onboarding.create_group')}</Text>
         </Button>
         <Button
           onPress={() => router.push('/onboarding/join-group')}
           style={OnboardingButtonStyle}
         >
-          <Text color="white">Een groep joinen</Text>
+          <Text color="white">{locales.t('onboarding.join_group')}</Text>
         </Button>
       </Container>
     </>
