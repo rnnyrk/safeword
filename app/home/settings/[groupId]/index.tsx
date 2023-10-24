@@ -1,7 +1,7 @@
 import type * as i from 'types';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'expo-router';
+import { useGlobalSearchParams, useRouter } from 'expo-router';
 import { Alert, Pressable, ScrollView } from 'react-native';
 import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -22,7 +22,7 @@ export default function SettingsGroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const queryClient = useQueryClient();
-  const params = useSearchParams<{ groupId: string }>();
+  const params = useGlobalSearchParams<{ groupId: string }>();
 
   const { data: group } = useGroupById(params.groupId);
   const { mutateAsync: onDeleteGroup, isLoading: isDeletingGroup } = useDeleteGroup();
@@ -39,62 +39,66 @@ export default function SettingsGroupScreen() {
   let codeTimeout: NodeJS.Timeout | null = null;
 
   function onConfirmRemoveUserFromGroup(name: string, removeMemberId: string) {
-    Alert.alert('Uit de groep zetten', `Weet je zeker dat je ${name} uit de groep wilt zetten?`, [
-      {
-        text: 'Annuleren',
-        style: 'cancel',
-      },
-      {
-        text: 'OK',
-        onPress: async () => {
-          if (!group?.members) return;
-
-          const newGroupMembers = group.members.filter((member) => member.id !== removeMemberId);
-          const removeMember = group.members.find((member) => member.id === removeMemberId);
-
-          if (!removeMember) {
-            console.error('Could not find member to remove');
-            return;
-          }
-
-          const { error: updateGroupError } = await onUpdateGroup({
-            id: group.id,
-            values: {
-              members: newGroupMembers.map((member) => member.id).join(','),
-            },
-          });
-
-          // @TODO remove group id from the groups array
-          const { data: updatedUser, error: updateUserError } = await onUpdateUser({
-            email: removeMember.email,
-            values: {
-              groups: null, // so instead of null remove the group id from the array
-            },
-          });
-
-          if (updateGroupError || updateUserError) {
-            toast.show({ message: 'Gebruiker verwijderen mislukt' });
-            console.error('Error updating group after removing user');
-            return;
-          }
+    Alert.alert(
+      locales.t('settings_group.delete_user_title'),
+      locales.t('settings_group.delete_user_description', { name }),
+      [
+        {
+          text: locales.t('cancel_button'),
+          style: 'cancel',
         },
-      },
-    ]);
+        {
+          text: locales.t('confirm_button'),
+          onPress: async () => {
+            if (!group?.members) return;
+
+            const newGroupMembers = group.members.filter((member) => member.id !== removeMemberId);
+            const removeMember = group.members.find((member) => member.id === removeMemberId);
+
+            if (!removeMember) {
+              console.error('Could not find member to remove');
+              return;
+            }
+
+            const { error: updateGroupError } = await onUpdateGroup({
+              id: group.id,
+              values: {
+                members: newGroupMembers.map((member) => member.id).join(','),
+              },
+            });
+
+            // @TODO remove group id from the groups array
+            const { data: updatedUser, error: updateUserError } = await onUpdateUser({
+              email: removeMember.email,
+              values: {
+                groups: null, // so instead of null remove the group id from the array
+              },
+            });
+
+            if (updateGroupError || updateUserError) {
+              toast.show({ message: locales.t('settings_group.delete_user_error') });
+              console.error('Error updating group after removing user');
+              return;
+            }
+          },
+        },
+      ],
+    );
   }
 
   function onConfirmDeleteGroup() {
     if (!group) return;
 
     Alert.alert(
-      'Groep verwijderen',
-      `Weet je zeker dat je de groep ${group.name} wilt verwijderen?`,
+      locales.t('settings_group.delete_group_title'),
+      locales.t('settings_group.delete_group_description'),
       [
         {
-          text: 'Annuleren',
+          text: locales.t('cancel_button'),
           style: 'cancel',
         },
         {
-          text: 'OK',
+          text: locales.t('confirm_button'),
           onPress: async () => {
             if (!group || !user) return;
 
@@ -133,7 +137,7 @@ export default function SettingsGroupScreen() {
             });
 
             if (deleteAdminError) {
-              toast.show({ message: 'Groep verwijderen mislukt' });
+              toast.show({ message: locales.t('settings_group.delete_group_error') });
               console.error(deleteAdminError);
               return;
             }
@@ -143,13 +147,13 @@ export default function SettingsGroupScreen() {
             });
 
             if (deleteGroupError) {
-              toast.show({ message: 'Groep verwijderen mislukt' });
+              toast.show({ message: locales.t('settings_group.delete_group_error') });
               console.error(deleteGroupError);
               return;
             }
 
             toast.show({
-              message: 'Groep verwijderen gelukt',
+              message: locales.t('settings_group.delete_group_success'),
               variant: 'success',
             });
 
@@ -177,7 +181,7 @@ export default function SettingsGroupScreen() {
     });
 
     if (regenerateError) {
-      toast.show({ message: 'Nieuwe code genereren mislukt' });
+      toast.show({ message: locales.t('settings_group.regenerate_error') });
       console.error('Error regenerating code');
       return;
     }
