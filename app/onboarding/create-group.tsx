@@ -5,16 +5,17 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { createGroup } from 'queries/groups/mutate';
 import { createAdmin, updateUser } from 'queries/users/mutate';
-import { getInviteCode, validation } from 'src/utils';
+import { getInviteCode, locales, validation } from 'src/utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { ActionButton } from 'common/interaction';
+import { ActionButton, useToast } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
 export default function CreateGroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
 
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);
@@ -58,8 +59,9 @@ export default function CreateGroupScreen() {
     });
 
     if (updatedUserError) {
+      toast.show({ message: locales.t('new_group.update_error') });
       console.error(updatedUserError);
-      throw updatedUserError;
+      return;
     }
 
     if (updatedUser) {
@@ -73,6 +75,8 @@ export default function CreateGroupScreen() {
     });
 
     if (createAdminError) {
+      // @TODO create-group (this) and new-group submits are exactly the same..
+      toast.show({ message: locales.t('new_group.admin_error') });
       console.error(createAdminError);
       throw createAdminError;
     }
@@ -96,7 +100,7 @@ export default function CreateGroupScreen() {
             color="primary"
             size={32}
           >
-            Groep aanmaken
+            {locales.t('new_group.label')}
           </Text>
           <Controller
             name="name"
@@ -104,7 +108,7 @@ export default function CreateGroupScreen() {
             rules={{ ...validation.required, ...validation.groupName }}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
-                placeholder="Naam van de groep"
+                placeholder={locales.t('new_group.placeholder')}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -123,7 +127,7 @@ export default function CreateGroupScreen() {
             onPress={handleSubmit(onSubmitGroup)}
             variant="secondary"
           >
-            Aanmaken
+            {locales.t('new_group.submit')}
           </ActionButton>
         </FormLayout.Action>
       </Container>

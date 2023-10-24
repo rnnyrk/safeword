@@ -5,10 +5,10 @@ import { Pressable } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupByCode } from 'queries/groups';
-import { getApiUrl, validation, windowWidth } from 'utils';
+import { getApiUrl, locales, validation, windowWidth } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Input } from 'common/form';
-import { ActionButton } from 'common/interaction';
+import { ActionButton, useToast } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Add, Min } from 'common/svg';
 import { Text } from 'common/typography';
@@ -16,6 +16,7 @@ import { Text } from 'common/typography';
 export default function InviteMembersScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const toast = useToast();
 
   const params = useSearchParams<{ code: string; name: string }>();
   const { data: group } = useGroupByCode(params.code);
@@ -64,6 +65,7 @@ export default function InviteMembersScreen() {
 
       router.replace('/home/');
     } catch (error) {
+      toast.show({ message: locales.t('invite_members.send_error') });
       console.error(error);
       throw error;
     } finally {
@@ -80,7 +82,7 @@ export default function InviteMembersScreen() {
             color="primary"
             size={32}
           >
-            Groep aanmaken
+            {locales.t('invite_members.title')}
           </Text>
           <Text
             color="darkGray"
@@ -88,8 +90,7 @@ export default function InviteMembersScreen() {
             fontFamily={400}
             style={{ marginTop: 8, marginBottom: 16 }}
           >
-            Nodig de mensen uit die je wilt verzamelen in deze groep. Alle genodigden van de groep
-            kunnen ook elkaar zien
+            {locales.t('invite_members.description')}
           </Text>
 
           {fields.map((field, index) => {
@@ -105,7 +106,7 @@ export default function InviteMembersScreen() {
                       marginBottom="4px"
                       marginTop="4px"
                       style={{ width: windowWidth - 64 + 'px' }}
-                      placeholder="naam@email.com"
+                      placeholder={locales.t('invite_members.placeholder')}
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
@@ -143,7 +144,7 @@ export default function InviteMembersScreen() {
             variant="primary"
             style={{ marginBottom: 32 }}
           >
-            Overslaan
+            {locales.t('invite_members.skip')}
           </ActionButton>
           <ActionButton
             direction="right"
@@ -152,7 +153,7 @@ export default function InviteMembersScreen() {
             onPress={handleSubmit(onInviteMembers)}
             variant="secondary"
           >
-            Uitnodigen
+            {locales.t('invite_members.submit')}
           </ActionButton>
         </FormLayout.Action>
       </Container>

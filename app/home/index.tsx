@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupsOfUser } from 'queries/groups';
+import { locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton } from 'common/interaction';
 import { Container } from 'common/layout';
@@ -36,7 +37,7 @@ export default function GroupsScreen() {
           variant="secondary"
           onPress={() => router.push({ pathname: '/home/new-group' })}
         >
-          Nieuwe groep
+          {locales.t('home.new_group')}
         </ActionButton>
       )}
     </Container>

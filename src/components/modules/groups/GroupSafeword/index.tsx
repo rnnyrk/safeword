@@ -4,7 +4,7 @@ import { FadeInUp } from 'react-native-reanimated';
 
 import { useGroupById } from 'queries/groups';
 import { useUpdateGroup } from 'queries/groups/mutate';
-import { getNewSafeword, windowWidth } from 'src/utils';
+import { getNewSafeword, locales, windowWidth } from 'src/utils';
 import { formatDate } from 'src/utils/dates';
 import { AnimatedGroup, DotLoader } from 'common/layout';
 import { BubbleStroke, Refresh } from 'common/svg';
@@ -51,7 +51,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
             color="darkGray"
             size={20}
           >
-            Ons SafeWord is
+            {locales.t('group.our_safeword')}
           </Text>
           <GroupSafewordWord>
             {isLoading ? (

@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { isIphone, SecureStoreAdapter } from 'utils';
+import { isIphone, locales, SecureStoreAdapter } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
@@ -119,7 +119,7 @@ export default function AuthScreen() {
             color="primary"
             size={28}
           >
-            Welkom bij SafeWord
+            {locales.t('login.title')}
           </Text>
           <Text
             color="primaryLight"
@@ -127,7 +127,7 @@ export default function AuthScreen() {
             size={18}
             style={{ marginTop: 2 }}
           >
-            Realtime verificatie voor elk gesprek.
+            {locales.t('login.subtitle')}
           </Text>
           <View
             style={{
@@ -142,8 +142,7 @@ export default function AuthScreen() {
               size={18}
               fontFamily={400}
             >
-              Maak nu een account aan en probeer het zelf, bij het maken van een account ga je
-              akkoord met onze{' '}
+              {locales.t('login.description')}
             </Text>
             <Text
               color="primary"
@@ -151,15 +150,14 @@ export default function AuthScreen() {
               fontFamily={400}
               onPress={() => onOpenLink('terms')}
             >
-              algemene voorwaarden
+              {locales.t('login.terms')}
             </Text>
             <Text
               color="darkGray"
               size={18}
               fontFamily={400}
             >
-              {' '}
-              en{' '}
+              {locales.t('login.and')}
             </Text>
             <Text
               color="primary"
@@ -167,7 +165,7 @@ export default function AuthScreen() {
               fontFamily={400}
               onPress={() => onOpenLink('privacy')}
             >
-              privacy statement
+              {locales.t('login.privacy')}
             </Text>
             <Text
               color="darkGray"
@@ -193,7 +191,7 @@ export default function AuthScreen() {
               />
             }
           >
-            <Text>Inloggen met Google</Text>
+            <Text>{locales.t('login.label')} Google</Text>
           </Button>
           {isIphone && (
             <Button
@@ -209,7 +207,7 @@ export default function AuthScreen() {
                 />
               }
             >
-              <Text>Inloggen met Apple</Text>
+              <Text>{locales.t('login.label')} Apple</Text>
             </Button>
           )}
         </FormLayout.Action>

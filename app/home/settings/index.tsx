@@ -3,6 +3,7 @@ import { Pressable } from 'react-native';
 
 import { useGroupsOfUser } from 'queries/groups';
 import theme from 'styles/theme';
+import { locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { List } from 'common/interaction';
 import { Container } from 'common/layout';
@@ -27,7 +28,7 @@ export default function SettingsScreen() {
         marginTop={40}
         marginBottom={16}
       >
-        Account
+        {locales.t('settings.account')}
       </Text>
 
       <Text color="black">{user.name}</Text>
@@ -44,7 +45,7 @@ export default function SettingsScreen() {
         marginTop={64}
         marginBottom={16}
       >
-        Groep beheren
+        {locales.t('settings.manage')}
       </Text>
       {groups.map((group, index) => {
         return (
