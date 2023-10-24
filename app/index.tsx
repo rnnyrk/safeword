@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import * as WebBrowser from 'expo-web-browser';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { isIphone, SecureStoreAdapter } from 'utils';
