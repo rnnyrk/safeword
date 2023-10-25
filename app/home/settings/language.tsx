@@ -1,4 +1,6 @@
+import type * as i from 'types';
 import { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { Alert, Pressable, ScrollView } from 'react-native';
 
 import { useGroupsOfUser } from 'queries/groups';
@@ -11,9 +13,9 @@ import { Check } from 'common/svg';
 import { Text } from 'common/typography';
 
 function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) {
-  const [currentLanguage, setCurrentLanguage] = useState<Languages>(defaultLanguage || 'nl-NL');
+  const [currentLanguage, setCurrentLanguage] = useState<i.Languages>(defaultLanguage || 'nl-NL');
 
-  const languages: { value: Languages; label: string }[] = [
+  const languages: { value: i.Languages; label: string }[] = [
     {
       value: 'nl-NL',
       label: 'Nederlands',
@@ -24,7 +26,7 @@ function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) 
     },
   ];
 
-  function onChangeLanguage(language: Languages) {
+  function onChangeLanguage(language: i.Languages) {
     setCurrentLanguage(language);
     onChange(language);
   }
@@ -64,26 +66,19 @@ function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) 
   );
 }
 
-type Languages = 'nl-NL' | 'en-US';
-
 type LanguageSelectorProps = {
-  defaultLanguage?: Languages;
-  onChange: (language: Languages) => void;
+  defaultLanguage?: i.Languages;
+  onChange: (language: i.Languages) => void;
 };
 
 export default function LanguageScreen() {
+  const router = useRouter();
   const { user } = useSupabase();
   const { data: groups } = useGroupsOfUser(user?.id);
 
   if (!groups || !groups.length || !user) return null;
 
-  console.log({
-    availableLocales: locales.availableLocales,
-    defaultLocale: locales.defaultLocale,
-    locale: locales.locale,
-  });
-
-  function onChangeMyLanguage(language: Languages) {
+  function onChangeMyLanguage(language: i.Languages) {
     Alert.alert(
       locales.t('settings_language.change_language_title'),
       locales.t('settings_language.change_language_description'),
@@ -96,13 +91,14 @@ export default function LanguageScreen() {
           text: locales.t('confirm_button'),
           onPress: async () => {
             onChangeLanguage(language);
+            router.push('/home/settings/');
           },
         },
       ],
     );
   }
 
-  function onChangeGroupLanguage(language: Languages) {
+  function onChangeGroupLanguage(language: i.Languages) {
     console.log(language);
   }
 
@@ -126,11 +122,11 @@ export default function LanguageScreen() {
           {locales.t('settings_language.your_description')}
         </Text>
         <LanguageSelector
-          defaultLanguage={locales.locale as Languages}
+          defaultLanguage={locales.locale as i.Languages}
           onChange={onChangeMyLanguage}
         />
 
-        <Text
+        {/* <Text
           size={32}
           color="darkGray"
           marginTop={64}
@@ -146,7 +142,7 @@ export default function LanguageScreen() {
         >
           {locales.t('settings_language.group_description')}
         </Text>
-        <LanguageSelector onChange={onChangeGroupLanguage} />
+        <LanguageSelector onChange={onChangeGroupLanguage} /> */}
       </ScrollView>
     </Container>
   );

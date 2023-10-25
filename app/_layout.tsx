@@ -1,3 +1,4 @@
+import type * as i from 'types';
 import { useEffect } from 'react';
 import {
   LexendDeca_400Regular,
@@ -12,6 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from 'styles/theme';
+import { getLocalData, onChangeLanguage } from 'utils';
 import { SupabaseProvider } from 'utils/SupabaseContext';
 import { ToastProvider } from 'common/interaction';
 
@@ -33,6 +35,16 @@ export default function AppLayout() {
     LexendDeca_500Medium,
     LexendDeca_800ExtraBold,
   });
+
+  useEffect(() => {
+    (async () => {
+      // Load current locale
+      const locale = await getLocalData<i.Languages>('locale');
+      if (locale) {
+        onChangeLanguage(locale);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded) {

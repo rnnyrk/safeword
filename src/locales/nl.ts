@@ -1,6 +1,6 @@
 export const nl = {
   cancel_button: 'Annuleren',
-  cancel_confirm: 'Bevestigen',
+  confirm_button: 'Bevestigen',
   home: {
     new_group: 'Nieuwe group',
   },

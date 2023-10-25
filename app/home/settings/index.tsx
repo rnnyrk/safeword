@@ -17,7 +17,7 @@ export default function SettingsScreen() {
 
   if (!groups || !groups.length || !user) return null;
 
-  const language = locales.defaultLocale === 'nl-NL' ? 'Nederland' : 'English';
+  const language = locales.locale === 'nl-NL' ? 'Nederlands' : 'English';
 
   return (
     <Container alignItems="flex-start">

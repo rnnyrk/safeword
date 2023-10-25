@@ -4,5 +4,6 @@ export * from './env';
 export * from './get';
 export * from './locales';
 export * from './secureStore';
+export * from './storage';
 export * from './supabase';
 export * from './validation';
