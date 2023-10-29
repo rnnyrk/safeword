@@ -4,7 +4,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { isIphone, locales, SecureStoreAdapter } from 'utils';
+import { isIphone, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { Button } from 'common/interaction';
 import { Container, FormLayout, LogoHeader } from 'common/layout';
@@ -69,7 +69,7 @@ export default function AuthScreen() {
         });
 
         // You can optionally store Google's access token if you need it later
-        SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
+        // SecureStoreAdapter.setItem('google-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
       console.error(error);
@@ -100,7 +100,7 @@ export default function AuthScreen() {
         });
 
         // You can optionally store Apple access token if you need it later
-        SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
+        // SecureStoreAdapter.setItem('apple-access-token', JSON.stringify(data.provider_token));
       }
     } catch (error) {
       console.error(error);

@@ -1,7 +1,7 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, useSegments } from 'expo-router';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 import { getUserByEmail } from 'queries/users';
 import { createUser } from 'queries/users/mutate';
@@ -50,6 +50,8 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   const [user, setUser] = useState<UserType>(undefined);
 
   async function getSupabaseUser(token: string) {
+    if (!token) return;
+
     const decodedToken = jwtDecode<SafeWordJwtPayload>(token);
     if (!decodedToken.sub) throw new Error('No user id found in token');
 
