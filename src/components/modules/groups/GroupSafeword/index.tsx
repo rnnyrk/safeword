@@ -9,14 +9,18 @@ import { AnimatedGroup, DotLoader } from 'common/layout';
 import { BubbleStroke, Refresh } from 'common/svg';
 import { Text } from 'common/typography';
 
-import { GroupSafewordContent, GroupSafewordDate, GroupSafewordWord } from './styled';
+import {
+  GroupSafewordContent,
+  GroupSafewordDate,
+  GroupSafewordRefresh,
+  GroupSafewordWord,
+} from './styled';
 
 export function GroupSafeword({ groupId }: GroupSafewordProps) {
   const { data: group, isPending: isLoadingGroup } = useGroupById(groupId);
-  const { mutateAsync: onUpdateGroup, isPending: isUpdating } = useUpdateGroup();
+  const { mutateAsync: onUpdateGroup } = useUpdateGroup();
 
-  const isLoading = isLoadingGroup || isUpdating;
-  const groupSize = windowWidth - 20;
+  const groupSize = windowWidth - 4;
 
   async function onGenerateNewSafeword() {
     if (!group) return;
@@ -54,7 +58,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
             {locales.t('group.our_safeword')}
           </Text>
           <GroupSafewordWord>
-            {isLoading ? (
+            {isLoadingGroup ? (
               <DotLoader
                 size="large"
                 color="primary"
@@ -72,7 +76,11 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
                   {group?.current_word}
                 </Text>
                 <Pressable onPress={onGenerateNewSafeword}>
-                  <Refresh />
+                  {({ pressed }) => (
+                    <GroupSafewordRefresh isPressed={pressed}>
+                      <Refresh />
+                    </GroupSafewordRefresh>
+                  )}
                 </Pressable>
               </>
             )}
