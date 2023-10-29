@@ -46,7 +46,9 @@ export function useUpdateGroup() {
   return useMutation({
     mutationFn: ({ id, values }: i.UpdateGroup) => updateGroup({ id, values }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }
@@ -66,7 +68,9 @@ export function useDeleteGroup() {
   return useMutation({
     mutationFn: ({ id }: i.DeleteGroup) => deleteGroup({ id }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }
@@ -96,7 +100,9 @@ export function useRegenerateGroupCode() {
     mutationFn: ({ id, invite_code }: i.RegenerateGroupCode) =>
       regenerateGroupCode({ id, invite_code }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }

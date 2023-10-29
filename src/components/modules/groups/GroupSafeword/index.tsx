@@ -12,8 +12,8 @@ import { Text } from 'common/typography';
 import { GroupSafewordContent, GroupSafewordDate, GroupSafewordWord } from './styled';
 
 export function GroupSafeword({ groupId }: GroupSafewordProps) {
-  const { data: group, isLoading: isLoadingGroup } = useGroupById(groupId);
-  const { mutateAsync: onUpdateGroup, isLoading: isUpdating } = useUpdateGroup();
+  const { data: group, isPending: isLoadingGroup } = useGroupById(groupId);
+  const { mutateAsync: onUpdateGroup, isPending: isUpdating } = useUpdateGroup();
 
   const isLoading = isLoadingGroup || isUpdating;
   const groupSize = windowWidth - 20;

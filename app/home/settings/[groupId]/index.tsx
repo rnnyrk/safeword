@@ -25,10 +25,10 @@ export default function SettingsGroupScreen() {
   const params = useGlobalSearchParams<{ groupId: string }>();
 
   const { data: group } = useGroupById(params.groupId);
-  const { mutateAsync: onDeleteGroup, isLoading: isDeletingGroup } = useDeleteGroup();
-  const { mutateAsync: onUpdateGroup, isLoading: isUpdatingGroup } = useUpdateGroup();
-  const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
-  const { mutateAsync: onRegenerateCode, isLoading: isRegeneratingCode } = useRegenerateGroupCode();
+  const { mutateAsync: onDeleteGroup, isPending: isDeletingGroup } = useDeleteGroup();
+  const { mutateAsync: onUpdateGroup, isPending: isUpdatingGroup } = useUpdateGroup();
+  const { mutateAsync: onUpdateUser, isPending: isUpdatingUser } = useUpdateUser();
+  const { mutateAsync: onRegenerateCode, isPending: isRegeneratingCode } = useRegenerateGroupCode();
 
   const isUpdating = isUpdatingGroup || isUpdatingUser;
 
@@ -159,7 +159,9 @@ export default function SettingsGroupScreen() {
 
             if (updatedCurrentUser?.data?.[0].groups) {
               // If any groups left, invalidate groups to get fetch all remaining groups
-              queryClient.invalidateQueries(['groups']);
+              queryClient.invalidateQueries({
+                queryKey: ['groups'],
+              });
 
               router.push('/home/');
             } else {
@@ -189,7 +191,9 @@ export default function SettingsGroupScreen() {
     setCode(groupCode);
     codeTimeout = setTimeout(() => {
       // Refetch the group to get newly joined users
-      queryClient.invalidateQueries(['groups', group.id]);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
 
       setCode(undefined);
       codeTimeout = null;

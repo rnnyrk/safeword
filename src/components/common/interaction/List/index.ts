@@ -107,7 +107,6 @@ type ListTextType = {
 };
 
 const ListSubtext = styled(Text).attrs({
-  family: 'tradeGothicBold',
   size: 14,
 })<ListSubtextType>`
   max-width: 100%;
