@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
@@ -10,18 +9,23 @@ import { AnimatedGroup, DotLoader } from 'common/layout';
 import { BubbleStroke, Refresh } from 'common/svg';
 import { Text } from 'common/typography';
 
-import { GroupSafewordContent, GroupSafewordDate, GroupSafewordWord } from './styled';
+import {
+  GroupSafewordContent,
+  GroupSafewordDate,
+  GroupSafewordRefresh,
+  GroupSafewordWord,
+} from './styled';
 
 export function GroupSafeword({ groupId }: GroupSafewordProps) {
-  const router = useRouter();
-  const { data: group, isLoading: isLoadingGroup } = useGroupById(groupId);
-  const { mutateAsync: onUpdateGroup, isLoading: isUpdating } = useUpdateGroup();
+  const { data: group, isPending: isLoadingGroup } = useGroupById(groupId);
+  const { mutateAsync: onUpdateGroup } = useUpdateGroup();
 
-  const isLoading = isLoadingGroup || isUpdating;
-  const groupSize = windowWidth - 20;
+  const groupSize = windowWidth - 4;
 
   async function onGenerateNewSafeword() {
-    const newSafeword = getNewSafeword();
+    if (!group) return;
+
+    const newSafeword = getNewSafeword(group.language);
 
     await onUpdateGroup({
       id: groupId,
@@ -43,6 +47,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
       </GroupSafewordDate>
       <AnimatedGroup
         size={groupSize}
+        style={{ width: '100%', justifyContent: 'center' }}
         entering={FadeInUp.duration(750).delay(250)}
         exiting={FadeInUp.duration(750).delay(250)}
       >
@@ -54,7 +59,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
             {locales.t('group.our_safeword')}
           </Text>
           <GroupSafewordWord>
-            {isLoading ? (
+            {isLoadingGroup ? (
               <DotLoader
                 size="large"
                 color="primary"
@@ -72,28 +77,15 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
                   {group?.current_word}
                 </Text>
                 <Pressable onPress={onGenerateNewSafeword}>
-                  <Refresh />
+                  {({ pressed }) => (
+                    <GroupSafewordRefresh isPressed={pressed}>
+                      <Refresh />
+                    </GroupSafewordRefresh>
+                  )}
                 </Pressable>
               </>
             )}
           </GroupSafewordWord>
-          {/* <Pressable
-            onPress={() =>
-              router.push({
-                pathname: '/home/[groupId]/send',
-                params: {
-                  groupId,
-                },
-              })
-            }
-          >
-            <Text
-              color="gray"
-              size={16}
-            >
-              SafeWord versturen
-            </Text>
-          </Pressable> */}
         </GroupSafewordContent>
 
         <BubbleStroke

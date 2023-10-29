@@ -41,6 +41,7 @@ export default function CreateGroupScreen() {
       name: data.name,
       invite_code: groupCode,
       userId: user.id,
+      language: 'nl-NL',
     });
 
     if (createGroupError) {

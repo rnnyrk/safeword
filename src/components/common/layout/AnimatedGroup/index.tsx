@@ -1,5 +1,5 @@
 import Animated from 'react-native-reanimated';
-import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components/native';
 
 export const AnimatedGroup = styled(Animated.View)<AnimatedGroupProps>`
   position: relative;

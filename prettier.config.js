@@ -10,10 +10,10 @@ module.exports = {
     '^next(.*)$',
     '<THIRD_PARTY_MODULES>',
     '',
-    '^(src|vectors|images|utils|hooks|queries|store|styles|config|navigators|screens|static)(/.*|$)',
+    '^(src|vectors|images|utils|hooks|locales|queries|store|styles|config|navigators|screens|static)(/.*|$)',
     '^(pages|layouts|modules|common)(/.*|$)',
     '',
     '^[./]',
   ],
-  plugins: [require('@ianvs/prettier-plugin-sort-imports')],
+  plugins: ['@ianvs/prettier-plugin-sort-imports'],
 };

@@ -1,11 +1,7 @@
 import type * as i from 'types';
 import { PostgrestError } from '@supabase/supabase-js';
 
-import { AvailableSafewords } from 'utils';
-
 export type GroupType = 'family' | 'friends' | 'work' | 'other';
-
-export type SafeWords = (typeof AvailableSafewords)[number];
 
 export type Group = {
   id: string;
@@ -13,10 +9,11 @@ export type Group = {
   created_at: string;
   qrcode: string;
   invite_code: string;
+  language: i.Language;
   type?: i.GroupType;
   admin_id: string;
   members: string;
-  current_word: i.SafeWords;
+  current_word: i.AvailableSafeWords;
 };
 
 export type FormattedGroup = Omit<i.Group, 'members'> & {
@@ -25,7 +22,7 @@ export type FormattedGroup = Omit<i.Group, 'members'> & {
 
 export type GroupReturn = Promise<{ data: i.Group[] | null; error: PostgrestError | null }>;
 
-export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code'> & {
+export type CreateGroup = Pick<i.Group, 'name' | 'type' | 'invite_code' | 'language'> & {
   userId: string;
 };
 

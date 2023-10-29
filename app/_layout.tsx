@@ -1,3 +1,4 @@
+import type * as i from 'types';
 import { useEffect } from 'react';
 import {
   LexendDeca_400Regular,
@@ -12,6 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from 'styles/theme';
+import { getLocalData, onChangeAppLanguage } from 'utils';
 import { SupabaseProvider } from 'utils/SupabaseContext';
 import { ToastProvider } from 'common/interaction';
 
@@ -21,7 +23,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 60 * 1000, // 60 seconds
-      cacheTime: 1000 * 6 * 10, // 10 minutes
+      gcTime: 1000 * 6 * 10, // 10 minutes
       retry: false,
     },
   },
@@ -33,6 +35,16 @@ export default function AppLayout() {
     LexendDeca_500Medium,
     LexendDeca_800ExtraBold,
   });
+
+  useEffect(() => {
+    (async () => {
+      // Load current locale
+      const locale = await getLocalData<i.Language>('locale');
+      if (locale) {
+        onChangeAppLanguage(locale);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (fontsLoaded) {

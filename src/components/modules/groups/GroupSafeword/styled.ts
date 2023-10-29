@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 export const GroupSafewordDate = styled.View`
   width: 100%;
@@ -17,6 +17,18 @@ export const GroupSafewordContent = styled.View`
 
 export const GroupSafewordWord = styled.View`
   position: relative;
-  flex-direction: row;
   align-items: center;
 `;
+
+export const GroupSafewordRefresh = styled.View<GroupSafewordRefreshProps>`
+  padding: 8px;
+
+  ${({ theme, isPressed }) => css`
+    border-radius: 12px;
+    background-color: ${isPressed ? theme.colors.pale : theme.colors.white};
+  `}
+`;
+
+type GroupSafewordRefreshProps = {
+  isPressed: boolean;
+};

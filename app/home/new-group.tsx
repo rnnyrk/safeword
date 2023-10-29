@@ -20,7 +20,7 @@ export default function NewGroupScreen() {
   const { user } = useSupabase();
   const queryClient = useQueryClient();
 
-  const { mutateAsync: onUpdateUser, isLoading: isUpdatingUser } = useUpdateUser();
+  const { mutateAsync: onUpdateUser } = useUpdateUser();
   const [isLoading, setLoading] = useState(false);
 
   const {
@@ -43,6 +43,7 @@ export default function NewGroupScreen() {
       name: data.name,
       invite_code: groupCode,
       userId: user.id,
+      language: 'nl-NL',
     });
 
     if (createGroupError) {
@@ -87,7 +88,9 @@ export default function NewGroupScreen() {
     setLoading(false);
 
     // Invalidate groups to get fetch all new groups
-    queryClient.invalidateQueries(['groups']);
+    queryClient.invalidateQueries({
+      queryKey: ['groups'],
+    });
 
     toast.show({ message: locales.t('new_group.success'), variant: 'success' });
     router.push({ pathname: '/home/' });

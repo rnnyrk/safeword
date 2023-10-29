@@ -14,9 +14,9 @@ import { Container, FormLayout, LogoHeader } from 'common/layout';
 import { Text } from 'common/typography';
 
 export default function JoinGroupScreen() {
+  const toast = useToast();
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const toast = useToast();
 
   const { user, setUser } = useSupabase();
   const [isLoading, setLoading] = useState(false);

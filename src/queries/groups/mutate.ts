@@ -1,10 +1,14 @@
 import type * as i from 'types';
-import { PostgrestError } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { getNewSafeword, supabase } from 'src/utils';
 
-export async function createGroup({ userId, name, invite_code }: i.CreateGroup): i.GroupReturn {
+export async function createGroup({
+  userId,
+  name,
+  invite_code,
+  language,
+}: i.CreateGroup): i.GroupReturn {
   const { data, error } = await supabase
     .from('groups')
     .insert({
@@ -12,7 +16,8 @@ export async function createGroup({ userId, name, invite_code }: i.CreateGroup):
       members: userId,
       name,
       invite_code,
-      current_word: getNewSafeword(),
+      current_word: getNewSafeword(language),
+      language,
     })
     .select();
 
@@ -41,7 +46,9 @@ export function useUpdateGroup() {
   return useMutation({
     mutationFn: ({ id, values }: i.UpdateGroup) => updateGroup({ id, values }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }
@@ -61,7 +68,9 @@ export function useDeleteGroup() {
   return useMutation({
     mutationFn: ({ id }: i.DeleteGroup) => deleteGroup({ id }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }
@@ -91,7 +100,9 @@ export function useRegenerateGroupCode() {
     mutationFn: ({ id, invite_code }: i.RegenerateGroupCode) =>
       regenerateGroupCode({ id, invite_code }),
     onSuccess: () => {
-      queryClient.invalidateQueries(['groups']);
+      queryClient.invalidateQueries({
+        queryKey: ['groups'],
+      });
     },
   });
 }

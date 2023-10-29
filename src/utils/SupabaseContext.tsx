@@ -1,24 +1,12 @@
 import type * as i from 'types';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter, useSegments } from 'expo-router';
-import jwt_decode, { JwtPayload } from 'jwt-decode';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
 
 import { getUserByEmail } from 'queries/users';
 import { createUser } from 'queries/users/mutate';
 
 import { supabase } from './supabase';
-
-type UserType = i.User | null | undefined;
-
-type SupabaseContextProps = {
-  loggedIn: boolean;
-  user: UserType;
-  setUser: (user: UserType) => void;
-  signOut: () => Promise<void>;
-  getAppleOAuthUrl: () => Promise<string | null>;
-  getGoogleOAuthUrl: () => Promise<string | null>;
-  setOAuthSession: (tokens: { access_token: string; refresh_token: string }) => Promise<void>;
-};
 
 export const SupabaseContext = createContext<SupabaseContextProps>({
   loggedIn: false,
@@ -62,7 +50,9 @@ export const SupabaseProvider = ({ children }: SupabaseProviderProps) => {
   const [user, setUser] = useState<UserType>(undefined);
 
   async function getSupabaseUser(token: string) {
-    const decodedToken = jwt_decode(token) as JwtPayload;
+    if (!token) return;
+
+    const decodedToken = jwtDecode<SafeWordJwtPayload>(token);
     if (!decodedToken.sub) throw new Error('No user id found in token');
 
     const email = decodedToken.email;
@@ -175,10 +165,20 @@ type SupabaseProviderProps = {
   children: React.ReactNode;
 };
 
-declare module 'jwt-decode' {
-  export interface JwtPayload {
-    email: string;
-    name?: string;
-    user_metadata?: Record<string, any>;
-  }
-}
+type UserType = i.User | null | undefined;
+
+type SupabaseContextProps = {
+  loggedIn: boolean;
+  user: UserType;
+  setUser: (user: UserType) => void;
+  signOut: () => Promise<void>;
+  getAppleOAuthUrl: () => Promise<string | null>;
+  getGoogleOAuthUrl: () => Promise<string | null>;
+  setOAuthSession: (tokens: { access_token: string; refresh_token: string }) => Promise<void>;
+};
+
+type SafeWordJwtPayload = JwtPayload & {
+  email: string;
+  name?: string;
+  user_metadata?: Record<string, any>;
+};

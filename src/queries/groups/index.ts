@@ -14,7 +14,9 @@ export async function fetchGroupsOfUser(userId: string): Promise<i.Group[] | nul
   // @TODO - fix this query with array includes/contains instead of textSearch
   const { data, error } = await supabase
     .from('groups')
-    .select('id, name, qrcode, invite_code, type, created_at, admin_id, members, current_word')
+    .select(
+      'id, name, qrcode, invite_code, type, language, created_at, admin_id, members, current_word',
+    )
     .textSearch('members', userId);
 
   if (error) {

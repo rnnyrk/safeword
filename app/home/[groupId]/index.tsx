@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from 'expo-router';
+import { useGlobalSearchParams, useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,14 +12,14 @@ import { GroupSafeword } from 'modules/groups';
 export default function GroupScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const params = useSearchParams<{ groupId: string }>();
+  const params = useGlobalSearchParams<{ groupId: string }>();
   const { data: group } = useGroupById(params.groupId);
 
   if (!group) return null;
 
   return (
     <Container>
-      <View style={{ flex: 2, justifyContent: 'center' }}>
+      <View style={{ flex: 2, justifyContent: 'center', width: '100%' }}>
         <GroupSafeword groupId={params.groupId} />
         <Text
           align="center"
