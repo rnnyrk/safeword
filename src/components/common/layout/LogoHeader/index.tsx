@@ -21,7 +21,7 @@ export function LogoHeader({
       {showBackButton ? (
         <Pressable
           hitSlop={10}
-          onPress={() => (backUrl ? router.replace(backUrl) : router.back())}
+          onPress={() => (backUrl ? router.push(backUrl) : router.back())}
         >
           {({ pressed }) => (
             <ArrowLeft fill={pressed ? theme.colors.primary : theme.colors.darkGray} />

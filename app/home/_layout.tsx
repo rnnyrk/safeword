@@ -1,6 +1,6 @@
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import { DrawerItem } from '@react-navigation/drawer';
-import { usePathname } from 'expo-router';
+import { usePathname, useRouter } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView } from 'react-native';
@@ -26,9 +26,12 @@ const DrawerItemStyle = {
   backgroundColor: theme.colors.white,
 };
 
-function CustomDrawerContent({ drawerPosition, navigation }: any) {
+function CustomDrawerContent({
+  drawerPosition,
+}: DrawerContentComponentProps & { drawerPosition: 'left' | 'right' }) {
   const insets = useSafeAreaInsets();
   const { signOut } = useSupabase();
+  const router = useRouter();
 
   return (
     <ScrollView
@@ -43,13 +46,13 @@ function CustomDrawerContent({ drawerPosition, navigation }: any) {
     >
       <DrawerItem
         label={locales.t('menu.my_group')}
-        onPress={() => navigation.navigate('index')}
+        onPress={() => router.push('/home/')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
       <DrawerItem
         label={locales.t('menu.settings')}
-        onPress={() => navigation.navigate('settings')}
+        onPress={() => router.push('/home/settings/')}
         labelStyle={DrawerLabelStyle}
         style={DrawerItemStyle}
       />
@@ -84,14 +87,12 @@ export default function HomeScreen() {
             backgroundColor: theme.colors.primary,
           },
         }}
-        drawerContent={(props: DrawerContentComponentProps) => {
-          return (
-            <CustomDrawerContent
-              drawerPosition="right"
-              {...props}
-            />
-          );
-        }}
+        drawerContent={(props: DrawerContentComponentProps) => (
+          <CustomDrawerContent
+            drawerPosition="right"
+            {...props}
+          />
+        )}
       >
         <Drawer.Screen name="index" />
         <Drawer.Screen name="settings" />
