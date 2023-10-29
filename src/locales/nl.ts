@@ -68,6 +68,17 @@ export const nl = {
   },
   settings_group: {
     regenerate_error: 'Nieuwe code genereren mislukt',
+    admin: 'beheerder',
+    extra_settings: 'Groepsinstellingen',
+    new_code: 'Nieuwe groepscode',
+    manage:
+      'Beheer je groepsleden, of genereer een nieuwe groepscode om mensen bij je groep te voegen.',
+    overview: 'Een overzicht van je groepsleden.',
+  },
+  settings_group_extra: {
+    change_group_language_title: 'Groepstaal wijzigen',
+    change_group_language_description:
+      'Weet je zeker dat je de taal van je groep wilt wijzigen? SafeWords zullen in het Nederlands zijn.',
     delete_group_error: 'Groep verwijderen mislukt',
     delete_group_success: 'Groep verwijderen gelukt',
     delete_group_title: 'Groep verwijderen',
@@ -76,19 +87,16 @@ export const nl = {
     delete_user_description:
       'Weet je zeker dat je de gebruiker %{name} wilt verwijderen uit je groep?',
     delete_user_error: 'Gebruiker verwijderen mislukt',
-    admin: 'beheerder',
     delete_group: 'Groep verwijderen',
-    new_code: 'Nieuwe groepscode',
-    manage:
-      'Beheer je groepsleden, of genereer een nieuwe groepscode om mensen bij je groep te voegen.',
-    overview: 'Een overzicht van je groepsleden.',
+    group_language: 'Groepstaal',
+    group_description: 'Selecteer voor je groep. De SafeWords zijn in deze taal.',
+    update_group_error: 'Groep aanpassen mislukt',
   },
   settings_language: {
     change_language_title: 'Taal wijzigen',
     change_language_description: 'Weet je zeker dat je de taal van je app wilt wijzigen?',
+    change_language_success: 'Groepstaal succesvol gewijzigd',
     your_language: 'App taal',
     your_description: 'Selecteer je gewenste taal binnen de app.',
-    group_language: 'Groups taal',
-    group_description: 'Selecteer voor je groep. De SafeWords zijn in deze taal.',
   },
 };

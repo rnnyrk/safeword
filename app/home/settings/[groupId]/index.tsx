@@ -1,4 +1,3 @@
-import type * as i from 'types';
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGlobalSearchParams, useRouter } from 'expo-router';
@@ -7,8 +6,8 @@ import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
-import { useDeleteGroup, useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
-import { deleteAdmin, updateUser, useUpdateUser } from 'queries/users/mutate';
+import { useRegenerateGroupCode, useUpdateGroup } from 'queries/groups/mutate';
+import { useUpdateUser } from 'queries/users/mutate';
 import theme from 'styles/theme';
 import { getInviteCode, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
@@ -25,7 +24,6 @@ export default function SettingsGroupScreen() {
   const params = useGlobalSearchParams<{ groupId: string }>();
 
   const { data: group } = useGroupById(params.groupId);
-  const { mutateAsync: onDeleteGroup, isPending: isDeletingGroup } = useDeleteGroup();
   const { mutateAsync: onUpdateGroup, isPending: isUpdatingGroup } = useUpdateGroup();
   const { mutateAsync: onUpdateUser, isPending: isUpdatingUser } = useUpdateUser();
   const { mutateAsync: onRegenerateCode, isPending: isRegeneratingCode } = useRegenerateGroupCode();
@@ -79,93 +77,6 @@ export default function SettingsGroupScreen() {
               toast.show({ message: locales.t('settings_group.delete_user_error') });
               console.error('Error updating group after removing user');
               return;
-            }
-          },
-        },
-      ],
-    );
-  }
-
-  function onConfirmDeleteGroup() {
-    if (!group) return;
-
-    Alert.alert(
-      locales.t('settings_group.delete_group_title'),
-      locales.t('settings_group.delete_group_description'),
-      [
-        {
-          text: locales.t('cancel_button'),
-          style: 'cancel',
-        },
-        {
-          text: locales.t('confirm_button'),
-          onPress: async () => {
-            if (!group || !user) return;
-
-            // First update the users, because only admins can update users and the admin will be deleted
-            const userPromises: i.UserReturn[] = [];
-
-            // Remove group id from the groups array
-            group.members.forEach(async (member) => {
-              if (!member.groups) return;
-              const filteredUserGroups = member.groups
-                .split(',')
-                .filter((groupId) => groupId !== group.id);
-
-              userPromises.push(
-                updateUser({
-                  email: member.email,
-                  values: {
-                    groups: filteredUserGroups.join(','),
-                  },
-                }),
-              );
-            });
-
-            const updatedUsers = await Promise.all(userPromises);
-
-            // Get current user from updated
-            const updatedCurrentUser = updatedUsers.find((updatedUser) => {
-              if (!updatedUser) return false;
-              return updatedUser?.data?.[0].id === user.id;
-            });
-
-            // After that, remove admin. Because the group can't be deleted if the admin row still exists
-            const { error: deleteAdminError } = await deleteAdmin({
-              userId: user.id,
-              groupId: group.id,
-            });
-
-            if (deleteAdminError) {
-              toast.show({ message: locales.t('settings_group.delete_group_error') });
-              console.error(deleteAdminError);
-              return;
-            }
-
-            const { error: deleteGroupError } = await onDeleteGroup({
-              id: group.id,
-            });
-
-            if (deleteGroupError) {
-              toast.show({ message: locales.t('settings_group.delete_group_error') });
-              console.error(deleteGroupError);
-              return;
-            }
-
-            toast.show({
-              message: locales.t('settings_group.delete_group_success'),
-              variant: 'success',
-            });
-
-            if (updatedCurrentUser?.data?.[0].groups) {
-              // If any groups left, invalidate groups to get fetch all remaining groups
-              queryClient.invalidateQueries({
-                queryKey: ['groups'],
-              });
-
-              router.push('/home/');
-            } else {
-              router.push('/onboarding/');
             }
           },
         },
@@ -277,24 +188,25 @@ export default function SettingsGroupScreen() {
 
       {isAdmin && (
         <FormLayout.Action insets={insets}>
-          {!code && (
-            <ActionButton
-              direction="right"
-              icon="delete"
-              isDisabled={!group}
-              isLoading={isDeletingGroup}
-              onPress={onConfirmDeleteGroup}
-              variant="delete"
-              style={{ marginBottom: 16 }}
-            >
-              {locales.t('settings_group.delete_group')}
-            </ActionButton>
-          )}
+          <ActionButton
+            direction="right"
+            icon="arrow"
+            onPress={() =>
+              router.push({
+                pathname: '/home/settings/[groupId]/extra',
+                params: { groupId: group.id },
+              })
+            }
+            variant="primary"
+            style={{ marginBottom: 16 }}
+          >
+            {locales.t('settings_group.extra_settings')}
+          </ActionButton>
 
           <ActionButton
             direction="right"
             icon={isRegeneratingCode || Boolean(code) ? null : 'refresh'}
-            isDisabled={!group || isRegeneratingCode || Boolean(code)}
+            isDisabled={isRegeneratingCode || Boolean(code)}
             isLoading={isRegeneratingCode}
             onPress={onRegenerateGroupCode}
             variant="secondary"
