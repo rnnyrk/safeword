@@ -47,6 +47,7 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
       </GroupSafewordDate>
       <AnimatedGroup
         size={groupSize}
+        style={{ width: '100%', justifyContent: 'center' }}
         entering={FadeInUp.duration(750).delay(250)}
         exiting={FadeInUp.duration(750).delay(250)}
       >
