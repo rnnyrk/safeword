@@ -1,5 +1,7 @@
 import type * as i from 'types';
 
+import { getAvailableSafewords } from 'locales/safewords';
+
 import { Env } from './env';
 
 export const getApiUrl = Env.EXPO_PUBLIC_SITE_URL;
@@ -18,44 +20,11 @@ export function getInviteCode(length: number) {
   return result;
 }
 
-export const AvailableSafewords = [
-  'Auto',
-  'Avond',
-  'Afwas',
-  'Banaan',
-  'Bureau',
-  'Dansen',
-  'Deur',
-  'Hand',
-  'Huis',
-  'Jas',
-  'Jurk',
-  'Kamer',
-  'Kast',
-  'Krab',
-  'Oplader',
-  'Oven',
-  'Plant',
-  'Pizza',
-  'Poes',
-  'Schoen',
-  'Slang',
-  'Slagroom',
-  'Snelweg',
-  'Strand',
-  'Tafel',
-  'Tosti',
-  'Vrijdag',
-  'Vlek',
-  'Was',
-  'Winkel',
-  'Woning',
-  'Zolder',
-] as const;
+export function getNewSafeword(groupLanguage: i.Language): i.AvailableSafeWords {
+  const availableSafewords = getAvailableSafewords(groupLanguage);
 
-export function getNewSafeword(): i.SafeWords {
-  const randomIndex = Math.floor(Math.random() * AvailableSafewords.length);
-  const newSafeword = AvailableSafewords[randomIndex];
+  const randomIndex = Math.floor(Math.random() * availableSafewords.length);
+  const newSafeword = availableSafewords[randomIndex];
 
-  return newSafeword;
+  return newSafeword as unknown as i.AvailableSafeWords;
 }

@@ -5,7 +5,7 @@ import { Alert, Pressable, ScrollView } from 'react-native';
 
 import { useGroupsOfUser } from 'queries/groups';
 import theme from 'styles/theme';
-import { locales, onChangeLanguage } from 'utils';
+import { locales, onChangeAppLanguage } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { List } from 'common/interaction';
 import { Container } from 'common/layout';
@@ -13,9 +13,9 @@ import { Check } from 'common/svg';
 import { Text } from 'common/typography';
 
 function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) {
-  const [currentLanguage, setCurrentLanguage] = useState<i.Languages>(defaultLanguage || 'nl-NL');
+  const [currentLanguage, setCurrentLanguage] = useState<i.Language>(defaultLanguage || 'nl-NL');
 
-  const languages: { value: i.Languages; label: string }[] = [
+  const languages: { value: i.Language; label: string }[] = [
     {
       value: 'nl-NL',
       label: 'Nederlands',
@@ -26,7 +26,7 @@ function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) 
     },
   ];
 
-  function onChangeLanguage(language: i.Languages) {
+  function onChangeAppLanguage(language: i.Language) {
     setCurrentLanguage(language);
     onChange(language);
   }
@@ -36,7 +36,7 @@ function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) 
       {languages.map((language, index) => (
         <Pressable
           key={`language_${index}`}
-          onPress={() => onChangeLanguage(language.value)}
+          onPress={() => onChangeAppLanguage(language.value)}
         >
           {({ pressed }) => {
             const isActive = language.value === currentLanguage;
@@ -67,8 +67,8 @@ function LanguageSelector({ defaultLanguage, onChange }: LanguageSelectorProps) 
 }
 
 type LanguageSelectorProps = {
-  defaultLanguage?: i.Languages;
-  onChange: (language: i.Languages) => void;
+  defaultLanguage?: i.Language;
+  onChange: (language: i.Language) => void;
 };
 
 export default function LanguageScreen() {
@@ -78,7 +78,7 @@ export default function LanguageScreen() {
 
   if (!groups || !groups.length || !user) return null;
 
-  function onChangeMyLanguage(language: i.Languages) {
+  function onChangeMyLanguage(language: i.Language) {
     Alert.alert(
       locales.t('settings_language.change_language_title'),
       locales.t('settings_language.change_language_description'),
@@ -90,7 +90,7 @@ export default function LanguageScreen() {
         {
           text: locales.t('confirm_button'),
           onPress: async () => {
-            onChangeLanguage(language);
+            onChangeAppLanguage(language);
             router.push('/home/settings/');
           },
         },
@@ -98,7 +98,7 @@ export default function LanguageScreen() {
     );
   }
 
-  function onChangeGroupLanguage(language: i.Languages) {
+  function onChangeGroupLanguage(language: i.Language) {
     console.log(language);
   }
 
@@ -122,7 +122,7 @@ export default function LanguageScreen() {
           {locales.t('settings_language.your_description')}
         </Text>
         <LanguageSelector
-          defaultLanguage={locales.locale as i.Languages}
+          defaultLanguage={locales.locale as i.Language}
           onChange={onChangeMyLanguage}
         />
 

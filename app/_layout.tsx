@@ -13,7 +13,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ThemeProvider } from 'styled-components/native';
 
 import theme from 'styles/theme';
-import { getLocalData, onChangeLanguage } from 'utils';
+import { getLocalData, onChangeAppLanguage } from 'utils';
 import { SupabaseProvider } from 'utils/SupabaseContext';
 import { ToastProvider } from 'common/interaction';
 
@@ -39,9 +39,9 @@ export default function AppLayout() {
   useEffect(() => {
     (async () => {
       // Load current locale
-      const locale = await getLocalData<i.Languages>('locale');
+      const locale = await getLocalData<i.Language>('locale');
       if (locale) {
-        onChangeLanguage(locale);
+        onChangeAppLanguage(locale);
       }
     })();
   }, []);

@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { Pressable } from 'react-native';
 import { FadeInUp } from 'react-native-reanimated';
 
@@ -13,7 +12,6 @@ import { Text } from 'common/typography';
 import { GroupSafewordContent, GroupSafewordDate, GroupSafewordWord } from './styled';
 
 export function GroupSafeword({ groupId }: GroupSafewordProps) {
-  const router = useRouter();
   const { data: group, isLoading: isLoadingGroup } = useGroupById(groupId);
   const { mutateAsync: onUpdateGroup, isLoading: isUpdating } = useUpdateGroup();
 
@@ -21,7 +19,9 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
   const groupSize = windowWidth - 20;
 
   async function onGenerateNewSafeword() {
-    const newSafeword = getNewSafeword();
+    if (!group) return;
+
+    const newSafeword = getNewSafeword(group.language);
 
     await onUpdateGroup({
       id: groupId,
@@ -77,23 +77,6 @@ export function GroupSafeword({ groupId }: GroupSafewordProps) {
               </>
             )}
           </GroupSafewordWord>
-          {/* <Pressable
-            onPress={() =>
-              router.push({
-                pathname: '/home/[groupId]/send',
-                params: {
-                  groupId,
-                },
-              })
-            }
-          >
-            <Text
-              color="gray"
-              size={16}
-            >
-              SafeWord versturen
-            </Text>
-          </Pressable> */}
         </GroupSafewordContent>
 
         <BubbleStroke
