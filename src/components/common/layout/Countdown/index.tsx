@@ -5,7 +5,7 @@ import { Text } from 'common/typography';
 import { CountdownContainer } from './styled';
 
 export function Countdown() {
-  const [time, setTime] = useState(30);
+  const [time, setTime] = useState(180);
   let timeInterval: NodeJS.Timeout | null = null;
 
   useEffect(() => {

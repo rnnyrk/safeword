@@ -1,7 +1,7 @@
 import type * as i from 'types';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGlobalSearchParams, useRouter } from 'expo-router';
-import { Alert, ScrollView } from 'react-native';
+import { Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useGroupById } from 'queries/groups';
@@ -10,7 +10,7 @@ import { deleteAdmin, updateUser } from 'queries/users/mutate';
 import { getNewSafeword, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, useToast } from 'common/interaction';
-import { Container, FormLayout } from 'common/layout';
+import { Container, CustomScrollView, FormLayout } from 'common/layout';
 import { Text } from 'common/typography';
 import { LanguageSelector } from 'modules/settings';
 
@@ -170,7 +170,7 @@ export default function SettingsGroupExtraScreen() {
       justifyContent="flex-start"
     >
       <FormLayout.Content>
-        <ScrollView>
+        <CustomScrollView>
           <Text
             size={32}
             color="darkGray"
@@ -191,7 +191,7 @@ export default function SettingsGroupExtraScreen() {
             onChange={onChangeGroupLanguage}
             defaultLanguage={group.language}
           />
-        </ScrollView>
+        </CustomScrollView>
       </FormLayout.Content>
 
       {isAdmin && (

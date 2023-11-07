@@ -1,14 +1,14 @@
 import type * as i from 'types';
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import theme from 'styles/theme';
 import { getApiUrl, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, List, useToast } from 'common/interaction';
-import { DotLoader, FormLayout } from 'common/layout';
+import { CustomScrollView, DotLoader, FormLayout } from 'common/layout';
 import { Check } from 'common/svg';
 import { Text } from 'common/typography';
 
@@ -84,7 +84,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
   return (
     <>
       <FormLayout.Content>
-        <ScrollView style={{ paddingTop: 64 }}>
+        <CustomScrollView style={{ paddingTop: 64 }}>
           {isLoading && (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
               <DotLoader
@@ -141,7 +141,7 @@ export function SendSafeword({ group, groupSize }: SendSafewordProps) {
                 ))}
             </>
           )}
-        </ScrollView>
+        </CustomScrollView>
       </FormLayout.Content>
 
       <FormLayout.Action insets={insets}>

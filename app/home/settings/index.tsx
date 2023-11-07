@@ -1,12 +1,12 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable } from 'react-native';
 
 import { useGroupsOfUser } from 'queries/groups';
 import theme from 'styles/theme';
 import { locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { List } from 'common/interaction';
-import { Container } from 'common/layout';
+import { Container, CustomScrollView } from 'common/layout';
 import { ArrowRight } from 'common/svg';
 import { Text } from 'common/typography';
 
@@ -21,7 +21,7 @@ export default function SettingsScreen() {
 
   return (
     <Container alignItems="flex-start">
-      <ScrollView>
+      <CustomScrollView>
         <Text
           size={32}
           color="darkGray"
@@ -110,7 +110,7 @@ export default function SettingsScreen() {
             </List.Item>
           )}
         </Pressable>
-      </ScrollView>
+      </CustomScrollView>
     </Container>
   );
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGlobalSearchParams, useRouter } from 'expo-router';
-import { Alert, Pressable, ScrollView } from 'react-native';
+import { Alert, Pressable } from 'react-native';
 import { FadeOutDown, Layout } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -12,7 +12,7 @@ import theme from 'styles/theme';
 import { getInviteCode, locales } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { ActionButton, List, useToast } from 'common/interaction';
-import { Container, Countdown, FormLayout } from 'common/layout';
+import { Container, Countdown, CustomScrollView, FormLayout } from 'common/layout';
 import { Min } from 'common/svg';
 import { Text } from 'common/typography';
 
@@ -100,6 +100,10 @@ export default function SettingsGroupScreen() {
     }
 
     setCode(groupCode);
+
+    // 2 min in milliseconds
+    const regenerateTime = 2 * 60 * 1000;
+
     codeTimeout = setTimeout(() => {
       // Refetch the group to get newly joined users
       queryClient.invalidateQueries({
@@ -108,7 +112,7 @@ export default function SettingsGroupScreen() {
 
       setCode(undefined);
       codeTimeout = null;
-    }, 30000);
+    }, regenerateTime);
   }
 
   useEffect(() => {
@@ -125,7 +129,7 @@ export default function SettingsGroupScreen() {
       justifyContent="flex-start"
     >
       <FormLayout.Content>
-        <ScrollView style={{ paddingTop: 64 }}>
+        <CustomScrollView style={{ paddingTop: 64 }}>
           <Text
             color="primaryLight"
             marginBottom={4}
@@ -183,7 +187,7 @@ export default function SettingsGroupScreen() {
               </List.AnimatedItem>
             );
           })}
-        </ScrollView>
+        </CustomScrollView>
       </FormLayout.Content>
 
       {isAdmin && (

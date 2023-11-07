@@ -1,12 +1,12 @@
 import type * as i from 'types';
 import { useRouter } from 'expo-router';
-import { Alert, ScrollView } from 'react-native';
+import { Alert } from 'react-native';
 
 import { useGroupsOfUser } from 'queries/groups';
 import { locales, onChangeAppLanguage } from 'utils';
 import { useSupabase } from 'utils/SupabaseContext';
 import { useToast } from 'common/interaction';
-import { Container } from 'common/layout';
+import { Container, CustomScrollView } from 'common/layout';
 import { Text } from 'common/typography';
 import { LanguageSelector } from 'modules/settings';
 
@@ -45,7 +45,7 @@ export default function LanguageScreen() {
 
   return (
     <Container alignItems="flex-start">
-      <ScrollView>
+      <CustomScrollView>
         <Text
           size={32}
           color="darkGray"
@@ -66,7 +66,7 @@ export default function LanguageScreen() {
           defaultLanguage={locales.locale as i.Language}
           onChange={onChangeMyLanguage}
         />
-      </ScrollView>
+      </CustomScrollView>
     </Container>
   );
 }
